@@ -51,6 +51,9 @@ public class Server {
                 while((message = in.readLine()) != null) {
                     System.out.println(username + ": " + message);
                     show(username + ": " + message);
+                    if(message.equals("bye")) {
+                        disconnect();
+                    }
                 }
             } catch(Exception e) {
                 System.out.println(username + " von der Verbindung getrennt");
