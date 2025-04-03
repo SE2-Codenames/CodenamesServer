@@ -28,4 +28,4 @@ jobs:
           restore-keys: ${{ runner.os }}-sonar
 
       - name: Build and analyze
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=SE2-Codenames_CodenamesServer
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=SE2-Codenames_CodenamesServer -Dsonar.login=${{ secrets.SONAR_TOKEN }}
