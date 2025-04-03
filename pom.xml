@@ -15,5 +15,4 @@
          <sonar.organization>se2-codenames</sonar.organization>
          <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
-
 </project>
