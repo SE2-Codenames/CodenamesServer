@@ -35,8 +35,18 @@ public class TestServerManager {
 
     @Test
     void testServerClient() throws Exception {
-        Socket socket = new Socket("localhost", 8080);  // Verbinde den Client
-        Thread.sleep(500);
+        try (Socket socket = new Socket("localhost", 8080)) {
+            assertTrue(socket.isConnected());
+
+            assertFalse(socket.isClosed());
+            assertTrue(socket.getPort() == 8080);
+
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            out.println("test");
+            assertDoesNotThrow(() -> in.readLine());
+        }
     }
 
     @Test
