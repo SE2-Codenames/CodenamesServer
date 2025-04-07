@@ -10,21 +10,26 @@ import java.net.Socket;
 
 
 public class TestServerImplManager {
-    private ServerImpl serverImpl;
+    private ServerImpl server;
     private Thread serverThread;
 
     @BeforeEach
     void setUp() {
-       /* serverThread = new Thread(() -> {
+        server = new ServerImpl();
+        serverThread = new Thread(() -> {
             try {
-                Server.main(new String[]{});
-            } catch (Exception e) {
+                server.start(8081); // Port ändern, um Konflikte zu vermeiden
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-        serverThread.start();+/
+        serverThread.start();
 
-        */
+        try {
+            Thread.sleep(500); // kurz warten, bis der Server läuft
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -37,11 +42,11 @@ public class TestServerImplManager {
 
     @Test
     void testServerClient() throws Exception {
-        try (Socket socket = new Socket("localhost", 8080)) {
+        try (Socket socket = new Socket("localhost", 8081)) {
             assertTrue(socket.isConnected());
 
             assertFalse(socket.isClosed());
-            assertTrue(socket.getPort() == 8080);
+            assertTrue(socket.getPort() == 8081);
 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -53,7 +58,7 @@ public class TestServerImplManager {
 
     @Test
     void testUserRegister() throws IOException, InterruptedException {
-        Socket socket = new Socket("localhost", 8080);
+        Socket socket = new Socket("localhost", 8081);
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
@@ -66,13 +71,13 @@ public class TestServerImplManager {
 
     @Test
     void testMessage() throws IOException, InterruptedException {
-        Socket client1 = new Socket("localhost", 8080);
+        Socket client1 = new Socket("localhost", 8081);
         BufferedReader in1 = new BufferedReader(new InputStreamReader(client1.getInputStream()));
         PrintWriter out1 = new PrintWriter(client1.getOutputStream(), true);
         in1.readLine();
         out1.println("client1");
 
-        Socket client2 = new Socket("localhost", 8080);
+        Socket client2 = new Socket("localhost", 8081);
         BufferedReader in2 = new BufferedReader(new InputStreamReader(client2.getInputStream()));
         PrintWriter out2 = new PrintWriter(client2.getOutputStream(), true);
         in2.readLine();
@@ -91,7 +96,7 @@ public class TestServerImplManager {
 
     @Test
     void testDisconnect() throws IOException, InterruptedException {
-        Socket client = new Socket("localhost", 8080);
+        Socket client = new Socket("localhost", 8081);
         client.setSoTimeout(500);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
@@ -109,7 +114,7 @@ public class TestServerImplManager {
     }
 
     private boolean isServerRunning() {
-        try (Socket socket = new Socket("localhost", 8080)) {
+        try (Socket socket = new Socket("localhost", 8081)) {
             return socket.isConnected();
         } catch (IOException e) {
             return false;
