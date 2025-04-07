@@ -9,20 +9,22 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 
-public class TestServerManager {
-    private Server server;
+public class TestServerImplManager {
+    private ServerImpl serverImpl;
     private Thread serverThread;
 
     @BeforeEach
     void setUp() {
-        serverThread = new Thread(() -> {
+       /* serverThread = new Thread(() -> {
             try {
                 Server.main(new String[]{});
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        serverThread.start();
+        serverThread.start();+/
+
+        */
     }
 
     @Test
