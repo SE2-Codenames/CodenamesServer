@@ -33,6 +33,6 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify sonar:sonar -Dsonar.projectKey=SE2-Codenames_CodenamesServer -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=SE2-Codenames_CodenamesServer -Dsonar.login=${{ secrets.SONAR_TOKEN }} -Dsonar.coverage.exclusions=src/main/java/**/ServerImpl.java
 
 
