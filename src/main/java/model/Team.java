@@ -2,23 +2,17 @@ package model;
 
 public class Team {
     private TeamColor color;
-    private int score;
     private int cardsRemaining;
     private boolean isCurrentTurn;
 
     public Team(TeamColor color) {
        this.color = color;
-        this.score = 0;
-        this.cardsRemaining = 0;
+        this.cardsRemaining = (color == TeamColor.RED) ? 9 : 8; //Red team always starts with 9 card, blue iwth 8
         this.isCurrentTurn = false;
     }
 
     public TeamColor getColor() {
         return color;
-    }
-
-    public int getScore() {
-        return score;
     }
 
     public int getCardsRemaining() {
@@ -33,17 +27,18 @@ public class Team {
         isCurrentTurn = currentTurn;
     }
 
-    public void incrementScore() {
-        score++;
-        cardsRemaining--;
-    }
+    public void startTurn() { isCurrentTurn = true; }
+
+    public void endTurn() { isCurrentTurn = false; }
 
     public void setCardsRemaining(int count) {
         this.cardsRemaining = count;
     }
 
+    public boolean hasWon() { return cardsRemaining == 0; }
+
     @Override
     public String toString() {
-        return color + " Team - Score: " + score + ", Cards left: " + cardsRemaining;
+        return color + " Team Cards left: " + cardsRemaining;
     }
 }
