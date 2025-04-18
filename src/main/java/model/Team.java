@@ -1,5 +1,7 @@
 package model;
 
+import java.util.List;
+
 public class Team {
     private TeamColor color;
     private int cardsRemaining;

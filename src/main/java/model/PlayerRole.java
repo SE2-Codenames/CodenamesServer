@@ -1,7 +1,7 @@
 package model;
 
 public enum PlayerRole {
-    AGENT, //makes guess
+    OPERATIVE, //makes guess
     SPYMASTER, //gives hint
     NONE //default unassigned
 }
