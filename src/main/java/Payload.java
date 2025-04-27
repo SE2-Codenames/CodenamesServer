@@ -1,3 +1,3 @@
 public interface Payload {
-    boolean val();
+    boolean valid();
 }
