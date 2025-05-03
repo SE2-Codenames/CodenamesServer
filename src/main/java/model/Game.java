@@ -112,6 +112,17 @@ public class Game {
         return players.stream().filter(p -> p.getUsername().equalsIgnoreCase(username)).findFirst();
     }
 
+    public void togglePlayerReady(String username) throws GameException {
+        Player player = getPlayerByUsername(username)
+                .orElseThrow(() -> new GameException("Player not found"));
+        player.setReady(!player.isReady());
+    }
+
+    public boolean allPlayersReady() {
+        return players.size() >= 4 &&
+                players.stream().allMatch(Player::isReady);
+    }
+
     private String validateClue(String clueWord) throws GameException {
         clueWord = clueWord.trim();
 
@@ -121,6 +132,7 @@ public class Game {
         if (clueWord.matches(".*\\d.*")) {
             throw new GameException("Clue cannot contain numbers");
         }
+
         String finalClueWord = clueWord;
         if (board.stream().anyMatch(card ->
                 card.getWord().equalsIgnoreCase(finalClueWord))) {
@@ -280,6 +292,29 @@ public class Game {
         } else {
             System.out.println("Game over! No winner!");
         }
+    }
+
+    public void resetGame() {
+        // Reset board
+        Collections.shuffle(board);
+        board.forEach(card -> card.revealed = false);
+
+        // Reset teams
+        redTeam.setCardsRemaining(9);
+        blueTeam.setCardsRemaining(8);
+        redTeam.setCurrentTurn(false);
+        blueTeam.setCurrentTurn(false);
+
+        // Reset game state
+        state = GameState.LOBBY;
+        currentTurn = startingTeam;
+        currentClue = null;
+        currentClueNumber = 0;
+        currentClueTeam = null;
+        remainingGuesses = 0;
+
+        // Keep players but reset their ready status
+        players.forEach(player -> player.setReady(false));
     }
 
     // Add this helper method
