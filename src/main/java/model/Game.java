@@ -13,6 +13,10 @@ public class Game {
     private GameState state;
     private final WordBank wordBank;
     private TeamColor currentTurn;
+    private String currentClue;
+    private int currentClueNumber;
+    private TeamColor currentClueTeam;
+    private int remainingGuesses;
 
     public Game(WordBank wordBank) {
         this.redTeam = new Team(TeamColor.RED);
@@ -43,6 +47,10 @@ public class Game {
     }
 
     public void startGame() {
+        if (state != GameState.LOBBY) {
+            throw new IllegalStateException("Game has already started");
+        }
+
         if (players.size() < 4) {
             throw new IllegalStateException("Need at least 4 players (2 per team)");
         } else if (players.stream().filter(p -> p.getPlayerRole() == PlayerRole.SPYMASTER).count() < 2) {
@@ -102,6 +110,253 @@ public class Game {
         //It's a safe way to handle "might not exist" situations,Forces you to think about the case where the player isn't found
         //Better than returning null which can cause errors
         return players.stream().filter(p -> p.getUsername().equalsIgnoreCase(username)).findFirst();
+    }
+
+    public void togglePlayerReady(String username) throws GameException {
+        Player player = getPlayerByUsername(username)
+                .orElseThrow(() -> new GameException("Player not found"));
+        player.setReady(!player.isReady());
+    }
+
+    public boolean allPlayersReady() {
+        return players.size() >= 4 &&
+                players.stream().allMatch(Player::isReady);
+    }
+
+    private String validateClue(String clueWord) throws GameException {
+        clueWord = clueWord.trim();
+
+        if (clueWord.isEmpty()) {
+            throw new GameException("Clue cannot be empty");
+        }
+        if (clueWord.matches(".*\\d.*")) {
+            throw new GameException("Clue cannot contain numbers");
+        }
+
+        String finalClueWord = clueWord;
+        if (board.stream().anyMatch(card ->
+                card.getWord().equalsIgnoreCase(finalClueWord))) {
+            throw new GameException("Clue cannot be a word on the board");
+        }
+
+        return clueWord;
+    }
+
+    public void giveClue(String clueWord, int number) throws GameException {
+        if (state != GameState.SPYMASTER_TURN) {
+            throw new GameException("Not spymaster's turn");
+        }
+
+        // Validate spymaster is giving the clue
+        Player currentSpymaster = players.stream()
+                .filter(p -> p.getTeamColor() == currentTurn && p.getPlayerRole() == PlayerRole.SPYMASTER)
+                .findFirst()
+                .orElseThrow(() -> new GameException("No spymaster for current team"));
+
+        // Validate clue content
+        clueWord = validateClue(clueWord);
+
+        // Store the clue information
+        this.currentClue = clueWord;
+        this.currentClueNumber = number;
+        this.currentClueTeam = currentTurn;
+
+        // Reset remaining guesses (number + 1 for the "zero means unlimited" case)
+        remainingGuesses = (number == 0) ? Integer.MAX_VALUE : number + 1;
+
+        // Transition to operative turn
+        state = GameState.OPERATIVE_TURN;
+
+        // Notify players about the new clue
+        // TODO: Implement player notification system
+    }
+
+    // Modify the guessCard method to handle clue-based guessing
+    public void guessCard(String word, Player guessingPlayer) throws GameException {
+        if (state == GameState.GAME_OVER) {
+            throw new GameException("Game has already ended");
+        }
+        if (state != GameState.OPERATIVE_TURN) {
+            throw new GameException("Not operative's turn");
+        }
+        if (guessingPlayer.getTeamColor() != currentTurn) {
+            throw new GameException("It's not your team's turn");
+        }
+        if (guessingPlayer.getPlayerRole() != PlayerRole.OPERATIVE) {
+            throw new GameException("Only operatives can guess");
+        }
+
+        Card guessedCard = findCardOnBoard(word);
+        handleCardReveal(guessedCard);
+    }
+
+    private Card findCardOnBoard(String word) throws GameException {
+        return board.stream()
+                .filter(card -> card.getWord().equalsIgnoreCase(word))
+                .findFirst()
+                .orElseThrow(() -> new GameException("Word not found on board"));
+    }
+
+    private void handleCardReveal(Card card) throws GameException {
+        if (card.isRevealed()) {
+            throw new GameException("Card already revealed");
+        }
+
+        card.reveal();
+        remainingGuesses--;
+
+        switch (card.getCardRole()) {
+            case ASSASSIN:
+                handleAssassinReveal();
+                break;
+            case NEUTRAL:
+                handleNeutralReveal(card);
+                break;
+            default:
+                handleTeamCardReveal(card);
+        }
+    }
+
+    private void handleAssassinReveal() {
+        state = GameState.GAME_OVER;
+        // Current team loses when revealing assassin
+        if (currentTurn == TeamColor.RED) {
+            redTeam.setCardsRemaining(0);
+        } else {
+            blueTeam.setCardsRemaining(0);
+        }
+        notifyGameOver();
+    }
+
+    private void handleNeutralReveal(Card card) {
+        card.reveal();
+        System.out.println("Neutral card revealed: " + card.getWord());
+        endTurn();
+
+    }
+
+    private void handleTeamCardReveal(Card card) {
+        Team currentTeam = getCurrentTeam();
+        Team opponentTeam = getOpponentTeam();
+
+        if (card.getCardRole().name().equals(currentTurn.name())) {
+            // Correct guess
+            currentTeam.setCardsRemaining(currentTeam.getCardsRemaining() - 1);
+
+            if (currentTeam.hasWon()) {
+                state = GameState.GAME_OVER;
+                notifyGameOver();
+            } else if (remainingGuesses <= 0) {
+                endTurn();
+            }
+        } else {
+            // Wrong team's card
+            opponentTeam.setCardsRemaining(opponentTeam.getCardsRemaining() - 1);
+            endTurn();
+
+            if (opponentTeam.hasWon()) {
+                state = GameState.GAME_OVER;
+                notifyGameOver();
+            }
+        }
+    }
+
+    private void endTurn() {
+        if (state == GameState.OPERATIVE_TURN) {
+            // Operative turn ends -> switch to other team's spymaster turn
+            currentTurn = (currentTurn == TeamColor.RED) ? TeamColor.BLUE : TeamColor.RED;
+            state = GameState.SPYMASTER_TURN;
+        }
+        else if (state == GameState.SPYMASTER_TURN) {
+            // Spymaster gave clue -> switch to same team's operative turn
+            state = GameState.OPERATIVE_TURN;
+        }
+
+        // Reset clue information when switching teams
+        if (state == GameState.SPYMASTER_TURN) {
+            currentClue = null;
+            currentClueNumber = 0;
+            remainingGuesses = 0;
+        }
+
+        // Notify players about turn change
+        notifyTurnChange();
+    }
+
+    private void notifyGameOver() {
+        Team winner = redTeam.hasWon() ? redTeam :
+                blueTeam.hasWon() ? blueTeam : null;
+
+        if (winner != null) {
+            System.out.printf("Game over! %s team wins!%n", winner.getColor());
+        } else {
+            System.out.println("Game over! No winner!");
+        }
+    }
+
+    public void resetGame() {
+        // Reset board
+        Collections.shuffle(board);
+        board.forEach(card -> card.revealed = false);
+
+        // Reset teams
+        redTeam.setCardsRemaining(9);
+        blueTeam.setCardsRemaining(8);
+        redTeam.setCurrentTurn(false);
+        blueTeam.setCurrentTurn(false);
+
+        // Reset game state
+        state = GameState.LOBBY;
+        currentTurn = startingTeam;
+        currentClue = null;
+        currentClueNumber = 0;
+        currentClueTeam = null;
+        remainingGuesses = 0;
+
+        // Keep players but reset their ready status
+        players.forEach(player -> player.setReady(false));
+    }
+
+    // Add this helper method
+    private void notifyTurnChange() {
+        // TODO: Implement actual player notification
+        System.out.println("Turn changed: " + currentTurn + " - " + state);
+    }
+
+    public List<Card> getBoardState(Player player) {
+        // Return the board state appropriate for the player's role
+        List<Card> visibleCards = new ArrayList<>();
+
+        for (Card card : board) {
+            if (card.isRevealed()) {
+                // Show all revealed cards to everyone
+                visibleCards.add(new Card(card.getWord(), card.getCardRole()));
+            }
+            else if (player != null &&
+                    player.getPlayerRole() == PlayerRole.SPYMASTER &&
+                    player.getTeamColor() != null &&
+                    player.getTeamColor().name().equals(card.getCardRole().name())) {
+                // Show spymaster their own team's hidden cards
+                visibleCards.add(new Card(card.getWord(), card.getCardRole()));
+            }
+            else {
+                // Hide unrevealed cards (null indicates hidden)
+                visibleCards.add(new Card(card.getWord(), null));
+            }
+        }
+        return visibleCards;
+    }
+
+    public List<Player> getPlayers() {
+        return Collections.unmodifiableList(players);
+    }
+
+    private Team getCurrentTeam() {
+        return currentTurn == TeamColor.RED ? redTeam : blueTeam;
+    }
+
+    private Team getOpponentTeam() {
+        return currentTurn == TeamColor.RED ? blueTeam : redTeam;
     }
 }
 

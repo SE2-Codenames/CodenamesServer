@@ -35,4 +35,7 @@ public class Player {
     public String getUsername() { return username; }
 
     public void setPlayerRole(PlayerRole playerRole) { this.playerRole = playerRole;}
+
+    public boolean isReady() { return isReady; }
+    public void setReady(boolean ready) { isReady = ready; }
 }

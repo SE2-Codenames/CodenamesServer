@@ -3,7 +3,7 @@ package model;
 public class Card {
     private String word;
     private CardRole cardRole;
-    private boolean revealed;
+    protected boolean revealed;
 
     public Card(String word, CardRole cardRole) {
         this.word = word;
