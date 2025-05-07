@@ -53,7 +53,7 @@ public class Game {
 
         if (players.size() < 4) {
             throw new IllegalStateException("Need at least 4 players (2 per team)");
-        } else if (players.stream().filter(p -> p.getPlayerRole() == PlayerRole.SPYMASTER).count() < 2) {
+        } else if (players.stream().filter(p -> p.getSpymaster()).count() < 2) {
             throw new IllegalStateException("Both teams need a spymaster");
         }
         // Assign starting team randomly if not set
@@ -65,7 +65,7 @@ public class Game {
         state = GameState.SPYMASTER_TURN;
     }
 
-    public void addPlayer(Player newPlayer) throws GameException {
+    /*public void addPlayer(Player newPlayer) throws GameException {
         validatePlayerAdd(newPlayer);
         players.add(newPlayer);
     }
@@ -102,7 +102,7 @@ public class Game {
 
         player.setTeamColor(team);
         player.setPlayerRole(role);
-    }
+    }*/
 
     private Optional<Player> getPlayerByUsername(String username) {
         //Looks for player with username, compares it ignoring upper/lower case differences (equalsIgnoreCase)
@@ -110,17 +110,6 @@ public class Game {
         //It's a safe way to handle "might not exist" situations,Forces you to think about the case where the player isn't found
         //Better than returning null which can cause errors
         return players.stream().filter(p -> p.getUsername().equalsIgnoreCase(username)).findFirst();
-    }
-
-    public void togglePlayerReady(String username) throws GameException {
-        Player player = getPlayerByUsername(username)
-                .orElseThrow(() -> new GameException("Player not found"));
-        player.setReady(!player.isReady());
-    }
-
-    public boolean allPlayersReady() {
-        return players.size() >= 4 &&
-                players.stream().allMatch(Player::isReady);
     }
 
     private String validateClue(String clueWord) throws GameException {
@@ -149,7 +138,7 @@ public class Game {
 
         // Validate spymaster is giving the clue
         Player currentSpymaster = players.stream()
-                .filter(p -> p.getTeamColor() == currentTurn && p.getPlayerRole() == PlayerRole.SPYMASTER)
+                .filter(p -> p.getTeamColor() == currentTurn && p.getSpymaster())
                 .findFirst()
                 .orElseThrow(() -> new GameException("No spymaster for current team"));
 
@@ -182,7 +171,7 @@ public class Game {
         if (guessingPlayer.getTeamColor() != currentTurn) {
             throw new GameException("It's not your team's turn");
         }
-        if (guessingPlayer.getPlayerRole() != PlayerRole.OPERATIVE) {
+        if (!guessingPlayer.getSpymaster()) {
             throw new GameException("Only operatives can guess");
         }
 
@@ -313,8 +302,6 @@ public class Game {
         currentClueTeam = null;
         remainingGuesses = 0;
 
-        // Keep players but reset their ready status
-        players.forEach(player -> player.setReady(false));
     }
 
     // Add this helper method
@@ -333,7 +320,7 @@ public class Game {
                 visibleCards.add(new Card(card.getWord(), card.getCardRole()));
             }
             else if (player != null &&
-                    player.getPlayerRole() == PlayerRole.SPYMASTER &&
+                    player.getSpymaster() &&
                     player.getTeamColor() != null &&
                     player.getTeamColor().name().equals(card.getCardRole().name())) {
                 // Show spymaster their own team's hidden cards

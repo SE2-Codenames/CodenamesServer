@@ -3,14 +3,13 @@ package model;
 public class Player {
     private String username;
     private TeamColor teamColor;
-    private PlayerRole playerRole;
-    private boolean isReady;
+    private boolean spymaster;
+
 
     public Player(String username) {
         this.username = username;
         this.teamColor = null;
-        this.playerRole = PlayerRole.NONE;
-        this.isReady = false;
+        this.spymaster = false;
     }
 
     //Compares usernames case-insensitively. exp.: "Jake" and "jake" are treated equally
@@ -30,12 +29,9 @@ public class Player {
         this.teamColor = teamColor;
     }
 
-    public PlayerRole getPlayerRole(){ return playerRole;}
+    public boolean getSpymaster(){ return spymaster;}
 
     public String getUsername() { return username; }
 
-    public void setPlayerRole(PlayerRole playerRole) { this.playerRole = playerRole;}
-
-    public boolean isReady() { return isReady; }
-    public void setReady(boolean ready) { isReady = ready; }
+    public void setPlayerRole(boolean spymaster) { this.spymaster = spymaster;}
 }
