@@ -1,6 +1,8 @@
+package Payload;
+
 import java.util.List;
 
-public class PayloadStart implements Payload{
+public class PayloadStart implements Payload {
 
     private String gameId;
     private List<String> players;

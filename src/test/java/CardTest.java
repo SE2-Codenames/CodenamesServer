@@ -1,5 +1,5 @@
-import model.Card;
-import model.CardRole;
+import model.Card.Card;
+import model.Card.CardRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

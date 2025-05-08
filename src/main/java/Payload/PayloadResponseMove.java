@@ -1,3 +1,5 @@
+package Payload;
+
 public class PayloadResponseMove implements PayloadResponses{
     private String gameId;
     private boolean success;

@@ -1,4 +1,5 @@
-package model;
+package model.Player;
+
 
 public class Player {
     private String username;

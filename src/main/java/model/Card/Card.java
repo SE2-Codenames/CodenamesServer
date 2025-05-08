@@ -1,9 +1,9 @@
-package model;
+package model.Card;
 
 public class Card {
     private String word;
     private CardRole cardRole;
-    protected boolean revealed;
+    public boolean revealed;
 
     public Card(String word, CardRole cardRole) {
         this.word = word;

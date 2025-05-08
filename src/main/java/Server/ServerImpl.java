@@ -1,7 +1,6 @@
-import java.io.BufferedReader;
+package Server;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
@@ -14,7 +13,7 @@ public class ServerImpl {
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
-        System.out.println("Server gestartet auf Port " + port);
+        System.out.println("Server.Server gestartet auf Port " + port);
         while (!serverSocket.isClosed()) {
             Socket socket = serverSocket.accept();
             UserManager user = new UserManager(socket, clients);

@@ -1,3 +1,5 @@
+package Payload;
+
 public class Request {
     private String type;
     private Payload payload;

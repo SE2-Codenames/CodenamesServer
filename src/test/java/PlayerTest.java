@@ -1,6 +1,6 @@
-import model.Player;
-import model.PlayerRole;
-import model.TeamColor;
+import model.Player.Player;
+import model.Player.PlayerRole;
+import TeamColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

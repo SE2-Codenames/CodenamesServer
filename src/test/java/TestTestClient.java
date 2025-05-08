@@ -18,11 +18,11 @@ public class TestTestClient {
 
         out.println("TestClientUser");
 
-        out.println("Hallo Server!");
+        out.println("Hallo Server.Server!");
 
         String response = in.readLine();
         assertNotNull(response);
-        assertTrue(response.contains("Hallo Server!"));
+        assertTrue(response.contains("Hallo Server.Server!"));
 
         out.println("bye");
         

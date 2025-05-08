@@ -1,4 +1,9 @@
-import model.*;
+import model.Card.Card;
+import model.Card.CardRole;
+import TeamColor;
+import model.Card.WordBank;
+import model.Player.Player;
+import model.Player.PlayerRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

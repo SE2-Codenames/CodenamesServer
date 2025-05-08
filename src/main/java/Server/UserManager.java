@@ -1,4 +1,6 @@
-import model.TeamColor;
+package Server;
+
+import model.Player.TeamColor;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +8,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class UserManager implements Runnable {
     private Socket socket;

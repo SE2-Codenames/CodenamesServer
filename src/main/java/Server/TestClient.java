@@ -1,3 +1,5 @@
+package Server;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -20,7 +22,7 @@ public class TestClient {
                         outStream.println(serverMessage);
                     }
                 } catch (IOException e) {
-                    outStream.println("Verbindung zum Server verloren.");
+                    outStream.println("Verbindung zum Server.Server verloren.");
                 }
             });
 

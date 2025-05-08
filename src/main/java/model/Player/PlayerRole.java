@@ -1,4 +1,4 @@
-package model;
+package model.Player;
 
 public enum PlayerRole {
     OPERATIVE, //makes guess

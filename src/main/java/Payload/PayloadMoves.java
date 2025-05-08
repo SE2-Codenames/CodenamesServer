@@ -1,4 +1,6 @@
-public class PayloadMoves implements Payload{
+package Payload;
+
+public class PayloadMoves implements Payload {
     private String cardId;
     private String player;
 

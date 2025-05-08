@@ -1,6 +1,5 @@
-package model;
+package model.Player;
 
-import java.util.List;
 
 public class Team {
     private TeamColor color;

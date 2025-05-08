@@ -1,3 +1,5 @@
+package Server;
+
 import java.io.IOException;
 
 public class Server {
@@ -6,7 +8,7 @@ public class Server {
         try {
             server.start(8081);
         } catch (IOException e) {
-            System.out.println("Server konnte nicht gestartet werden.");
+            System.out.println("Server.Server konnte nicht gestartet werden.");
         }
     }
 }
