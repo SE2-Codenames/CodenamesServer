@@ -1,5 +1,5 @@
-import Team;
-import TeamColor;
+import model.Player.Team;
+import model.Player.TeamColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
