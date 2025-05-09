@@ -1,6 +1,5 @@
 import model.Player.Player;
-import model.Player.PlayerRole;
-import TeamColor;
+import model.Player.TeamColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,16 +19,15 @@ public class PlayerTest {
     public void testConstructor() {
         assertEquals("Mihi", player1.getUsername());
         assertNull(player1.getTeamColor());
-        assertEquals(PlayerRole.NONE, player1.getPlayerRole());
-        assertFalse(player1.isReady());
+        assertFalse(player1.getSpymaster());
     }
 
     @Test
     public void testSetGetPlayerRole() {
-        player1.setPlayerRole(PlayerRole.SPYMASTER);
-        assertEquals(PlayerRole.SPYMASTER, player1.getPlayerRole());
-        player2.setPlayerRole(PlayerRole.OPERATIVE);
-        assertEquals(PlayerRole.OPERATIVE, player2.getPlayerRole());
+        player1.setPlayerRole(true);
+        assertTrue(player1.getSpymaster());
+        player2.setPlayerRole(false);
+        assertFalse(player2.getSpymaster());
     }
 
     @Test
@@ -38,12 +36,6 @@ public class PlayerTest {
         assertEquals(TeamColor.RED, player1.getTeamColor());
         player2.setTeamColor(TeamColor.BLUE);
         assertEquals(TeamColor.BLUE, player2.getTeamColor());
-    }
-
-    @Test
-    public void testReady() {
-        player1.setReady(true);
-        assertTrue(player1.isReady());
     }
 
     @Test
