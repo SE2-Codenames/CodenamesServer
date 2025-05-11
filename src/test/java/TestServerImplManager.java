@@ -1,4 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
+
+import Server.ServerImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +28,7 @@ public class TestServerImplManager {
         serverThread.start();
 
         try {
-            Thread.sleep(500); // kurz warten, bis der Server läuft
+            Thread.sleep(500); // kurz warten, bis der Server.Server läuft
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -36,7 +38,7 @@ public class TestServerImplManager {
     void testServerStart() {
         assertDoesNotThrow(() -> {
             Thread.sleep(500);
-            assertTrue(isServerRunning(), "Server wurde gestartet");
+            assertTrue(isServerRunning(), "Server.Server wurde gestartet");
         });
     }
 
