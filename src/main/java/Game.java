@@ -29,6 +29,12 @@ public class Game {
         checkScore();
     }
 
+    //getter Methoden
+    public List<Card> getBoard(){return board;}
+    public GameState getGamestate(){return state;}
+    public TeamColor getCurrentTeam(){return currentTurn;}
+    public int[] getScore(){return score;}
+
     // creat Cardboard
     private List<Card> createBoard(List<String> randomWords) {
         List<Card> board = new ArrayList<>();
@@ -75,7 +81,7 @@ public class Game {
             return TeamColor.BLUE;
     }
 
-    private void getClue(String[] clue){
+    public void getClue(String[] clue){
         currentClue = clue[0];
         remainingGuesses = getInt(clue[1]);
     }
@@ -188,7 +194,7 @@ public class Game {
             notifyGameOver();
         }
     }
-    //änderungen
+
     private void checkTurnState() {
         if(remainingGuesses < 0){
             endTurn();
@@ -208,17 +214,18 @@ public class Game {
     }
 
     private void notifyWin() {
-
-    }
-
-    public List<Card> getBoard(){
-        return board;
+        state = GameState.GAME_OVER;
     }
 
     private void notifyGameOver() {
-
+        state = GameState.GAME_OVER;
+        if(currentTurn == TeamColor.RED){
+            currentTurn = TeamColor.BLUE;
+        }
+        else{
+            currentTurn = TeamColor.RED;
+        }
     }
-
 }
 
 
