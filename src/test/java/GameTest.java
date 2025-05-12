@@ -1,3 +1,5 @@
+import Server.Game;
+import Server.GameException;
 import model.Card.Card;
 import model.Card.CardRole;
 import model.Card.WordBank;
@@ -86,7 +88,7 @@ public class GameTest {
         int assassinFound = game.getBoard().indexOf(assassin);
         game.guessCard(assassinFound);
         assertTrue(assassinFound >= 0);
-        //Game Over evtl. noch (GameState)
+        //Server.Game Over evtl. noch (GameState)
     }
 
     @Test

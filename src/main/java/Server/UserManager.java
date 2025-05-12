@@ -9,6 +9,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 
+import static java.lang.System.out;
+
+
 public class UserManager implements Runnable {
     private Socket socket;
     private PrintWriter out;
@@ -17,10 +20,13 @@ public class UserManager implements Runnable {
     private TeamColor team;
     private boolean isSpymaster = false;
     private static List<UserManager> clients; // Statische Referenz auf die Client-Liste
+    private Gameprogress gameprogress;
+
 
     public UserManager(Socket socket, List<UserManager> clients) {
         this.socket = socket;
         UserManager.clients = clients;
+        this.gameprogress = new Gameprogress(clients);
     }
 
     @Override
@@ -54,7 +60,14 @@ public class UserManager implements Runnable {
                 } else if (message.equals("bye")) {
                     disconnect();
                     break;
-                } else {
+                }
+                else if (message.equals("START_GAME") ||
+                        message.startsWith("HINT:") ||
+                        message.startsWith("SELECT:")) {
+                    System.out.println("Verarbeitung: " + message);
+                    gameprogress.processMessage(message, out);
+                }
+                else {
                     ServerImpl.broadcastMessage(username + ": " + message);
                 }
             }
@@ -108,5 +121,9 @@ public class UserManager implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public PrintWriter getWriter() {
+        return out;
     }
 }

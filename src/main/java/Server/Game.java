@@ -1,7 +1,7 @@
+package Server;
+
 import model.Card.*;
 import model.GameState;
-import model.Player.Player;
-import model.Player.Team;
 import model.Player.TeamColor;
 
 import java.util.*;

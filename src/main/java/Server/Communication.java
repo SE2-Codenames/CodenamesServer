@@ -1,3 +1,5 @@
+package Server;
+
 import model.Card.Card;
 import model.GameState;
 import model.Player.TeamColor;
@@ -8,6 +10,7 @@ import java.util.List;
 public class Communication {
 
     private PrintWriter out;
+    private String lastInput;
 
     public Communication() {
         // empty constructor
@@ -17,13 +20,17 @@ public class Communication {
         this.out = out;
     }
 
+    public void setInput(String input) {
+        this.lastInput = input;
+    }
+
     // get Information from the Client
     // _______________________________
 
     // Spymaster gives a hint and the number of hints
-    public String[] getHint(String input) {
-        if (input != null && input.startsWith("HINT:")) {
-            String[] parts = input.substring(5).split(":");
+    public String[] getHint() {
+        if (lastInput != null && lastInput.startsWith("HINT:")) {
+            String[] parts = lastInput.substring(5).split(":");
             if (parts.length == 2) {
                 return parts;
             }
@@ -31,12 +38,11 @@ public class Communication {
         return new String[]{"", "0"};
     }
 
-
-    //Operater give a Clue     (-1 ENDTURN)
-    public int selectCard(String input) {
-        if (input != null && input.startsWith("SELECT:")) {
+    // Operative gives a clue (-1 = ENDTURN)
+    public int selectCard() {
+        if (lastInput != null && lastInput.startsWith("SELECT:")) {
             try {
-                return Integer.parseInt(input.substring(7));
+                return Integer.parseInt(lastInput.substring(7));
             } catch (NumberFormatException e) {
                 return -1;
             }
