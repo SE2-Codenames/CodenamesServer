@@ -23,6 +23,7 @@ public class Game {
         currentTurn = startingTeamRandom();
         this.state = GameState.LOBBY;
         this.board = createBoard(wordBank.getRandomWords(25));
+        this.score = new int[2];
         checkScore();
     }
 
@@ -197,6 +198,10 @@ public class Game {
 
     private void notifyWin() {
 
+    }
+
+    public List<Card> getBoard(){
+        return board;
     }
 
     private void notifyGameOver() {
