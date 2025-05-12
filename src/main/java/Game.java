@@ -17,6 +17,8 @@ public class Game {
     // für die Cheatfunktion nötig
     private String currentClue;
     private TeamColor currentClueTeam;
+    private int totalRedCards = 0;
+    private int totalBlueCards = 0;
 
 
     public Game(WordBank wordBank) {
@@ -52,6 +54,11 @@ public class Game {
             else if (i < 24) cardType = CardRole.NEUTRAL;   // Next 7 = Neutral
             else cardType = CardRole.ASSASSIN;              // Last 1 = Assassin
 
+            if(cardType == CardRole.RED){
+                totalRedCards++;
+            } else if(cardType == CardRole.BLUE){
+                totalBlueCards++;
+            }
             board.add(new Card(randomWords.get(i), cardType));
         }
         // 2. Shuffle to randomize positions
@@ -157,20 +164,24 @@ public class Game {
 
     // calculate the score and check Win state
     private void checkScore() {
-        score[0] = 0;
-        score[1] = 0;
+        int revealedRed = 0;
+        int revealedBlue = 0;
 
         for (int i = 0; i < 25; i++) {
             if(board.get(i).isRevealed()){
                 if(board.get(i).getCardRole() == CardRole.RED){
-                    score[0]++;
+                    revealedRed++;
                 }
                 else {
-                    score[1]++;
+                    revealedBlue++;
                 }
             }
         }
-        if(score[0] == 0 || score[1] == 0){
+
+        score[0] = 0;
+        score[1] = 0;
+
+        if(revealedRed == totalRedCards || revealedBlue == totalBlueCards){
             notifyWin();
         }
         if(score[0] == -1 || score[1] == -1){

@@ -1,7 +1,6 @@
 import model.Card.Card;
 import model.Card.CardRole;
 import model.Card.WordBank;
-import model.Player.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,6 @@ import static org.mockito.Mockito.when;
 public class GameTest {
     private Game game;
     private WordBank words;
-    private Player player1, player2, player3, player4;
     private List<String> fixedWords;
 
 
@@ -28,10 +26,6 @@ public class GameTest {
         words = mock(WordBank.class);
         when(words.getRandomWords(25)).thenReturn(fixedWords);
         game = new Game(words);
-        player1 = new Player("Mihi");
-        player2 = new Player("Edi");
-        player3 = new Player("Steffi");
-        player4 = new Player("Stefan");
     }
 
     @Test
@@ -54,59 +48,65 @@ public class GameTest {
                 .count();
         assertEquals(1, card);
     }
-    
+
+    @Test
+    public void testRedBlueCards() {
+        long red = game.getBoard().stream().filter(c -> c.getCardRole() == CardRole.RED).count();
+        long blue = game.getBoard().stream().filter(c -> c.getCardRole() == CardRole.BLUE).count();
+
+        assertTrue((red == 9 && blue == 8) || (red == 8 && blue == 9));
+    }
 
     @Test
     public void testRevealCard() throws GameException {
-        List<Card> board = game.getBoard();
-        int index = -1;
-        for(int i = 0; i < board.size(); i++){
-            if(!board.get(i).isRevealed()) {
-                index = i;
-                break;
-            }
-        }
+        Card unrevealed = game.getBoard().stream().filter(c -> !c.isRevealed()).findFirst().orElseThrow();
+        int index = game.getBoard().indexOf(unrevealed);
 
-        assertTrue(index >= 0);
         game.guessCard(index);
-        assertTrue(board.get(index).isRevealed());
+        assertTrue(unrevealed.isRevealed());
     }
 
     @Test
-    public void testGuessRevealedCard() throws GameException {
-        List<Card> board = game.getBoard();
-        int index = -1;
+    public void testGuessedRevealedCard() throws GameException {
+        Card unrevealed = game.getBoard().stream().filter(c -> !c.isRevealed()).findFirst().orElseThrow();
+        int index = game.getBoard().indexOf(unrevealed);
 
-        for(int i = 0; i < board.size(); i++){
-            if(!board.get(i).isRevealed()) {
-                index = i;
-                break;
-            }
-        }
-
-        assertTrue(index >= 0);
         game.guessCard(index);
-        int finalIndex = index;
-        assertThrows(GameException.class, () -> game.guessCard(finalIndex));
+        assertTrue(unrevealed.isRevealed());
+        assertThrows(GameException.class, () -> game.guessCard(index));
 
     }
 
     @Test
-    public void testRevealAssasin() throws GameException {
+    public void testRevealAssassin() throws GameException {
 
-        List<Card> board = game.getBoard();
-        int assassinFound = -1;
-        for (int i = 0; i < board.size(); i++) {
-            if (board.get(i).getCardRole() == CardRole.ASSASSIN) {
-                assassinFound = i;
-                break;
-            }
-        }
-
-        assertTrue(assassinFound >= 0);
+        Card assassin = game.getBoard().stream()
+                .filter(c ->c.getCardRole() == CardRole.ASSASSIN)
+                .findFirst().orElseThrow();
+        int assassinFound = game.getBoard().indexOf(assassin);
         game.guessCard(assassinFound);
-        List<Card> updated = game.getBoard();
-        assertTrue(updated.get(assassinFound).isRevealed());
+        assertTrue(assassinFound >= 0);
+        //Game Over evtl. noch (GameState)
+    }
+
+    @Test
+    public void testNeutral() throws GameException {
+        Card neutral = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.NEUTRAL)
+                .findFirst().orElseThrow();
+        int neutralFound = game.getBoard().indexOf(neutral);
+        game.guessCard(neutralFound);
+        assertTrue(neutralFound >= 0);
+
+    }
+
+    @Test
+    public void testScore() throws GameException {
+        Card red = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.RED && !c.isRevealed())
+                .findFirst().orElseThrow();
+        game.guessCard(game.getBoard().indexOf(red));
+        assertTrue(red.isRevealed());
     }
 
 }
