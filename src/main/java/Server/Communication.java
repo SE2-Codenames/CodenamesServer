@@ -51,8 +51,8 @@ public class Communication {
     }
 
     //gamestart after lobby
-    public boolean gameStart(String input) {
-        return input != null && input.trim().equalsIgnoreCase("START_GAME");
+    public boolean gameStart() {
+        return lastInput != null && lastInput.trim().equalsIgnoreCase("START_GAME");
     }
 
 
@@ -60,7 +60,7 @@ public class Communication {
     //______________________________
 
     //give Gamestate, TeamState, Cardlist and Score
-    public void giveGame(GameState gameState, TeamColor teamColor, List<Card> cards, int[] score) {
+    public void giveGame(GameState gameState, TeamColor teamColor, List<Card> cards, int[] score, String hint) {
         if (out == null) return;
 
         StringBuilder json = new StringBuilder();
@@ -79,6 +79,7 @@ public class Communication {
         }
         json.append("],");
         json.append("\"score\":[").append(score[0]).append(",").append(score[1]).append("]");
+        json.append("\"hint\":\"").append(hint).append("\",");
         json.append("}");
 
         out.println("GAME_STATE:" + json.toString());
