@@ -3,6 +3,7 @@ import Server.GameException;
 import model.Card.Card;
 import model.Card.CardRole;
 import model.Card.WordBank;
+import model.GameState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -87,8 +88,8 @@ public class GameTest {
                 .findFirst().orElseThrow();
         int assassinFound = game.getBoard().indexOf(assassin);
         game.guessCard(assassinFound);
-        assertTrue(assassinFound >= 0);
-        //Server.Game Over evtl. noch (GameState)
+        assertTrue(assassin.isRevealed());
+        assertEquals(GameState.GAME_OVER, game.getGamestate());
     }
 
     @Test
