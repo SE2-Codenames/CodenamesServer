@@ -1,11 +1,9 @@
 package model.Player;
 
-
 public class Player {
     private String username;
     private TeamColor teamColor;
     private boolean spymaster;
-
 
     public Player(String username) {
         this.username = username;
@@ -13,13 +11,8 @@ public class Player {
         this.spymaster = false;
     }
 
-    //Compares usernames case-insensitively. exp.: "Jake" and "jake" are treated equally
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Player player = (Player) o;
-        return username.equalsIgnoreCase(player.username);
+    public String getUsername() {
+        return username;
     }
 
     public TeamColor getTeamColor() {
@@ -30,9 +23,17 @@ public class Player {
         this.teamColor = teamColor;
     }
 
-    public boolean getSpymaster(){ return spymaster;}
+    public boolean getSpymaster() {
+        return spymaster;
+    }
 
-    public String getUsername() { return username; }
+    public void setSpymaster(boolean spymaster) {
+        this.spymaster = spymaster;
+    }
 
-    public void setPlayerRole(boolean spymaster) { this.spymaster = spymaster;}
+    public String toInfoString() {
+        return username + "," +
+                (teamColor != null ? teamColor.name() : "") + "," +
+                spymaster;
+    }
 }
