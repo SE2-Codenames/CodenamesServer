@@ -80,7 +80,7 @@ public class Gameprogress {
         broadcastGameState();
     }
 
-    private void broadcastGameState() {
+    protected void broadcastGameState() {
         if (game == null) return;
         LOGGER.info("Spielstatus wird an alle Clients gesendet...");
         for (WebSocket session : sessions.keySet()) {

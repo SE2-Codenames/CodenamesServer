@@ -172,4 +172,53 @@ public class GameProgressTest {
         verify(socket).send(contains("Unexpected error:"));
     }
 
+    @Test
+    public void testGameLobbyGameOver() {
+
+        Communication comm = spy(new Communication(socket));
+        comm.setInput("IRRELEVANT");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.LOBBY);
+
+        gameprogress = new Gameprogress(sessions) {
+            {
+                this.communication = comm;
+                this.game = mockGame;
+            }
+
+            @Override
+            public void broadcastGameState() {
+                socket.send("LOBBY");
+            }
+        };
+
+        gameprogress.processMessage(socket, "ANY");
+        verify(socket).send(contains("LOBBY"));
+    }
+
+    @Test
+    public void testGameStateGameOver() {
+        Communication comm = spy(new Communication(socket));
+        comm.setInput("IRRELEVANT");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.GAME_OVER);
+
+        gameprogress = new Gameprogress(sessions) {
+            {
+                this.communication = comm;
+                this.game = mockGame;
+            }
+
+            @Override
+            public void broadcastGameState() {
+                socket.send("GAME_OVER");
+            }
+        };
+
+        gameprogress.processMessage(socket, "ANY");
+        verify(socket).send(contains("GAME_OVER"));
+    }
+
 }
