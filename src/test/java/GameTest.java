@@ -4,6 +4,7 @@ import model.Card.Card;
 import model.Card.CardRole;
 import model.Card.WordBank;
 import model.GameState;
+import model.Player.TeamColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -181,6 +182,45 @@ public class GameTest {
             assertEquals("Clue cannot be a word on the board", cause.getMessage());
         }
     }
-    
+
+    @Test
+    public void testEndTurnManyGuesses() throws Exception {
+        game.getClue(new String[]{"Apple", "0"});
+
+        Field field = Game.class.getDeclaredField("state");
+        field.setAccessible(true);
+        field.set(game, GameState.OPERATIVE_TURN);
+
+        Card card = game.getBoard().stream()
+                .filter(c -> !c.isRevealed() && (
+                        (game.getCurrentTeam() == TeamColor.RED && c.getCardRole() == CardRole.RED) ||
+                                (game.getCurrentTeam() == TeamColor.BLUE && c.getCardRole() == CardRole.BLUE)))
+                .findFirst()
+                .orElseThrow();
+
+        int index = game.getBoard().indexOf(card);
+        game.guessCard(index);
+
+        assertEquals(GameState.SPYMASTER_TURN, game.getGamestate());
+    }
+
+    @Test
+    public void testNotifyWin() throws Exception {
+        List<Card> redCards = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.RED)
+                .toList();
+
+        for (Card c : redCards) {
+            Field field = Card.class.getDeclaredField("revealed");
+            field.setAccessible(true);
+            field.set(c, true);
+        }
+
+        Method checkScore = Game.class.getDeclaredMethod("checkScore");
+        checkScore.setAccessible(true);
+        checkScore.invoke(game);
+
+        assertEquals(GameState.GAME_OVER, game.getGamestate());
+    }
 
 }
