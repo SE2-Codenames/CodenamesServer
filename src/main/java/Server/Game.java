@@ -34,6 +34,8 @@ public class Game {
     public GameState getGamestate(){return state;}
     public TeamColor getCurrentTeam(){return currentTurn;}
     public int[] getScore(){return score;}
+    public String getHint(){return currentClue;}
+    public int getRemainingGuesses(){return remainingGuesses;}
 
     // creat Cardboard
     private List<Card> createBoard(List<String> randomWords) {
