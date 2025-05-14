@@ -7,6 +7,9 @@ import model.GameState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,7 @@ public class GameTest {
     @BeforeEach
     public void setUp() {
         fixedWords = new ArrayList<>();
-        for(int i = 1; i<= 25; i++) {
+        for(char i = 1; i<= 25; i++) {
             fixedWords.add("Word " + i);
         }
         words = mock(WordBank.class);
@@ -118,5 +121,66 @@ public class GameTest {
         assertEquals("Banana", game.getHint());
         assertEquals(2, game.getRemainingGuesses());
     }
+
+    @Test
+    public void testClueIncorrect() {
+        assertThrows(NumberFormatException.class, () -> game.getClue(new String[]{"Apfel", "mm"}));
+    }
+
+    @Test
+    public void testValidateClueTrue() throws Exception {
+        game.getClue(new String[]{"Apfel", "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+        String clue = (String) method.invoke(game);
+        assertEquals("Apfel", clue);
+    }
+
+    @Test
+    public void testValidateClueFalse() throws Exception {
+        game.getClue(new String[]{"     ", "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+
+        try{
+            method.invoke(game);
+        } catch(InvocationTargetException e){
+            Throwable cause = e.getCause();
+            assertTrue(cause instanceof GameException);
+            assertEquals("Clue cannot be empty", cause.getMessage());
+        }
+    }
+
+    @Test
+    public void testValidateClueIncorrect() throws Exception {
+        game.getClue(new String[]{"Apfel33", "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+
+        try{
+            method.invoke(game);
+        } catch(InvocationTargetException e){
+            Throwable cause = e.getCause();
+            assertTrue(cause instanceof GameException);
+            assertEquals("Clue cannot contain numbers", cause.getMessage());
+        }
+    }
+
+    @Test
+    public void testValidateClueBoard() throws Exception {
+        String clue = game.getBoard().get(0).getWord();
+        game.getClue(new String[]{clue, "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+
+        try{
+            method.invoke(game);
+        } catch(InvocationTargetException e){
+            Throwable cause = e.getCause();
+            assertTrue(cause instanceof GameException);
+            assertEquals("Clue cannot be a word on the board", cause.getMessage());
+        }
+    }
+    
 
 }
