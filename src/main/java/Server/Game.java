@@ -37,6 +37,8 @@ public class Game {
     public String getHint(){return currentClue;}
     public int getRemainingGuesses(){return remainingGuesses;}
 
+    public void setGamestate(GameState state){this.state = state;}
+
     // creat Cardboard
     private List<Card> createBoard(List<String> randomWords) {
         List<Card> board = new ArrayList<>();

@@ -2,6 +2,7 @@ package Server;
 
 import com.google.gson.Gson;
 import model.Card.WordBank;
+import model.GameState;
 import model.Player.Player;
 import org.java_websocket.WebSocket;
 
@@ -47,6 +48,7 @@ public class Gameprogress {
         LOGGER.info("SPIELSTART angefordert");
         WordBank wordBank = new WordBank();
         game = new Game(wordBank);
+        game.setGamestate(GameState.SPYMASTER_TURN);
         broadcastGameState();
     }
 
