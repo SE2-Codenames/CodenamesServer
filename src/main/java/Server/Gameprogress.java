@@ -15,8 +15,8 @@ public class Gameprogress {
 
     private final Map<WebSocket, Player> sessions; // Map: WebSocket -> Player
     private final Gson gson = new Gson();
-    private Game game;
-    private Communication communication;
+    public Game game;
+    protected Communication communication;
 
     public Gameprogress(Map<WebSocket, Player> sessions) {
         this.sessions = sessions;
