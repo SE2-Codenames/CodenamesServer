@@ -112,4 +112,11 @@ public class GameTest {
         assertTrue(red.isRevealed());
     }
 
+    @Test
+    public void testClue() {
+        game.getClue(new String[]{"Banana", "2"});
+        assertEquals("Banana", game.getHint());
+        assertEquals(2, game.getRemainingGuesses());
+    }
+
 }

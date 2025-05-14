@@ -85,7 +85,7 @@ public class Game {
 
     public void getClue(String[] clue){
         currentClue = clue[0];
-        remainingGuesses = getInt(clue[1]);
+        remainingGuesses = Integer.parseInt(clue[1]);
     }
 
     //muss später überarbeitet werden, um die Cheatfunktion zu implementieren
