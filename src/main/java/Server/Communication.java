@@ -1,88 +1,75 @@
 package Server;
 
+import com.google.gson.Gson;
 import model.Card.Card;
 import model.GameState;
 import model.Player.TeamColor;
+import org.java_websocket.WebSocket;
 
-import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 
 public class Communication {
 
-    private PrintWriter out;
-    private String lastInput;
+    private static final Logger LOGGER = Logger.getLogger(Communication.class.getName());
 
-    public Communication() {
-        // empty constructor
-    }
+    private final WebSocket conn;
+    private final Gson gson = new Gson();
+    private String input;
 
-    public Communication(PrintWriter out) {
-        this.out = out;
+    public Communication(WebSocket conn) {
+        this.conn = conn;
     }
 
     public void setInput(String input) {
-        this.lastInput = input;
+        this.input = input;
     }
 
-    // get Information from the Client
-    // _______________________________
+    // ==== Empfangene Nachrichten verarbeiten ====
 
-    // Spymaster gives a hint and the number of hints
+    public boolean isGameStartRequested() {
+        return input != null && input.equalsIgnoreCase("START_GAME");
+    }
+
     public String[] getHint() {
-        if (lastInput != null && lastInput.startsWith("HINT:")) {
-            String[] parts = lastInput.substring(5).split(":");
-            if (parts.length == 2) {
-                return parts;
+        if (input.startsWith("HINT:")) {
+            String[] parts = input.split(":");
+            if (parts.length == 3) {
+                return new String[]{parts[1], parts[2]};
             }
         }
         return new String[]{"", "0"};
     }
 
-    // Operative gives a clue (-1 = ENDTURN)
-    public int selectCard() {
-        if (lastInput != null && lastInput.startsWith("SELECT:")) {
+    public int getSelectedCard() {
+        if (input.startsWith("SELECT:")) {
+            String posStr = input.substring("SELECT:".length());
             try {
-                return Integer.parseInt(lastInput.substring(7));
+                return Integer.parseInt(posStr);
             } catch (NumberFormatException e) {
-                return -1;
+                LOGGER.warning("Ungültige Kartenposition empfangen: " + posStr);
             }
         }
         return -1;
     }
 
-    //gamestart after lobby
-    public boolean gameStart() {
-        return lastInput != null && lastInput.trim().equalsIgnoreCase("START_GAME");
-    }
+    // ==== Nachricht an Client senden ====
 
+    public void sendGameState(GameState gameState, TeamColor currentTeam, List<Card> cards,
+                              int[] score, String hint, int remainingGuesses) {
 
-    //give Information to the Client
-    //______________________________
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("gameState", gameState);
+        payload.put("teamRole", currentTeam);
+        payload.put("card", cards);
+        payload.put("score", score);
+        payload.put("hint", hint);
+        payload.put("remainingGuesses", remainingGuesses);
 
-    //give Gamestate, TeamState, Cardlist and Score
-    public void giveGame(GameState gameState, TeamColor teamColor, List<Card> cards, int[] score, String hint, int remainingGuesses) {
-        if (out == null) return;
-
-        StringBuilder json = new StringBuilder();
-        json.append("{");
-        json.append("\"gameState\":\"").append(gameState.name()).append("\",");
-        json.append("\"teamRole\":\"").append(teamColor.name()).append("\",");
-        json.append("\"card\":[");
-        for (int i = 0; i < cards.size(); i++) {
-            Card card = cards.get(i);
-            json.append("{")
-                    .append("\"word\":\"").append(card.getWord()).append("\",")
-                    .append("\"role\":\"").append(card.getCardRole()).append("\",")
-                    .append("\"isRevealed\":").append(card.isRevealed())
-                    .append("}");
-            if (i < cards.size() - 1) json.append(",");
-        }
-        json.append("],");
-        json.append("\"score\":[").append(score[0]).append(",").append(score[1]).append("]");
-        json.append("\"hint\":\"").append(hint).append("\",");
-        json.append("\"remainingGuesses\":\"").append(remainingGuesses).append("\",");
-        json.append("}");
-
-        out.println("GAME_STATE:" + json.toString());
+        String message = "GAME_STATE:" + gson.toJson(payload);
+        conn.send(message);
+        LOGGER.info("Gesendet an Client: " + message);
     }
 }

@@ -1,82 +1,98 @@
 package Server;
 
+import com.google.gson.Gson;
 import model.Card.WordBank;
-import model.GameState;
-import java.io.PrintWriter;
-import java.util.List;
+import model.Player.Player;
+import org.java_websocket.WebSocket;
+
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Gameprogress {
 
     private static final Logger LOGGER = Logger.getLogger(Gameprogress.class.getName());
-    private List<UserManager> clients;
-    private Communication communication;  // Referenz zur Communication-Klasse
+
+    private final Map<WebSocket, Player> sessions; // Map: WebSocket -> Player
+    private final Gson gson = new Gson();
     private Game game;
+    private Communication communication;
 
-    public Gameprogress(List<UserManager> clients) {
-        this.clients = clients;
+    public Gameprogress(Map<WebSocket, Player> sessions) {
+        this.sessions = sessions;
     }
 
-    private void startGame(PrintWriter out) throws GameException {
-        communication = new Communication(out);
-        LOGGER.log(Level.INFO, "START_GAME received.");
-        WordBank wordBank = new WordBank();
-        game = new Game(wordBank);
-        checkState(out);
-    }
-
-    private void checkState(PrintWriter out) throws GameException {
-        GameState state = game.getGamestate();
-        if (state == GameState.LOBBY) {
-            gameoverTurn(out);
-        } else if (state == GameState.SPYMASTER_TURN) {
-            spymasterTurn(out);
-        } else if (state == GameState.OPERATIVE_TURN) {
-            operativeTurn(out);
-        } else if (state == GameState.GAME_OVER) {
-            gameoverTurn(out);
-        }
-    }
-
-    private void giveInformation(PrintWriter out) throws GameException {
-        for (UserManager user : clients) {
-            LOGGER.log(Level.INFO, "Sending GAME_STATE to client: " + user.getPlayerInfo());
-            Communication comm = new Communication(user.getWriter());
-            comm.giveGame(game.getGamestate(), game.getCurrentTeam(), game.getBoard(), game.getScore(), game.getHint(), game.getRemainingGuesses());
-        }
-        communication.giveGame(game.getGamestate(), game.getCurrentTeam(), game.getBoard(), game.getScore(), game.getHint(), game.getRemainingGuesses());
-        checkState(out);
-    }
-
-    private void spymasterTurn(PrintWriter out) {
-        String[] clue = communication.getHint();
-        game.getClue(clue);
-    }
-
-    private void operativeTurn(PrintWriter out) throws GameException {
-        int guess = communication.selectCard();
-        game.guessCard(guess);
-    }
-
-    private void gameoverTurn(PrintWriter out) {
-        communication.giveGame(game.getGamestate(), game.getCurrentTeam(), game.getBoard(), game.getScore(), game.getHint(), game.getRemainingGuesses());
-    }
-
-    public void processMessage(String input, PrintWriter out) {
-        communication = new Communication(out);
+    public void processMessage(WebSocket conn, String input) {
+        communication = new Communication(conn);
         communication.setInput(input);
+
         try {
-            if (communication.gameStart()) {
-                startGame(out);
+            if (communication.isGameStartRequested()) {
+                startGame();
+                for (WebSocket socket : sessions.keySet()) {
+                    socket.send("SHOW_GAMEBOARD");
+                }
             } else {
-                checkState(out);
+                checkState(conn);
             }
         } catch (GameException e) {
-            out.println("MESSAGE:Server.Game Error: " + e.getMessage());
+            conn.send("MESSAGE:GameException: " + e.getMessage());
         } catch (Exception e) {
-            out.println("MESSAGE:Unexpected Error: " + e.getMessage());
-            LOGGER.log(Level.SEVERE, "Error processing message: {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "Fehler bei Nachrichtenverarbeitung: ", e);
+            conn.send("MESSAGE:Unexpected error: " + e.getMessage());
+        }
+    }
+
+    private void startGame() throws GameException {
+        LOGGER.info("SPIELSTART angefordert");
+        WordBank wordBank = new WordBank();
+        game = new Game(wordBank);
+        broadcastGameState();
+    }
+
+    private void checkState(WebSocket conn) throws GameException {
+        if (game == null) {
+            conn.send("MESSAGE:Spiel wurde noch nicht gestartet.");
+            return;
+        }
+
+        switch (game.getGamestate()) {
+            case LOBBY -> gameoverTurn();
+            case SPYMASTER_TURN -> spymasterTurn(conn);
+            case OPERATIVE_TURN -> operativeTurn(conn);
+            case GAME_OVER -> gameoverTurn();
+        }
+    }
+
+    private void spymasterTurn(WebSocket conn) {
+        String[] clue = communication.getHint();
+        game.getClue(clue);
+        broadcastGameState();
+    }
+
+    private void operativeTurn(WebSocket conn) throws GameException {
+        int guess = communication.getSelectedCard();
+        game.guessCard(guess);
+        broadcastGameState();
+    }
+
+    private void gameoverTurn() {
+        broadcastGameState();
+    }
+
+    private void broadcastGameState() {
+        if (game == null) return;
+        LOGGER.info("Spielstatus wird an alle Clients gesendet...");
+        for (WebSocket session : sessions.keySet()) {
+            Communication comm = new Communication(session);
+            comm.sendGameState(
+                    game.getGamestate(),
+                    game.getCurrentTeam(),
+                    game.getBoard(),
+                    game.getScore(),
+                    game.getHint(),
+                    game.getRemainingGuesses()
+            );
         }
     }
 }

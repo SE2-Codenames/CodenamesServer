@@ -1,4 +1,3 @@
-import Server.UserManager;
 import model.Player.TeamColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
