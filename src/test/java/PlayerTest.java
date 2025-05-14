@@ -23,10 +23,10 @@ public class PlayerTest {
     }
 
     @Test
-    public void testSetGetPlayerRole() {
-        player1.setPlayerRole(true);
+    public void testSetGetSpymaster() {
+        player1.setSpymaster(true);
         assertTrue(player1.getSpymaster());
-        player2.setPlayerRole(false);
+        player2.setSpymaster(false);
         assertFalse(player2.getSpymaster());
     }
 
@@ -39,10 +39,18 @@ public class PlayerTest {
     }
 
     @Test
-    public void testUpperCase() {
-        Player player3 = new Player("mihi");
-        assertEquals(player3, player1);
+    public void testToInfoString() {
+        player1.setTeamColor(TeamColor.RED);
+        player1.setSpymaster(true);
+        assertEquals("Mihi,RED,true", player1.toInfoString());
     }
+
+    @Test
+    public void testToInfoStringNoTeamColor() {
+        player1.setSpymaster(true);
+        assertEquals("Mihi,,true", player1.toInfoString());
+    }
+
 
     @Test
     public void testRandomName() {

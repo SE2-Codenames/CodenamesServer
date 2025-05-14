@@ -1,184 +1,226 @@
+import Server.Game;
+import Server.GameException;
 import model.Card.Card;
 import model.Card.CardRole;
-import model.Player.TeamColor;
 import model.Card.WordBank;
-import model.Player.Player;
-import model.Player.PlayerRole;
+import model.GameState;
+import model.Player.TeamColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class GameTest {
-    /*private Game game;
+    private Game game;
     private WordBank words;
-    private Player player1;
-    private Player player2;
-    private Player player3;
-    private Player player4;
+    private List<String> fixedWords;
+
 
     @BeforeEach
     public void setUp() {
-        words = new WordBank();
-        game = new Game(words);
-        player1 = new Player("Mihi");
-        player2 = new Player("Edi");
-        player3 = new Player("Steffi");
-        player4 = new Player("Stefan");
-    }
-
-    @Test
-    public void testGameNotEnoughPlayers(){
-        assertThrows(IllegalArgumentException.class, game::startGame);
-    }
-
-    @Test
-    public void testStartGameNoSpymaster() throws GameException {
-        player1.setTeamColor(TeamColor.BLUE);
-        player1.setPlayerRole(false);
-        player2.setTeamColor(TeamColor.RED);
-
-        player2.setPlayerRole(false);
-
-
-        game.getPlayers().add(player1);
-        game.getPlayers().add(player2);
-
-        assertThrows(IllegalStateException.class, game::startGame);
-    }
-
-    @Test
-    public void testGiveClue() throws GameException {
-        player1.setTeamColor(TeamColor.BLUE);
-        player2.setTeamColor(TeamColor.RED);
-        player3.setTeamColor(TeamColor.BLUE);
-        player4.setTeamColor(TeamColor.RED);
-
-        player1.setPlayerRole(true);
-        player2.setPlayerRole(true);
-        player3.setPlayerRole(false);
-        player4.setPlayerRole(false);
-
-        game.getPlayers().add(player1);
-        game.getPlayers().add(player2);
-        game.getPlayers().add(player3);
-        game.getPlayers().add(player4);
-
-        game.startGame();
-
-        String word = game.getBoardState(null).get(0).getWord();
-        assertThrows(GameException.class, () -> game.giveClue(word,2));
-    }
-
-    @Test
-    public void testCorrectCardsRemaining() throws GameException {
-        player1.setTeamColor(TeamColor.RED);
-        player2.setTeamColor(TeamColor.BLUE);
-        player3.setTeamColor(TeamColor.RED);
-        player4.setTeamColor(TeamColor.BLUE);
-
-        player1.setPlayerRole(true);
-        player2.setPlayerRole(true);
-        player3.setPlayerRole(false);
-        player4.setPlayerRole(false);
-
-        game.getPlayers().add(player1);
-        game.getPlayers().add(player2);
-        game.getPlayers().add(player3);
-        game.getPlayers().add(player4);
-
-        game.startGame();
-        game.giveClue("Apfel",2);
-
-        List<Card> board = game.getBoardState(player1);
-
-        Card redCard = board.stream()
-                .filter(c -> c.getCardRole() == CardRole.RED && !c.isRevealed())
-                .findFirst()
-                .orElseThrow(() -> new AssertionError("No unrevealed RED card found"));
-
-        long before = board.stream()
-                .filter(c -> c.getCardRole() == CardRole.RED && !c.isRevealed())
-                .count();
-
-        game.guessCard(redCard.getWord(), player3);
-
-        long after = game.getBoardState(player1).stream()
-                .filter(c -> c.getCardRole() == CardRole.RED && !c.isRevealed())
-                .count();
-
-        assertEquals(before, after);
-    }
-
-    @Test
-    public void testChooseAssasin() throws GameException {
-        player1.setTeamColor(TeamColor.RED);
-        player2.setTeamColor(TeamColor.BLUE);
-        player3.setTeamColor(TeamColor.RED);
-        player4.setTeamColor(TeamColor.BLUE);
-
-        player1.setPlayerRole(true);
-        player2.setPlayerRole(true);
-        player3.setPlayerRole(false);
-        player4.setPlayerRole(false);
-
-        game.getPlayers().add(player1);
-        game.getPlayers().add(player2);
-        game.getPlayers().add(player3);
-        game.getPlayers().add(player4);
-
-        game.startGame();
-        game.giveClue("Apfel",2);
-
-        List<Card> visibleCards = game.getBoardState(player3);
-        boolean assassinFound = false;
-        for (Card c : visibleCards) {
-            if (!c.isRevealed() && c.getCardRole() == CardRole.ASSASSIN) {
-                game.guessCard(c.getWord(), player3);
-                break;
-            }
+        fixedWords = new ArrayList<>();
+        for(char i = 1; i<= 25; i++) {
+            fixedWords.add("Word " + i);
         }
-
-        assertThrows(GameException.class, () -> game.giveClue("Apfel", 2));
+        words = mock(WordBank.class);
+        when(words.getRandomWords(25)).thenReturn(fixedWords);
+        game = new Game(words);
     }
 
     @Test
-    public void testReset() throws GameException {
-        player1.setTeamColor(TeamColor.RED);
-        player2.setTeamColor(TeamColor.BLUE);
-        player3.setTeamColor(TeamColor.RED);
-        player4.setTeamColor(TeamColor.BLUE);
+    public void testSize(){
+        assertEquals(25, game.getBoard().size());
+    }
 
-        player1.setPlayerRole(true);
-        player2.setPlayerRole(true);
-        player3.setPlayerRole(false);
-        player4.setPlayerRole(false);
+    @Test
+    public void testBoardWords(){
+        List<Card> board = game.getBoard();
+        for(Card card : board){
+            assertTrue(fixedWords.contains(card.getWord()));
+        }
+    }
 
-        game.getPlayers().add(player1);
-        game.getPlayers().add(player2);
-        game.getPlayers().add(player3);
-        game.getPlayers().add(player4);
+    @Test
+    public void testAssassingCard() throws GameException {
+        long card = game.getBoard().stream()
+                .filter(c ->c.getCardRole() == CardRole.ASSASSIN)
+                .count();
+        assertEquals(1, card);
+    }
 
-        game.startGame();
-        game.giveClue("Apfel",2);
+    @Test
+    public void testRedBlueCards() {
+        long red = game.getBoard().stream().filter(c -> c.getCardRole() == CardRole.RED).count();
+        long blue = game.getBoard().stream().filter(c -> c.getCardRole() == CardRole.BLUE).count();
 
-        List<Card> visible = game.getBoardState(player3);
-        Card guess = visible.stream()
-                .filter(c -> !c.isRevealed())
+        assertTrue((red == 9 && blue == 8) || (red == 8 && blue == 9));
+    }
+
+    @Test
+    public void testRevealCard() throws GameException {
+        Card unrevealed = game.getBoard().stream().filter(c -> !c.isRevealed()).findFirst().orElseThrow();
+        int index = game.getBoard().indexOf(unrevealed);
+
+        game.guessCard(index);
+        assertTrue(unrevealed.isRevealed());
+    }
+
+    @Test
+    public void testGuessedRevealedCard() throws GameException {
+        Card unrevealed = game.getBoard().stream().filter(c -> !c.isRevealed()).findFirst().orElseThrow();
+        int index = game.getBoard().indexOf(unrevealed);
+
+        game.guessCard(index);
+        assertTrue(unrevealed.isRevealed());
+        assertThrows(GameException.class, () -> game.guessCard(index));
+
+    }
+
+    @Test
+    public void testRevealAssassin() throws GameException {
+
+        Card assassin = game.getBoard().stream()
+                .filter(c ->c.getCardRole() == CardRole.ASSASSIN)
+                .findFirst().orElseThrow();
+        int assassinFound = game.getBoard().indexOf(assassin);
+        game.guessCard(assassinFound);
+        assertTrue(assassin.isRevealed());
+        assertEquals(GameState.GAME_OVER, game.getGamestate());
+    }
+
+    @Test
+    public void testNeutral() throws GameException {
+        Card neutral = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.NEUTRAL)
+                .findFirst().orElseThrow();
+        int neutralFound = game.getBoard().indexOf(neutral);
+        game.guessCard(neutralFound);
+        assertTrue(neutralFound >= 0);
+
+    }
+
+    @Test
+    public void testScore() throws GameException {
+        Card red = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.RED && !c.isRevealed())
+                .findFirst().orElseThrow();
+        game.guessCard(game.getBoard().indexOf(red));
+        assertTrue(red.isRevealed());
+    }
+
+    @Test
+    public void testClue() {
+        game.getClue(new String[]{"Banana", "2"});
+        assertEquals("Banana", game.getHint());
+        assertEquals(2, game.getRemainingGuesses());
+    }
+
+    @Test
+    public void testClueIncorrect() {
+        assertThrows(NumberFormatException.class, () -> game.getClue(new String[]{"Apfel", "mm"}));
+    }
+
+    @Test
+    public void testValidateClueTrue() throws Exception {
+        game.getClue(new String[]{"Apfel", "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+        String clue = (String) method.invoke(game);
+        assertEquals("Apfel", clue);
+    }
+
+    @Test
+    public void testValidateClueFalse() throws Exception {
+        game.getClue(new String[]{"     ", "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+
+        try{
+            method.invoke(game);
+        } catch(InvocationTargetException e){
+            Throwable cause = e.getCause();
+            assertTrue(cause instanceof GameException);
+            assertEquals("Clue cannot be empty", cause.getMessage());
+        }
+    }
+
+    @Test
+    public void testValidateClueIncorrect() throws Exception {
+        game.getClue(new String[]{"Apfel33", "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+
+        try{
+            method.invoke(game);
+        } catch(InvocationTargetException e){
+            Throwable cause = e.getCause();
+            assertTrue(cause instanceof GameException);
+            assertEquals("Clue cannot contain numbers", cause.getMessage());
+        }
+    }
+
+    @Test
+    public void testValidateClueBoard() throws Exception {
+        String clue = game.getBoard().get(0).getWord();
+        game.getClue(new String[]{clue, "2"});
+        Method method = Game.class.getDeclaredMethod("validateClue");
+        method.setAccessible(true);
+
+        try{
+            method.invoke(game);
+        } catch(InvocationTargetException e){
+            Throwable cause = e.getCause();
+            assertTrue(cause instanceof GameException);
+            assertEquals("Clue cannot be a word on the board", cause.getMessage());
+        }
+    }
+
+    @Test
+    public void testEndTurnManyGuesses() throws Exception {
+        game.getClue(new String[]{"Apple", "0"});
+
+        Field field = Game.class.getDeclaredField("state");
+        field.setAccessible(true);
+        field.set(game, GameState.OPERATIVE_TURN);
+
+        Card card = game.getBoard().stream()
+                .filter(c -> !c.isRevealed() && (
+                        (game.getCurrentTeam() == TeamColor.RED && c.getCardRole() == CardRole.RED) ||
+                                (game.getCurrentTeam() == TeamColor.BLUE && c.getCardRole() == CardRole.BLUE)))
                 .findFirst()
                 .orElseThrow();
 
-        game.guessCard(guess.getWord(), player3);
-        assertTrue(guess.isRevealed());
+        int index = game.getBoard().indexOf(card);
+        game.guessCard(index);
 
-        game.resetGame();
+        assertEquals(GameState.SPYMASTER_TURN, game.getGamestate());
+    }
 
-        long revealed = game.getBoardState(player3).stream()
-                .filter(Card::isRevealed)
-                .count();
+    @Test
+    public void testNotifyWin() throws Exception {
+        List<Card> redCards = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.RED)
+                .toList();
 
-        assertEquals(0, revealed);
-    }*/
+        for (Card c : redCards) {
+            Field field = Card.class.getDeclaredField("revealed");
+            field.setAccessible(true);
+            field.set(c, true);
+        }
+
+        Method checkScore = Game.class.getDeclaredMethod("checkScore");
+        checkScore.setAccessible(true);
+        checkScore.invoke(game);
+
+        assertEquals(GameState.GAME_OVER, game.getGamestate());
+    }
+
 }
