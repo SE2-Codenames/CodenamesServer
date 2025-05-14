@@ -60,7 +60,7 @@ public class Communication {
     //______________________________
 
     //give Gamestate, TeamState, Cardlist and Score
-    public void giveGame(GameState gameState, TeamColor teamColor, List<Card> cards, int[] score, String hint) {
+    public void giveGame(GameState gameState, TeamColor teamColor, List<Card> cards, int[] score, String hint, int remainingGuesses) {
         if (out == null) return;
 
         StringBuilder json = new StringBuilder();
@@ -80,6 +80,7 @@ public class Communication {
         json.append("],");
         json.append("\"score\":[").append(score[0]).append(",").append(score[1]).append("]");
         json.append("\"hint\":\"").append(hint).append("\",");
+        json.append("\"remainingGuesses\":\"").append(remainingGuesses).append("\",");
         json.append("}");
 
         out.println("GAME_STATE:" + json.toString());
