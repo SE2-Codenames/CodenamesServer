@@ -79,6 +79,7 @@ public class Gameprogress {
     }
 
     private void gameoverTurn() {
+        LOGGER.info("SPIELGAMEOVER");
         broadcastGameState();
     }
 
