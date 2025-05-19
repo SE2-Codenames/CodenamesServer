@@ -66,16 +66,18 @@ public class Gameprogress {
         }
     }
 
-    private void spymasterTurn(WebSocket conn) {
+    private void spymasterTurn(WebSocket conn) throws GameException {
         String[] clue = communication.getHint();
         game.getClue(clue);
         broadcastGameState();
+        checkState(conn);
     }
 
     private void operativeTurn(WebSocket conn) throws GameException {
         int guess = communication.getSelectedCard();
         game.guessCard(guess);
         broadcastGameState();
+        checkState(conn);
     }
 
     private void gameoverTurn() {
@@ -97,5 +99,6 @@ public class Gameprogress {
                     game.getRemainingGuesses()
             );
         }
+
     }
 }
