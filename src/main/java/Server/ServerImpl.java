@@ -19,7 +19,7 @@ public class ServerImpl extends WebSocketServer {
     private final Gameprogress gameprogress;
 
     public ServerImpl(int port) {
-        super(new InetSocketAddress(port));
+        super(new InetSocketAddress("0.0.0.0", port));
         this.gameprogress = new Gameprogress(connections);
     }
 
@@ -46,6 +46,15 @@ public class ServerImpl extends WebSocketServer {
 
         if (message.startsWith("USER:")) {
             String name = message.substring("USER:".length());
+
+            boolean name_taken = connections.values().stream()
+                    .anyMatch(p -> p.getUsername().equalsIgnoreCase(name));
+            if (name_taken) {
+                LOGGER.info("USERNAME_TAKEN");
+                conn.send("USERNAME_TAKEN");
+                return;
+            }
+
             Player player = new Player(name);
             connections.put(conn, player);
             LOGGER.info(name + " ist dem Spiel beigetreten.");
