@@ -85,7 +85,7 @@ public class Gameprogress {
         broadcastGameState();
     }
 
-    private void gameReset() {
+    public void gameReset() {
         LOGGER.info("SPIELGAMERESET");
 
         WordBank wordBank = new WordBank();
