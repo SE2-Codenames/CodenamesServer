@@ -85,6 +85,20 @@ public class Gameprogress {
         broadcastGameState();
     }
 
+    private void gameReset() {
+        LOGGER.info("SPIELGAMERESET");
+
+        WordBank wordBank = new WordBank();
+        game = new Game(wordBank);
+        game.setGamestate(GameState.LOBBY);
+
+        for(WebSocket socket : sessions.keySet()) {
+            socket.send("RESET");
+        }
+
+        broadcastGameState();
+    }
+
     protected void broadcastGameState() {
         if (game == null) return;
         LOGGER.info("Spielstatus wird an alle Clients gesendet...");
