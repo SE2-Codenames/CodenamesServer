@@ -7,6 +7,8 @@ import model.Player.Player;
 import org.java_websocket.WebSocket;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +68,8 @@ public class Gameprogress {
         }
     }
 
+    //hier game reset wegen zurück zum StartScreen/ Lobby
+
     private void spymasterTurn(WebSocket conn) throws GameException {
         String[] clue = communication.getHint();
         game.getClue(clue);
@@ -83,6 +87,13 @@ public class Gameprogress {
     private void gameoverTurn() {
         LOGGER.info("SPIELGAMEOVER");
         broadcastGameState();
+
+        new Timer().schedule(new TimerTask() {
+           @Override
+           public void run() {
+               gameReset();
+           }
+        }, 7000); //nach 7 Sekunden - Reset vom Spiel
     }
 
     public void gameReset() {
