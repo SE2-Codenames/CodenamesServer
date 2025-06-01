@@ -16,7 +16,6 @@ public class Game {
     private int[] score;                //score[0] = RED; score[1] = BLUE
     // für die Cheatfunktion nötig
     private String currentClue;
-    private TeamColor currentClueTeam;
     private int totalRedCards = 0;
     private int totalBlueCards = 0;
 
@@ -92,7 +91,7 @@ public class Game {
     }
 
     //muss später überarbeitet werden, um die Cheatfunktion zu implementieren
-    private String validateClue() throws GameException {
+    /*private String validateClue() throws GameException {
         String clueWord = currentClue.trim();
 
         if (clueWord.isEmpty()) {
@@ -109,7 +108,7 @@ public class Game {
         }
 
         return clueWord;
-    }
+    }*/
 
     // Input from the Operative Player for there guess
     public void guessCard(int guess) throws GameException {
@@ -129,7 +128,7 @@ public class Game {
                 handleAssassinReveal();
                 break;
             case NEUTRAL:
-                handleNeutralReveal(card);
+                handleNeutralReveal();
                 break;
             default:
                 handleTeamCardReveal(card);
@@ -147,7 +146,7 @@ public class Game {
         checkScore();
     }
 
-    private void handleNeutralReveal(Card card) {
+    private void handleNeutralReveal() {
         checkScore();
         endTurn();
     }

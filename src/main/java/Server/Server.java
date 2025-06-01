@@ -1,10 +1,12 @@
 package Server;
+import java.util.logging.Logger;
 
 public class Server {
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
     public static void main(String[] args) {
         int port = 8081; // oder frei wählbar
         ServerImpl server = new ServerImpl(port);
         server.start();
-        System.out.println("Server läuft auf Port " + port);
+        logger.info("Server läuft auf Port " + port);
     }
 }
