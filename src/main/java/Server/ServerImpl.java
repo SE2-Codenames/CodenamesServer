@@ -42,7 +42,7 @@ public class ServerImpl extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        LOGGER.info("Nachricht empfangen: " + message);
+        LOGGER.info(String.format("Nachricht empfangen: " + message));
 
         if (message.startsWith("USER:")) {
             String name = message.substring("USER:".length());
@@ -57,7 +57,7 @@ public class ServerImpl extends WebSocketServer {
 
             Player player = new Player(name);
             connections.put(conn, player);
-            LOGGER.info(name + " ist dem Spiel beigetreten.");
+            LOGGER.info(String.format(name + " ist dem Spiel beigetreten."));
             broadcastPlayerList();
             conn.send("USERNAME_OK");
 
@@ -72,7 +72,7 @@ public class ServerImpl extends WebSocketServer {
                         TeamColor team = TeamColor.valueOf(teamStr);
                         player.setTeamColor(team);
                         player.setSpymaster(false);
-                        LOGGER.info(name + " ist Team " + team + " beigetreten.");
+                        LOGGER.info(String.format(name + " ist Team " + team + " beigetreten."));
                         broadcastPlayerList();
                     } catch (IllegalArgumentException e) {
                         conn.send("MESSAGE:Ungültiges Team.");
@@ -101,7 +101,7 @@ public class ServerImpl extends WebSocketServer {
                 boolean newState = !player.getSpymaster();
                 player.setSpymaster(newState);
                 conn.send("SPYMASTER_TOGGLE:" + player.getUsername() + ":" + newState);
-                LOGGER.info(player.getUsername() + (newState ? " ist jetzt Spymaster." : " ist kein Spymaster mehr."));
+                LOGGER.info(String.format(player.getUsername() + (newState ? " ist jetzt Spymaster." : " ist kein Spymaster mehr.")));
                 broadcastPlayerList();
             } else {
                 conn.send("MESSAGE:Spieler nicht gefunden oder nicht zugeordnet.");
@@ -133,7 +133,7 @@ public class ServerImpl extends WebSocketServer {
                     .append(player.getSpymaster()).append(";");
         }
         String msg = sb.toString();
-        LOGGER.info("Sende Spielerliste: " + msg);
+        LOGGER.info(String.format("Sende Spielerliste: " + msg));
         for (WebSocket conn : connections.keySet()) {
             conn.send(msg);
         }
