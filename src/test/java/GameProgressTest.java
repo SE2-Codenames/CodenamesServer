@@ -14,6 +14,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class GameProgressTest {
@@ -219,6 +221,25 @@ public class GameProgressTest {
 
         gameprogress.processMessage(socket, "ANY");
         verify(socket).send(contains("GAME_OVER"));
+    }
+
+    @Test
+    public void testGameReset() {
+        Gameprogress gameprogress = new Gameprogress(sessions) {
+            @Override
+            protected void broadcastGameState() {
+                socket.send("RESET_BROADCAST");
+            }
+        };
+
+        gameprogress.gameReset();
+
+        assertNotNull(gameprogress.game);
+        assertEquals(GameState.LOBBY, gameprogress.game.getGamestate());
+
+
+        verify(socket).send("RESET");
+        verify(socket).send("RESET_BROADCAST");
     }
 
 }

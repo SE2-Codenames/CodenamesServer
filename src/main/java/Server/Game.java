@@ -4,6 +4,7 @@ import model.Card.*;
 import model.GameState;
 import model.Player.TeamColor;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 import static javax.swing.UIManager.getInt;
@@ -77,7 +78,7 @@ public class Game {
 
     //randomized the starting Team
     private TeamColor startingTeamRandom() {
-        Random rd = new Random();
+        SecureRandom rd = new SecureRandom();
         if(rd.nextBoolean())
             return TeamColor.RED;
         else
