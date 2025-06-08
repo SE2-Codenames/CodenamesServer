@@ -107,11 +107,8 @@ public class ServerImpl extends WebSocketServer {
                 conn.send("MESSAGE:Spieler nicht gefunden oder nicht zugeordnet.");
             }
 
-        } else if (message.equals("START_GAME")) {
-            gameprogress.processMessage(conn, message);
-
         } else {
-            conn.send("MESSAGE:Unbekannter Befehl.");
+            gameprogress.processMessage(conn, message);
         }
     }
 
