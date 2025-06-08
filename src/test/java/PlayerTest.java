@@ -60,7 +60,7 @@ public class PlayerTest {
 
     @Test
     public void testEqualsNull() {
-        assertNotEquals(player1, null);
+        assertNotEquals(null, player1);
     }
 
 }

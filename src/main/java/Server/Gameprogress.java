@@ -7,6 +7,8 @@ import model.Player.Player;
 import org.java_websocket.WebSocket;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,19 +68,45 @@ public class Gameprogress {
         }
     }
 
-    private void spymasterTurn(WebSocket conn) {
+    //hier game reset wegen zurück zum StartScreen/ Lobby
+
+    private void spymasterTurn(WebSocket conn) throws GameException {
         String[] clue = communication.getHint();
         game.getClue(clue);
         broadcastGameState();
+        checkState(conn);
     }
 
     private void operativeTurn(WebSocket conn) throws GameException {
         int guess = communication.getSelectedCard();
         game.guessCard(guess);
         broadcastGameState();
+        checkState(conn);
     }
 
     private void gameoverTurn() {
+        LOGGER.info("SPIELGAMEOVER");
+        broadcastGameState();
+
+        new Timer().schedule(new TimerTask() {
+           @Override
+           public void run() {
+               gameReset();
+           }
+        }, 7000); //nach 7 Sekunden - Reset vom Spiel
+    }
+
+    public void gameReset() {
+        LOGGER.info("SPIELGAMERESET");
+
+        WordBank wordBank = new WordBank();
+        game = new Game(wordBank);
+        game.setGamestate(GameState.LOBBY);
+
+        for(WebSocket socket : sessions.keySet()) {
+            socket.send("RESET");
+        }
+
         broadcastGameState();
     }
 
@@ -96,5 +124,6 @@ public class Gameprogress {
                     game.getRemainingGuesses()
             );
         }
+
     }
 }
