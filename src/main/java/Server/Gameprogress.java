@@ -81,11 +81,14 @@ public class Gameprogress {
     private void operativeTurn(WebSocket conn) throws GameException {
         int guess = communication.getSelectedCard();
         int marked = communication.getMarkedCard();
-        game.guessCard(guess);
-        game.toggleMark(marked);
+        if (guess != -1) {
+            game.guessCard(guess);
+        }
+        if (marked != -1) {
+            game.toggleMark(marked);
+        }
         broadcastGameState();
         checkState(conn);
-        
     }
 
     private void gameoverTurn() {
