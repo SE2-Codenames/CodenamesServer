@@ -19,7 +19,7 @@ public class Gameprogress {
     private final Map<WebSocket, Player> sessions; // Map: WebSocket -> Player
     private final Gson gson = new Gson();
     public Game game;
-    protected Communication communication;
+    public Communication communication;
 
     public Gameprogress(Map<WebSocket, Player> sessions) {
         this.sessions = sessions;
@@ -110,7 +110,7 @@ public class Gameprogress {
         broadcastGameState();
     }
 
-    protected void broadcastGameState() {
+    public void broadcastGameState() {
         if (game == null) return;
         LOGGER.info("Spielstatus wird an alle Clients gesendet...");
         for (WebSocket session : sessions.keySet()) {
