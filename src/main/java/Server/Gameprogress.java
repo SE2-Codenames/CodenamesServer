@@ -75,13 +75,17 @@ public class Gameprogress {
         game.getClue(clue);
         broadcastGameState();
         checkState(conn);
+        game.clearMarks();
     }
 
     private void operativeTurn(WebSocket conn) throws GameException {
         int guess = communication.getSelectedCard();
+        int marked = communication.getMarkedCard();
         game.guessCard(guess);
+        game.toggleMark(marked);
         broadcastGameState();
         checkState(conn);
+        
     }
 
     private void gameoverTurn() {
@@ -121,7 +125,8 @@ public class Gameprogress {
                     game.getBoard(),
                     game.getScore(),
                     game.getHint(),
-                    game.getRemainingGuesses()
+                    game.getRemainingGuesses(),
+                    game.getMarkedCards()
             );
         }
 

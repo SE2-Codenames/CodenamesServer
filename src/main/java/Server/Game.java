@@ -19,6 +19,7 @@ public class Game {
     private String currentClue;
     private int totalRedCards = 0;
     private int totalBlueCards = 0;
+    private boolean[] markedCards = new boolean[25];
 
 
     public Game(WordBank wordBank) {
@@ -36,8 +37,12 @@ public class Game {
     public int[] getScore(){return score;}
     public String getHint(){return currentClue;}
     public int getRemainingGuesses(){return remainingGuesses;}
+    public boolean[] getMarkedCards() {
+        return markedCards;
+    }
     //setter Methoden
     public void setGamestate(GameState state){this.state = state;}
+
 
     // creat Cardboard
     private List<Card> createBoard(List<String> randomWords) {
@@ -235,6 +240,16 @@ public class Game {
         else{
             currentTurn = TeamColor.RED;
         }
+    }
+
+    public void toggleMark(int index) {
+        if (index >= 0 && index < markedCards.length) {
+            markedCards[index] = !markedCards[index];
+        }
+    }
+
+    public void clearMarks() {
+        Arrays.fill(markedCards, false);
     }
 }
 

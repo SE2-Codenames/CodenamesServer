@@ -55,10 +55,22 @@ public class Communication {
         return -1;
     }
 
+    public int getMarkedCard() {
+        if (input.startsWith("MARK:")) {
+            String posStr = input.substring("MARK:".length());
+            try {
+                return Integer.parseInt(posStr);
+            } catch (NumberFormatException e) {
+                LOGGER.warning("Ungültige MARK-Kartenposition empfangen: " + posStr);
+            }
+        }
+        return -1;
+    }
+
     // ==== Nachricht an Client senden ====
 
     public void sendGameState(GameState gameState, TeamColor currentTeam, List<Card> cards,
-                              int[] score, String hint, int remainingGuesses) {
+                              int[] score, String hint, int remainingGuesses, boolean[] markedCards) {
 
         Map<String, Object> payload = new HashMap<>();
         payload.put("gameState", gameState);
@@ -67,6 +79,7 @@ public class Communication {
         payload.put("score", score);
         payload.put("hint", hint);
         payload.put("remainingGuesses", remainingGuesses);
+        payload.put("markedCards", markedCards);
 
         String message = "GAME_STATE:" + gson.toJson(payload);
         conn.send(message);
