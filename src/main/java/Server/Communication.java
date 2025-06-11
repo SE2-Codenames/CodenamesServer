@@ -71,7 +71,6 @@ public class Communication {
         return -1;
     }
 
-<<<<<<< HEAD
     public int getMarkedCard() {
         if (input.startsWith("MARK:")) {
             String posStr = input.substring("MARK:".length());
@@ -82,13 +81,12 @@ public class Communication {
             }
         }
         return -1;
-=======
+
     public String getExposeData() {
         if (isExposeCommand()) {
             return input.substring("EXPOSE:".length()).trim();
         }
         return "";
->>>>>>> f3f7cd3543ca46733f3ce5153fb824864cae3d65
     }
 
     // ==== Nachricht an Client senden ====

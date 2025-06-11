@@ -17,12 +17,8 @@ public class Gameprogress {
     private final Map<WebSocket, Player> sessions;
     private final Gson gson = new Gson();
     public Game game;
-<<<<<<< HEAD
     public Communication communication;
 
-=======
-    protected Communication communication;
->>>>>>> f3f7cd3543ca46733f3ce5153fb824864cae3d65
     public Gameprogress(Map<WebSocket, Player> sessions) {
         this.sessions = sessions;
     }
