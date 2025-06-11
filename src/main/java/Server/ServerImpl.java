@@ -17,6 +17,7 @@ public class ServerImpl extends WebSocketServer {
     private static final Logger LOGGER = Logger.getLogger(ServerImpl.class.getName());
     private final Map<WebSocket, Player> connections = Collections.synchronizedMap(new HashMap<>());
     private final Gameprogress gameprogress;
+    private static final String SPYMASTER_TOGGLE = "SPYMASTER_TOGGLE";
 
     public ServerImpl(int port) {
         super(new InetSocketAddress("0.0.0.0", port));
@@ -82,8 +83,8 @@ public class ServerImpl extends WebSocketServer {
                 }
             }
 
-        } else if (message.startsWith("SPYMASTER_TOGGLE:")) {
-            String name = message.substring("SPYMASTER_TOGGLE:".length());
+        } else if (message.startsWith(SPYMASTER_TOGGLE)) {
+            String name = message.substring(SPYMASTER_TOGGLE.length());
             Player player = connections.get(conn);
             if (player != null && player.getUsername().equals(name)) {
                 if (player.getTeamColor() == null) {
@@ -95,12 +96,12 @@ public class ServerImpl extends WebSocketServer {
                     Player p = entry.getValue();
                     if (!entry.getKey().equals(conn) && p.getTeamColor() == player.getTeamColor() && p.getSpymaster()) {
                         p.setSpymaster(false);
-                        entry.getKey().send("SPYMASTER_TOGGLE:" + p.getUsername() + ":false");
+                        entry.getKey().send(SPYMASTER_TOGGLE + p.getUsername() + ":false");
                     }
                 }
                 boolean newState = !player.getSpymaster();
                 player.setSpymaster(newState);
-                conn.send("SPYMASTER_TOGGLE:" + player.getUsername() + ":" + newState);
+                conn.send(SPYMASTER_TOGGLE + player.getUsername() + ":" + newState);
                 LOGGER.info(String.format(player.getUsername() + (newState ? " ist jetzt Spymaster." : " ist kein Spymaster mehr.")));
                 broadcastPlayerList();
             } else {
