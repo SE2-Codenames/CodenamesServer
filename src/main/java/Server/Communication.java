@@ -81,8 +81,9 @@ public class Communication {
             }
         }
         return -1;
+    }
 
-    public String getExposeData() {
+    public String getExposeData () {
         if (isExposeCommand()) {
             return input.substring("EXPOSE:".length()).trim();
         }
@@ -91,20 +92,20 @@ public class Communication {
 
     // ==== Nachricht an Client senden ====
 
-    public void sendGameState(GameState gameState, TeamColor currentTeam, List<Card> cards,
-                              int[] score, String hint, int remainingGuesses, boolean[] markedCards) {
+    public void sendGameState (GameState gameState, TeamColor currentTeam, List < Card > cards,
+                               int[] score, String hint,int remainingGuesses, boolean[] markedCards){
 
         Map<String, Object> payload = new HashMap<>();
-        payload.put("gameState", gameState);
-        payload.put("teamRole", currentTeam);
-        payload.put("card", cards);
-        payload.put("score", score);
-        payload.put("hint", hint);
-        payload.put("remainingGuesses", remainingGuesses);
-        payload.put("markedCards", markedCards);
+            payload.put("gameState", gameState);
+            payload.put("teamRole", currentTeam);
+            payload.put("card", cards);
+            payload.put("score", score);
+            payload.put("hint", hint);
+            payload.put("remainingGuesses", remainingGuesses);
+            payload.put("markedCards", markedCards);
 
-        String message = "GAME_STATE:" + gson.toJson(payload);
-        conn.send(message);
-        LOGGER.info("Gesendet an Client: " + message);
-    }
+            String message = "GAME_STATE:" + gson.toJson(payload);
+            conn.send(message);
+            LOGGER.info("Gesendet an Client: " + message);
+        }
 }
