@@ -27,24 +27,40 @@ public class Communication {
         this.input = input;
     }
 
-    // ==== Empfangene Nachrichten verarbeiten ====
+    // ==== Eingehende Nachrichten prüfen ====
 
     public boolean isGameStartRequested() {
         return input != null && input.equalsIgnoreCase("START_GAME");
     }
 
+    public boolean isHint() {
+        return input != null && input.startsWith("HINT:");
+    }
+
+    public boolean isCardSelection() {
+        return input != null && input.startsWith("SELECT:");
+    }
+
+    public boolean isExposeCommand() {
+        return input != null && input.startsWith("EXPOSE:");
+    }
+
+    // ==== Eingehende Nachricht auslesen ====
+
     public String[] getHint() {
-        if (input.startsWith("HINT:")) {
+        if (isHint()) {
             String[] parts = input.split(":");
             if (parts.length == 3) {
                 return new String[]{parts[1], parts[2]};
+            } else {
+                LOGGER.warning("Ungültiges HINT-Format: " + input);
             }
         }
         return new String[]{"", "0"};
     }
 
     public int getSelectedCard() {
-        if (input.startsWith("SELECT:")) {
+        if (isCardSelection()) {
             String posStr = input.substring("SELECT:".length());
             try {
                 return Integer.parseInt(posStr);
@@ -55,6 +71,7 @@ public class Communication {
         return -1;
     }
 
+<<<<<<< HEAD
     public int getMarkedCard() {
         if (input.startsWith("MARK:")) {
             String posStr = input.substring("MARK:".length());
@@ -65,6 +82,13 @@ public class Communication {
             }
         }
         return -1;
+=======
+    public String getExposeData() {
+        if (isExposeCommand()) {
+            return input.substring("EXPOSE:".length()).trim();
+        }
+        return "";
+>>>>>>> f3f7cd3543ca46733f3ce5153fb824864cae3d65
     }
 
     // ==== Nachricht an Client senden ====

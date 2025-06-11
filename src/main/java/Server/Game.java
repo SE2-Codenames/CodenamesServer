@@ -7,7 +7,6 @@ import model.Player.TeamColor;
 import java.security.SecureRandom;
 import java.util.*;
 
-import static javax.swing.UIManager.getInt;
 
 public class Game {
     private final List<Card> board;
@@ -46,7 +45,7 @@ public class Game {
 
     // creat Cardboard
     private List<Card> createBoard(List<String> randomWords) {
-        List<Card> board = new ArrayList<>();
+        List<Card> boardCards = new ArrayList<>();
 
         // 1. Assign card types (9 startingTeam, 8 !startingTeam, 7 neutral, 1 assassin)
 
@@ -74,11 +73,11 @@ public class Game {
             } else if(cardType == CardRole.BLUE){
                 totalBlueCards++;
             }
-            board.add(new Card(randomWords.get(i), cardType));
+            boardCards.add(new Card(randomWords.get(i), cardType));
         }
         // 2. Shuffle to randomize positions
-        Collections.shuffle(board);
-        return board;
+        Collections.shuffle(boardCards);
+        return boardCards;
     }
 
     //randomized the starting Team

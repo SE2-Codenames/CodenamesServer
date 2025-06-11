@@ -6,9 +6,7 @@ import model.GameState;
 import model.Player.Player;
 import org.java_websocket.WebSocket;
 
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,43 +14,66 @@ public class Gameprogress {
 
     private static final Logger LOGGER = Logger.getLogger(Gameprogress.class.getName());
 
-    private final Map<WebSocket, Player> sessions; // Map: WebSocket -> Player
+    private final Map<WebSocket, Player> sessions;
     private final Gson gson = new Gson();
     public Game game;
+<<<<<<< HEAD
     public Communication communication;
 
+=======
+    protected Communication communication;
+>>>>>>> f3f7cd3543ca46733f3ce5153fb824864cae3d65
     public Gameprogress(Map<WebSocket, Player> sessions) {
         this.sessions = sessions;
     }
 
     public void processMessage(WebSocket conn, String input) {
+        LOGGER.info("[processMessage] Eingehende Nachricht: " + input);
         communication = new Communication(conn);
         communication.setInput(input);
 
         try {
             if (communication.isGameStartRequested()) {
-                startGame();
+                LOGGER.info("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress());
+                startGame(conn);
                 for (WebSocket socket : sessions.keySet()) {
                     socket.send("SHOW_GAMEBOARD");
                 }
-            } else {
-                checkState(conn);
+
+                return;
             }
+            if (communication.isExposeCommand()) {
+                handleExpose(conn);
+                return;
+            }
+            checkState(conn);
+
         } catch (GameException e) {
+            LOGGER.warning("[processMessage] GameException: " + e.getMessage());
             conn.send("MESSAGE:GameException: " + e.getMessage());
         } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Fehler bei Nachrichtenverarbeitung: ", e);
+            LOGGER.log(Level.SEVERE, "[processMessage] Unerwarteter Fehler bei Nachrichtenverarbeitung", e);
             conn.send("MESSAGE:Unexpected error: " + e.getMessage());
         }
     }
 
-    private void startGame() throws GameException {
+    public void startGame(WebSocket initiator) {
         LOGGER.info("SPIELSTART angefordert");
-        WordBank wordBank = new WordBank();
-        game = new Game(wordBank);
-        game.setGamestate(GameState.SPYMASTER_TURN);
+
+        if (game != null && game.getGamestate() != GameState.LOBBY) {
+            LOGGER.warning("Spiel wurde bereits gestartet oder läuft noch.");
+            initiator.send("MESSAGE:Das Spiel läuft bereits.");
+            return;
+        }
+
+        // Neues Spiel erzeugen mit WordBank
+        this.game = new Game(new WordBank());
+        this.game.setGamestate(GameState.SPYMASTER_TURN);
+
+        LOGGER.info("Neues Spiel gestartet. Startteam: " + game.getCurrentTeam());
         broadcastGameState();
     }
+
 
     private void checkState(WebSocket conn) throws GameException {
         if (game == null) {
@@ -61,14 +82,28 @@ public class Gameprogress {
         }
 
         switch (game.getGamestate()) {
-            case LOBBY -> gameoverTurn();
-            case SPYMASTER_TURN -> spymasterTurn(conn);
-            case OPERATIVE_TURN -> operativeTurn(conn);
-            case GAME_OVER -> gameoverTurn();
+            case LOBBY -> {
+                conn.send("MESSAGE:Warte auf Spielstart.");
+            }
+            case SPYMASTER_TURN -> {
+                if (communication.isHint()) {
+                    spymasterTurn(conn);
+                } else {
+                    conn.send("MESSAGE:Warte auf Hinweis des Spymasters.");
+                }
+            }
+            case OPERATIVE_TURN -> {
+                if (communication.isCardSelection()) {
+                    operativeTurn(conn);
+                } else {
+                    conn.send("MESSAGE:Operatives sind am Zug.");
+                }
+            }
+            case GAME_OVER -> {
+                gameoverTurn();
+            }
         }
     }
-
-    //hier game reset wegen zurück zum StartScreen/ Lobby
 
     private void spymasterTurn(WebSocket conn) throws GameException {
         String[] clue = communication.getHint();
@@ -89,6 +124,12 @@ public class Gameprogress {
         }
         broadcastGameState();
         checkState(conn);
+    }
+
+    private void handleExpose(WebSocket conn) {
+        String data = communication.getExposeData();
+        LOGGER.info("EXPOSE verwendet: " + data);
+        conn.send("MESSAGE:Expose verwendet: " + data);
     }
 
     private void gameoverTurn() {
