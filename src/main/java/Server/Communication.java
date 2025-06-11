@@ -27,24 +27,40 @@ public class Communication {
         this.input = input;
     }
 
-    // ==== Empfangene Nachrichten verarbeiten ====
+    // ==== Eingehende Nachrichten prüfen ====
 
     public boolean isGameStartRequested() {
         return input != null && input.equalsIgnoreCase("START_GAME");
     }
 
+    public boolean isHint() {
+        return input != null && input.startsWith("HINT:");
+    }
+
+    public boolean isCardSelection() {
+        return input != null && input.startsWith("SELECT:");
+    }
+
+    public boolean isExposeCommand() {
+        return input != null && input.startsWith("EXPOSE:");
+    }
+
+    // ==== Eingehende Nachricht auslesen ====
+
     public String[] getHint() {
-        if (input.startsWith("HINT:")) {
+        if (isHint()) {
             String[] parts = input.split(":");
             if (parts.length == 3) {
                 return new String[]{parts[1], parts[2]};
+            } else {
+                LOGGER.warning("Ungültiges HINT-Format: " + input);
             }
         }
         return new String[]{"", "0"};
     }
 
     public int getSelectedCard() {
-        if (input.startsWith("SELECT:")) {
+        if (isCardSelection()) {
             String posStr = input.substring("SELECT:".length());
             try {
                 return Integer.parseInt(posStr);
@@ -55,21 +71,41 @@ public class Communication {
         return -1;
     }
 
+    public int getMarkedCard() {
+        if (input.startsWith("MARK:")) {
+            String posStr = input.substring("MARK:".length());
+            try {
+                return Integer.parseInt(posStr);
+            } catch (NumberFormatException e) {
+                LOGGER.warning("Ungültige MARK-Kartenposition empfangen: " + posStr);
+            }
+        }
+        return -1;
+    }
+
+    public String getExposeData () {
+        if (isExposeCommand()) {
+            return input.substring("EXPOSE:".length()).trim();
+        }
+        return "";
+    }
+
     // ==== Nachricht an Client senden ====
 
-    public void sendGameState(GameState gameState, TeamColor currentTeam, List<Card> cards,
-                              int[] score, String hint, int remainingGuesses) {
+    public void sendGameState (GameState gameState, TeamColor currentTeam, List < Card > cards,
+                               int[] score, String hint,int remainingGuesses, boolean[] markedCards){
 
         Map<String, Object> payload = new HashMap<>();
-        payload.put("gameState", gameState);
-        payload.put("teamRole", currentTeam);
-        payload.put("card", cards);
-        payload.put("score", score);
-        payload.put("hint", hint);
-        payload.put("remainingGuesses", remainingGuesses);
+            payload.put("gameState", gameState);
+            payload.put("teamRole", currentTeam);
+            payload.put("card", cards);
+            payload.put("score", score);
+            payload.put("hint", hint);
+            payload.put("remainingGuesses", remainingGuesses);
+            payload.put("markedCards", markedCards);
 
-        String message = "GAME_STATE:" + gson.toJson(payload);
-        conn.send(message);
-        LOGGER.info("Gesendet an Client: " + message);
-    }
+            String message = "GAME_STATE:" + gson.toJson(payload);
+            conn.send(message);
+            LOGGER.info("Gesendet an Client: " + message);
+        }
 }

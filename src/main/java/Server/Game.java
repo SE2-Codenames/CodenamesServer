@@ -7,7 +7,6 @@ import model.Player.TeamColor;
 import java.security.SecureRandom;
 import java.util.*;
 
-import static javax.swing.UIManager.getInt;
 
 public class Game {
     private final List<Card> board;
@@ -19,6 +18,7 @@ public class Game {
     private String currentClue;
     private int totalRedCards = 0;
     private int totalBlueCards = 0;
+    private boolean[] markedCards = new boolean[25];
 
 
     public Game(WordBank wordBank) {
@@ -36,12 +36,16 @@ public class Game {
     public int[] getScore(){return score;}
     public String getHint(){return currentClue;}
     public int getRemainingGuesses(){return remainingGuesses;}
+    public boolean[] getMarkedCards() {
+        return markedCards;
+    }
     //setter Methoden
     public void setGamestate(GameState state){this.state = state;}
 
+
     // creat Cardboard
     private List<Card> createBoard(List<String> randomWords) {
-        List<Card> board = new ArrayList<>();
+        List<Card> boardCards = new ArrayList<>();
 
         // 1. Assign card types (9 startingTeam, 8 !startingTeam, 7 neutral, 1 assassin)
 
@@ -69,11 +73,11 @@ public class Game {
             } else if(cardType == CardRole.BLUE){
                 totalBlueCards++;
             }
-            board.add(new Card(randomWords.get(i), cardType));
+            boardCards.add(new Card(randomWords.get(i), cardType));
         }
         // 2. Shuffle to randomize positions
-        Collections.shuffle(board);
-        return board;
+        Collections.shuffle(boardCards);
+        return boardCards;
     }
 
     //randomized the starting Team
@@ -235,6 +239,16 @@ public class Game {
         else{
             currentTurn = TeamColor.RED;
         }
+    }
+
+    public void toggleMark(int index) {
+        if (index >= 0 && index < markedCards.length) {
+            markedCards[index] = !markedCards[index];
+        }
+    }
+
+    public void clearMarks() {
+        Arrays.fill(markedCards, false);
     }
 }
 

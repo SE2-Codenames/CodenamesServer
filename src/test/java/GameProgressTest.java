@@ -54,14 +54,24 @@ public class GameProgressTest {
 
     @Test
     public void testSpymasterHint() throws Exception {
-        Communication comm = spy(new Communication(socket));
-        comm.setInput("HINT:apple:2");
+        Communication comm = mock(Communication.class);
+        when(comm.getHint()).thenReturn(new String[]{"apple", "2"});
 
-        gameprogress = new Gameprogress(sessions) {
+        Game mockGame = mock(Game.class);
+
+        when(mockGame.getGamestate())
+                .thenReturn(GameState.SPYMASTER_TURN)
+                .thenReturn(GameState.GAME_OVER); // für rekursiven checkState
+
+        Gameprogress gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mock(Game.class);
-                when(game.getGamestate()).thenReturn(GameState.SPYMASTER_TURN);
+                this.game = mockGame;
+            }
+
+            @Override
+            public void broadcastGameState() {
+
             }
 
             @Override
@@ -69,23 +79,32 @@ public class GameProgressTest {
                 this.communication = comm;
                 super.processMessage(c, message);
             }
-
         };
 
         gameprogress.processMessage(socket, "HINT:apple:2");
-        verify(gameprogress.game).getClue(new String[]{"apple", "2"});
+
+        verify(mockGame).getClue(new String[]{"apple", "2"});
     }
 
     @Test
     public void testOperativeTurn() throws Exception {
-        Communication comm = spy(new Communication(socket));
-        comm.setInput("SELECT:5");
+        Communication comm = mock(Communication.class);
+        when(comm.getSelectedCard()).thenReturn(5);
 
-        gameprogress = new Gameprogress(sessions) {
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate())
+                .thenReturn(GameState.OPERATIVE_TURN)
+                .thenReturn(GameState.GAME_OVER);
+
+        Gameprogress gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mock(Game.class);
-                when(game.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
+                this.game = mockGame;
+            }
+
+            @Override
+            public void broadcastGameState() {
+
             }
 
             @Override
@@ -93,11 +112,11 @@ public class GameProgressTest {
                 this.communication = comm;
                 super.processMessage(c, message);
             }
-
         };
 
         gameprogress.processMessage(socket, "SELECT:5");
-        verify(gameprogress.game).guessCard(eq(5));
+
+        verify(mockGame).guessCard(5);
     }
 
     @Test
@@ -227,7 +246,7 @@ public class GameProgressTest {
     public void testGameReset() {
         Gameprogress gameprogress = new Gameprogress(sessions) {
             @Override
-            protected void broadcastGameState() {
+            public void broadcastGameState() {
                 socket.send("RESET_BROADCAST");
             }
         };
