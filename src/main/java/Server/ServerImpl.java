@@ -83,6 +83,14 @@ public class ServerImpl extends WebSocketServer {
                 }
             }
 
+        } else if (message.startsWith("READY:")) {
+            String name = message.substring("READY:".length());
+            Player player = connections.get(conn);
+            if (player != null && player.getUsername().equals(name)) {
+                player.setReady(true);
+                LOGGER.info(name + " ist bereit.");
+                broadcastPlayerList();
+            }
         } else if (message.startsWith(SPYMASTER_TOGGLE)) {
             String name = message.substring(SPYMASTER_TOGGLE.length());
             Player player = connections.get(conn);
@@ -128,7 +136,9 @@ public class ServerImpl extends WebSocketServer {
         for (Player player : connections.values()) {
             sb.append(player.getUsername()).append(",")
                     .append(player.getTeamColor() != null ? player.getTeamColor().name() : "").append(",")
-                    .append(player.getSpymaster()).append(";");
+                    .append(player.getSpymaster()).append(",")
+                    .append(player.isReady()).append(";");
+
         }
         String msg = sb.toString();
         LOGGER.info(String.format("Sende Spielerliste: " + msg));

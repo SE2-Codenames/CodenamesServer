@@ -5,10 +5,13 @@ public class Player {
     private TeamColor teamColor;
     private boolean spymaster;
 
+    private boolean isReady;
+
     public Player(String username) {
         this.username = username;
         this.teamColor = null;
         this.spymaster = false;
+        this.isReady = false;
     }
 
     public String getUsername() {
@@ -35,5 +38,13 @@ public class Player {
         return username + "," +
                 (teamColor != null ? teamColor.name() : "") + "," +
                 spymaster;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        this.isReady = ready;
     }
 }
