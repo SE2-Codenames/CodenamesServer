@@ -1,0 +1,93 @@
+import model.Card.WordBank;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class WordBankTest {
+
+    private WordBank wordBank;
+    private List<String> mockWords;
+
+    @BeforeEach
+    public void setUp() {
+        // Setup mock word list
+        mockWords = List.of("apple", "banana", "cherry", "date", "elderberry");
+        wordBank = new WordBank();
+
+        // Inject test words instead of loading from XML
+        setPrivateField(wordBank, "allWords", new ArrayList<>(mockWords));
+    }
+
+    @Test
+    public void testGetRandomWords_NormalCase() {
+        List<String> result = wordBank.getRandomWords(3);
+
+        assertEquals(3, result.size());
+        assertTrue(mockWords.containsAll(result));
+        // Verify no duplicates
+        assertEquals(3, new HashSet<>(result).size());
+    }
+
+    @Test
+    public void testGetRandomWords_AllWords() {
+        List<String> result = wordBank.getRandomWords(mockWords.size());
+
+        assertEquals(mockWords.size(), result.size());
+        assertTrue(mockWords.containsAll(result));
+        // Verify shuffled
+        assertNotEquals(mockWords, result);
+    }
+
+    @Test
+    public void testGetRandomWords_TooManyWords() {
+        assertThrows(IllegalArgumentException.class,
+                () -> wordBank.getRandomWords(mockWords.size() + 1));
+    }
+
+    @Test
+    public void testGetRandomWords_ZeroWords() {
+        List<String> result = wordBank.getRandomWords(0);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testGetRandomWords_Shuffled() {
+        // Run multiple times to verify randomness
+        Set<List<String>> results = new HashSet<>();
+        for (int i = 0; i < 10; i++) {
+            results.add(wordBank.getRandomWords(mockWords.size()));
+        }
+
+        // Very likely to get different orders
+        assertTrue(results.size() > 1);
+    }
+
+    //allows tests to modify private fields of an object for tests
+    private void setPrivateField(Object obj, String fieldName, Object value) {
+        try {
+            // 1. Get the Field object for the specified field name
+            Field field = obj.getClass().getDeclaredField(fieldName);
+
+            // 2. Override Java's access control checks
+            field.setAccessible(true);
+
+            // 3. Actually set the field's value
+            field.set(obj, value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void testConstructorLoadsWords() {
+        WordBank wordBank = new WordBank();
+        assertFalse(wordBank.getRandomWords(1).isEmpty());
+    }
+}
