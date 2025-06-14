@@ -90,6 +90,10 @@ public class Communication {
         return "";
     }
 
+    public boolean clearMarksRequested() {
+        return input.contains("\"clearMarks\":true");
+    }
+
     // ==== Nachricht an Client senden ====
 
     public void sendGameState (GameState gameState, TeamColor currentTeam, List < Card > cards,
