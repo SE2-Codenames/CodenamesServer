@@ -1,4 +1,5 @@
-import Server.ServerImpl;
+package Server;
+
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 import org.junit.jupiter.api.Test;

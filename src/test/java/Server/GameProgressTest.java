@@ -1,7 +1,5 @@
-import Server.Communication;
-import Server.Game;
-import Server.GameException;
-import Server.Gameprogress;
+package Server;
+
 import model.GameState;
 import model.Player.Player;
 import org.java_websocket.WebSocket;

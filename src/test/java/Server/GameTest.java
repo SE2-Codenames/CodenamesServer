@@ -1,5 +1,5 @@
-import Server.Game;
-import Server.GameException;
+package Server;
+
 import model.Card.Card;
 import model.Card.CardRole;
 import model.Card.WordBank;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
