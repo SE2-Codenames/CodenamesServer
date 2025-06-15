@@ -250,6 +250,17 @@ public class Game {
     public void clearMarks() {
         Arrays.fill(markedCards, false);
     }
+
+    public boolean expose () {
+        String hint = currentClue.trim().toLowerCase();
+        for (Card card : board) {
+            String cardWord = card.getWord().toLowerCase();
+            if (cardWord.equals(hint) || cardWord.contains(hint) || hint.contains(cardWord)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
 
