@@ -91,7 +91,11 @@ public class Gameprogress {
             case OPERATIVE_TURN -> {
                 if (communication.isCardSelection()) {
                     operativeTurn(conn);
-                } else {
+                }
+                else if (communication.isCardMarked()) {
+                    cardMarked(conn);
+                }
+                else {
                     conn.send("MESSAGE:Operatives sind am Zug.");
                 }
             }
@@ -109,15 +113,16 @@ public class Gameprogress {
         game.clearMarks();
     }
 
+    private void cardMarked(WebSocket conn) throws GameException {
+        int marked = communication.getMarkedCard();
+        game.toggleMark(marked);
+        broadcastMarkedCards();
+        checkState(conn);
+    }
+
     private void operativeTurn(WebSocket conn) throws GameException {
         int guess = communication.getSelectedCard();
-        int marked = communication.getMarkedCard();
-        if (guess != -1) {
-            game.guessCard(guess);
-        }
-        if (marked != -1) {
-            game.toggleMark(marked);
-        }
+        game.guessCard(guess);
         broadcastGameState();
         checkState(conn);
     }
@@ -164,11 +169,18 @@ public class Gameprogress {
                     game.getCurrentTeam(),
                     game.getBoard(),
                     game.getScore(),
-                    game.getHint(),
-                    game.getRemainingGuesses(),
-                    game.getMarkedCards()
+                    game.getHint()
             );
         }
 
+    }
+
+    public void broadcastMarkedCards() {
+        if (game == null) return;
+        LOGGER.info("Markierte Karten werden an alle Clients gesendet...");
+        for (WebSocket session : sessions.keySet()) {
+            Communication comm = new Communication(session);
+            comm.sendMarked(game.getMarkedCards());
+        }
     }
 }

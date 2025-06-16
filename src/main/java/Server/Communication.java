@@ -41,6 +41,10 @@ public class Communication {
         return input != null && input.startsWith("SELECT:");
     }
 
+    public boolean isCardMarked() {
+        return input != null && input.startsWith("MARK:");
+    }
+
     public boolean isExposeCommand() {
         return input != null && input.startsWith("EXPOSE:");
     }
@@ -92,20 +96,63 @@ public class Communication {
 
     // ==== Nachricht an Client senden ====
 
-    public void sendGameState (GameState gameState, TeamColor currentTeam, List < Card > cards,
-                               int[] score, String hint,int remainingGuesses, boolean[] markedCards){
-
+    public void sendGameState(GameState gameState, TeamColor currentTeam, List<Card> cards, int[] score, String hint) {
         Map<String, Object> payload = new HashMap<>();
-            payload.put("gameState", gameState);
-            payload.put("teamRole", currentTeam);
-            payload.put("card", cards);
-            payload.put("score", score);
-            payload.put("hint", hint);
-            payload.put("remainingGuesses", remainingGuesses);
-            payload.put("markedCards", markedCards);
+        payload.put("gameState", gameState);
+        payload.put("teamRole", currentTeam);
+        payload.put("card", cards);
+        payload.put("score", score);
+        payload.put("hint", hint);
 
-            String message = "GAME_STATE:" + gson.toJson(payload);
-            conn.send(message);
-            LOGGER.info("Gesendet an Client: " + message);
-        }
+        String message = "GAME_STATE:" + gson.toJson(payload);
+        conn.send(message);
+        LOGGER.info("Gesendet an Client: " + message);
+    }
+
+    public void sendMarked(boolean[] markedCards) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("markedCards", markedCards);
+        String message = "MARKED:" + gson.toJson(payload);
+        conn.send(message);
+        LOGGER.info("Gesendet an Client: " + message);
+    }
+
+    //Chatnachrichten
+    public void sendHint(String hint, int number) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", "hint");
+        payload.put("hint", hint);
+        payload.put("number", number);
+        sendChat(payload);
+    }
+
+    public void sendCard(Card card) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", "card");
+        payload.put("card", card);
+        sendChat(payload);
+    }
+
+    public void sendExpose(String message) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", "expose");
+        payload.put("message", message);
+        sendChat(payload);
+    }
+
+    public void sendWin(String message, TeamColor team, int score) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", "win");
+        payload.put("message", message);
+        payload.put("team", team);
+        payload.put("score", score);
+        sendChat(payload);
+    }
+
+    private void sendChat(Map<String, Object> payload) {
+        String json = gson.toJson(payload);
+        String fullMessage = "CHAT:" + json;
+        conn.send(fullMessage);
+        LOGGER.info("Gesendet an Client: " + fullMessage);
+    }
 }
