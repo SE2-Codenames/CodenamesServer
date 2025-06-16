@@ -126,6 +126,26 @@ public class Gameprogress {
         String data = communication.getExposeData();
         LOGGER.info("EXPOSE verwendet: " + data);
         conn.send("MESSAGE:Expose verwendet: " + data);
+
+        if (game.checkExpose()) {
+            LOGGER.info("Expose true. Card awarded to current team.");
+            if (game.addTeamCard(true)) {
+                LOGGER.info("Card added.");
+            } else {
+                LOGGER.info("No neutral card left.");
+            }
+            game.clearMarks();
+            game.endTurn();
+            conn.send("MESSAGE:Expose successful.");
+        } else {
+            LOGGER.info("Expose false. Card awarded to opposite team.");
+            if (game.addTeamCard(false)) {
+                LOGGER.info("Card added.");
+            } else {
+                LOGGER.info("No neutral card left.");
+            }
+        }
+        broadcastGameState();
     }
 
     private void gameoverTurn() {
