@@ -1,5 +1,6 @@
 package Server;
 
+import model.GameState;
 import model.Player.Player;
 import model.Player.TeamColor;
 import org.java_websocket.WebSocket;
@@ -39,6 +40,11 @@ public class ServerImpl extends WebSocketServer {
             LOGGER.info("Verbindung ohne zugewiesenen Spieler getrennt.");
         }
         broadcastPlayerList();
+
+        if (gameprogress.game != null && gameprogress.game.getGamestate() != GameState.LOBBY) {
+            LOGGER.info(" Spieler verloren während aktivem Spiel. Setze Spiel zurück...");
+            gameprogress.gameReset();
+        }
     }
 
     @Override
