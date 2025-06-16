@@ -14,11 +14,9 @@ public class Game {
     private TeamColor currentTurn;      //Team Turn
     private int remainingGuesses;
     private int[] score;                //score[0] = RED; score[1] = BLUE
+    private boolean[] markedCards = new boolean[25];
     // für die Cheatfunktion nötig
     private String currentClue;
-    private int totalRedCards = 0;
-    private int totalBlueCards = 0;
-    private boolean[] markedCards = new boolean[25];
 
 
     public Game(WordBank wordBank) {
@@ -68,11 +66,6 @@ public class Game {
             else if (i < 24) cardType = CardRole.NEUTRAL;   // Next 7 = Neutral
             else cardType = CardRole.ASSASSIN;              // Last 1 = Assassin
 
-            if(cardType == CardRole.RED){
-                totalRedCards++;
-            } else if(cardType == CardRole.BLUE){
-                totalBlueCards++;
-            }
             boardCards.add(new Card(randomWords.get(i), cardType));
         }
         // 2. Shuffle to randomize positions

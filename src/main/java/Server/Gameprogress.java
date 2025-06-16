@@ -108,9 +108,10 @@ public class Gameprogress {
     private void spymasterTurn(WebSocket conn) throws GameException {
         String[] clue = communication.getHint();
         game.getClue(clue);
+        game.clearMarks();
+        broadcastMarkedCards();
         broadcastGameState();
         checkState(conn);
-        game.clearMarks();
     }
 
     private void cardMarked(WebSocket conn) throws GameException {

@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="4ddd924b-592e-4901-b9e5-b651e2e1a3a5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Communication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Game.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Server/Gameprogress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Gameprogress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server/ServerPayload.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,7 +41,7 @@
   "keyToString": {
     "Application.Server.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Development",
+    "git-widget-placeholder": "Edi(ChatFunction)",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -88,7 +87,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1750071602569</updated>
-      <workItem from="1750071603610" duration="5001000" />
+      <workItem from="1750071603610" duration="10159000" />
     </task>
     <servers />
   </component>
