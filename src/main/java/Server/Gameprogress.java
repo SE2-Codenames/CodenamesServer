@@ -14,7 +14,7 @@ public class Gameprogress {
 
     private static final Logger LOGGER = Logger.getLogger(Gameprogress.class.getName());
 
-    private final Map<WebSocket, Player> sessions;
+    public final Map<WebSocket, Player> sessions;
     private final Gson gson = new Gson();
     public Game game;
     public Communication communication;

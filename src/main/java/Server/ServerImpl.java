@@ -34,6 +34,7 @@ public class ServerImpl extends WebSocketServer {
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         Player player = connections.remove(conn);
+        gameprogress.sessions.remove(conn);
         if (player != null) {
             LOGGER.info(player.getUsername() + " hat die Verbindung getrennt.");
         } else {
@@ -41,7 +42,7 @@ public class ServerImpl extends WebSocketServer {
         }
         broadcastPlayerList();
 
-        if (gameprogress.game != null && gameprogress.game.getGamestate() != GameState.LOBBY) {
+       if (gameprogress.game != null && gameprogress.game.getGamestate() != GameState.LOBBY) {
             LOGGER.info(" Spieler verloren während aktivem Spiel. Setze Spiel zurück...");
             gameprogress.gameReset();
         }
