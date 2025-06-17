@@ -286,7 +286,6 @@ public class Game {
             selectedCard.setCardRole(CardRole.BLUE);
         }
 
-        checkScore();
         return true;
     }
 }

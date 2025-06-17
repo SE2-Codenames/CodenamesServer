@@ -125,14 +125,13 @@ public class Gameprogress {
 
     private void handleExpose(WebSocket conn) {
         String data = communication.getExposeData();
-        LOGGER.info("EXPOSE verwendet: " + data);
-        //conn.send("MESSAGE:Expose verwendet: " + data);
 
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
 
         boolean cardAdded = game.addTeamCard(targetTeam);
         if (!cardAdded) {
             LOGGER.info("No neutral cards left.");
+            conn.send("MESSAGE: No cards left.");
 
             int[] score = game.getScore();
             if (targetTeam == TeamColor.RED) {
