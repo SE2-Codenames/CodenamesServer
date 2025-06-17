@@ -1,6 +1,7 @@
 package Server;
 
 import com.google.gson.Gson;
+import model.Card.Card;
 import model.Card.WordBank;
 import model.GameState;
 import model.Player.Player;
@@ -108,7 +109,12 @@ public class Gameprogress {
     private void spymasterTurn(WebSocket conn) throws GameException {
         String[] clue = communication.getHint();
         game.getClue(clue);
-        game.clearMarks();
+
+        for (WebSocket session : sessions.keySet()) {
+            Communication comm = new Communication(session);
+            comm.sendHint(clue[0], Integer.parseInt(clue[1]));
+        }
+
         broadcastMarkedCards();
         broadcastGameState();
         checkState(conn);
@@ -124,6 +130,13 @@ public class Gameprogress {
     private void operativeTurn(WebSocket conn) throws GameException {
         int guess = communication.getSelectedCard();
         game.guessCard(guess);
+
+        Card selectedCard = game.getBoard().get(guess);
+        for (WebSocket session : sessions.keySet()) {
+            Communication comm = new Communication(session);
+            comm.sendCard(selectedCard);
+        }
+
         broadcastGameState();
         checkState(conn);
     }
