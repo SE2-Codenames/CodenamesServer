@@ -213,6 +213,7 @@ public class Game {
             // Operative turn ends -> switch to other team's spymaster turn
             currentTurn = (currentTurn == TeamColor.RED) ? TeamColor.BLUE : TeamColor.RED;
             state = GameState.SPYMASTER_TURN;
+            clearMarks();
         }
         else if (state == GameState.SPYMASTER_TURN) {
             // Spymaster gave clue -> switch to same team's operative turn
