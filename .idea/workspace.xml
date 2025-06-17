@@ -6,12 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dfac1e98-fee4-4839-a94c-e14869f4ee66" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/CardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Card/CardTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/ConnectionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/ConnectionTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/GameProgressTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/GameProgressTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/GameTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/GameTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/PlayerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Player/PlayerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TeamTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Player/TeamTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,6 +27,9 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ConnectionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.testStartGame.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;implement-shake--mihi&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -52,7 +49,7 @@
       <recent name="model" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.GameProgressTest">
+  <component name="RunManager" selected="Application.Server">
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Server.Server" />
       <module name="CodenamesServer" />
@@ -62,6 +59,21 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ConnectionTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.ConnectionTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -81,10 +93,28 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="GameProgressTest.testStartGame" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.GameProgressTest" />
+      <option name="METHOD_NAME" value="testStartGame" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.GameProgressTest" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="JUnit.GameProgressTest.testStartGame" />
+        <item itemvalue="JUnit.ConnectionTest" />
+        <item itemvalue="JUnit.GameProgressTest" />
       </list>
     </recent_temporary>
   </component>
@@ -108,7 +138,8 @@
       <workItem from="1749907791802" duration="3209000" />
       <workItem from="1750007132490" duration="9000" />
       <workItem from="1750007657580" duration="3000" />
-      <workItem from="1750007899472" duration="388000" />
+      <workItem from="1750007899472" duration="2852000" />
+      <workItem from="1750116360347" duration="621000" />
     </task>
     <servers />
   </component>
