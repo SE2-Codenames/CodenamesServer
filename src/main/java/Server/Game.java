@@ -41,6 +41,7 @@ public class Game {
     }
     //setter Methoden
     public void setGamestate(GameState state){this.state = state;}
+    public void setScore(int[] score){this.score = score;}
 
 
     // create Cardboard
@@ -262,7 +263,7 @@ public class Game {
         return false;
     }
 
-    public boolean addTeamCard (boolean isExposed) {
+    public boolean addTeamCard (TeamColor targetTeam) {
         List<Integer> neutralCards = new ArrayList<>();
         for (int i = 0; i < board.size(); i++) {
             Card card = board.get(i);
@@ -278,13 +279,6 @@ public class Game {
         SecureRandom random = new SecureRandom();
         int randomIndex = neutralCards.get(random.nextInt(neutralCards.size()));
         Card selectedCard = board.get(randomIndex);
-
-        TeamColor targetTeam;
-        if (isExposed) {
-            targetTeam = currentTurn;
-        } else {
-            targetTeam = (currentTurn == TeamColor.RED) ? TeamColor.BLUE : TeamColor.RED;
-        }
 
         if (targetTeam == TeamColor.RED) {
             selectedCard.setCardRole(CardRole.RED);
