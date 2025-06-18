@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ConnectionTest {
@@ -83,5 +84,46 @@ public class ConnectionTest {
 
         assertTrue(takenMessageReceived, "Server should respond with USERNAME_TAKEN for duplicate usernames.");
     }
+
+
+    @Test
+    public void testClientDisconnectionRemovesConnection() throws Exception {
+        int port = 9092;
+        ServerImpl server = new ServerImpl(port);
+        server.start();
+
+        URI uri = new URI("ws://localhost:" + port);
+        CountDownLatch disconnectedLatch = new CountDownLatch(1);
+
+        WebSocketClient client = new WebSocketClient(uri) {
+            @Override public void onOpen(ServerHandshake handshakedata) {
+                send("USER:stefan");
+            }
+
+            @Override public void onClose(int code, String reason, boolean remote) {
+                disconnectedLatch.countDown();
+            }
+
+            @Override public void onMessage(String message) {}
+            @Override public void onError(Exception ex) {}
+        };
+
+        client.connectBlocking();
+        Thread.sleep(300);
+
+        client.close();
+
+        boolean wasDisconnected = disconnectedLatch.await(3, TimeUnit.SECONDS);
+        Thread.sleep(300);
+
+        int sizeAfterDisconnect = server.getConnections().size();
+
+
+        server.stop();
+
+        assertTrue(wasDisconnected, "Client should disconnect");
+        assertEquals(0, sizeAfterDisconnect, "Server should have no active connections after client disconnects.");
+    }
+
 
 }
