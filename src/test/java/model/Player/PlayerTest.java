@@ -63,4 +63,10 @@ public class PlayerTest {
         assertNotEquals(null, player1);
     }
 
+    @Test
+    public void testSetGetReady() {
+        assertFalse(player1.isReady()); // initial false
+        player1.setReady(true);
+        assertTrue(player1.isReady());
+    }
 }

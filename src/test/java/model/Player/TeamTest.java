@@ -61,4 +61,19 @@ public class TeamTest {
         assertTrue(s.contains("RED"));
         assertTrue(s.contains("Cards left: 9"));
     }
+
+    @Test
+    public void testSetNegativeCardsRemaining() {
+        team1.setCardsRemaining(-5);
+        assertEquals(-5, team1.getCardsRemaining()); // aktuell erlaubt, evtl. ändern
+    }
+
+    @Test
+    public void testToStringAfterWin() {
+        team1.setCardsRemaining(0);
+        String output = team1.toString();
+        assertTrue(output.contains("RED"));
+        assertTrue(output.contains("Cards left: 0"));
+    }
+
 }

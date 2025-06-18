@@ -73,7 +73,7 @@ public class Gameprogress {
     }
 
 
-    private void checkState(WebSocket conn) throws GameException {
+    protected void checkState(WebSocket conn) throws GameException {
         if (game == null) {
             conn.send("MESSAGE:Spiel wurde noch nicht gestartet.");
             return;

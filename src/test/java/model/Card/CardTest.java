@@ -62,4 +62,20 @@ class CardTest {
         blueTeamCard.reveal();
         assertEquals("Cat [BLUE] (revealed)", blueTeamCard.toString());
     }
+
+    @Test
+    void setCardRoleTest() {
+        redTeamCard.setCardRole(CardRole.NEUTRAL);
+        assertEquals(CardRole.NEUTRAL, redTeamCard.getCardRole());
+    }
+
+    @Test
+    void constructorWithNullValues() {
+        Card card = new Card(null, null);
+        assertNull(card.getWord());
+        assertNull(card.getCardRole());
+        assertFalse(card.isRevealed());
+    }
+
+
 }

@@ -4,31 +4,48 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6b152b2b-2d91-4389-afc4-ff76bd82ee16" name="Changes" comment="" />
+    <list default="true" id="6b152b2b-2d91-4389-afc4-ff76bd82ee16" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/test/java/Server/CommunicationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/Server/TestCommunication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Gameprogress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Gameprogress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Server/ConnectionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/ServerImplTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Server/GameProgressTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/GameProgressTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/model/Card/CardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Card/CardTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/model/Player/PlayerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Player/PlayerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/model/Player/TeamTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Player/TeamTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "EduardKlaus"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;EduardKlaus&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/SE2-Codenames/CodenamesServer.git",
-    "accountId": "10f0a170-924c-4672-a8b7-de6c993498e1"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/SE2-Codenames/CodenamesServer.git&quot;,
+    &quot;accountId&quot;: &quot;10f0a170-924c-4672-a8b7-de6c993498e1&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2ygPdtSMDBVq2A6Bz83nkQIJxQH" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -36,7 +53,28 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "JUnit.CardTest.constructorWithNullValues.executor": "Run",
+    "JUnit.CardTest.executor": "Run",
+    "JUnit.CardTest.setCardRoleTest.executor": "Run",
+    "JUnit.CommunicationTest.executor": "Run",
+    "JUnit.ConnectionTest.executor": "Run",
+    "JUnit.GameProgressTest.executor": "Run",
+    "JUnit.GameProgressTest.testCardMarkToggleMultipleTimes.executor": "Run",
+    "JUnit.GameProgressTest.testCardMarked.executor": "Run",
+    "JUnit.GameProgressTest.testExposeCommand.executor": "Run",
+    "JUnit.GameProgressTest.testGameLobbyGameOver.executor": "Run",
+    "JUnit.GameProgressTest.testInvalidHintFormatHandled.executor": "Run",
+    "JUnit.GameTest.executor": "Run",
+    "JUnit.PlayerTest.executor": "Run",
+    "JUnit.PlayerTest.testEqualsSameUsername.executor": "Run",
+    "JUnit.PlayerTest.testSetGetReady.executor": "Run",
+    "JUnit.ServerImplTest.executor": "Run",
+    "JUnit.TeamTest.executor": "Run",
+    "JUnit.TeamTest.testSetNegativeCardsRemaining.executor": "Run",
+    "JUnit.TeamTest.testToStringAfterWin.executor": "Run",
+    "JUnit.WordBankTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "Development",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -46,6 +84,103 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunManager" selected="JUnit.WordBankTest">
+    <configuration name="GameProgressTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.GameProgressTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameProgressTest.testCardMarkToggleMultipleTimes" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.GameProgressTest" />
+      <option name="METHOD_NAME" value="testCardMarkToggleMultipleTimes" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameProgressTest.testCardMarked" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.GameProgressTest" />
+      <option name="METHOD_NAME" value="testCardMarked" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.ServerImplTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WordBankTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="WordBankTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.GameProgressTest.testCardMarkToggleMultipleTimes" />
+      <item itemvalue="JUnit.ServerImplTest" />
+      <item itemvalue="JUnit.WordBankTest" />
+      <item itemvalue="JUnit.GameProgressTest.testCardMarked" />
+      <item itemvalue="JUnit.GameProgressTest" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.WordBankTest" />
+        <item itemvalue="JUnit.GameProgressTest" />
+        <item itemvalue="JUnit.GameProgressTest.testCardMarkToggleMultipleTimes" />
+        <item itemvalue="JUnit.ServerImplTest" />
+        <item itemvalue="JUnit.GameProgressTest.testCardMarked" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -63,6 +198,7 @@
       <option name="presentableId" value="Default" />
       <updated>1750253334772</updated>
       <workItem from="1750253336082" duration="455000" />
+      <workItem from="1750253796956" duration="5432000" />
     </task>
     <servers />
   </component>
