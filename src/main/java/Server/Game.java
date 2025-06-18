@@ -77,10 +77,10 @@ public class Game {
     //randomized the starting Team
     private TeamColor startingTeamRandom() {
         SecureRandom rd = new SecureRandom();
-        if(rd.nextBoolean())
+        //if(rd.nextBoolean())
             return TeamColor.RED;
-        else
-            return TeamColor.BLUE;
+        //else
+        //    return TeamColor.BLUE;
     }
 
     public void getClue(String[] clue){
@@ -88,26 +88,6 @@ public class Game {
         remainingGuesses = Integer.parseInt(clue[1]);
         endTurn();
     }
-
-    //muss später überarbeitet werden, um die Cheatfunktion zu implementieren
-    /*private String validateClue() throws GameException {
-        String clueWord = currentClue.trim();
-
-        if (clueWord.isEmpty()) {
-            throw new GameException("Clue cannot be empty");
-        }
-        if (clueWord.matches(".*\\d.*")) {
-            throw new GameException("Clue cannot contain numbers");
-        }
-
-        String finalClueWord = clueWord;
-        if (board.stream().anyMatch(card ->
-                card.getWord().equalsIgnoreCase(finalClueWord))) {
-            throw new GameException("Clue cannot be a word on the board");
-        }
-
-        return clueWord;
-    }*/
 
     // Input from the Operative Player for there guess
     public void guessCard(int guess) throws GameException {
