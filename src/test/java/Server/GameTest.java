@@ -127,63 +127,6 @@ public class GameTest {
         assertThrows(NumberFormatException.class, () -> game.getClue(new String[]{"Apfel", "mm"}));
     }
 
-    /* Müssen noch überarbeitet werden, wegen validateClue
-
-    @Test
-    public void testValidateClueTrue() throws Exception {
-        game.getClue(new String[]{"Apfel", "2"});
-        Method method = Game.class.getDeclaredMethod("validateClue");
-        method.setAccessible(true);
-        String clue = (String) method.invoke(game);
-        assertEquals("Apfel", clue);
-    }
-
-    @Test
-    public void testValidateClueFalse() throws Exception {
-        game.getClue(new String[]{"     ", "2"});
-        Method method = Game.class.getDeclaredMethod("validateClue");
-        method.setAccessible(true);
-
-        try{
-            method.invoke(game);
-        } catch(InvocationTargetException e){
-            Throwable cause = e.getCause();
-            assertTrue(cause instanceof GameException);
-            assertEquals("Clue cannot be empty", cause.getMessage());
-        }
-    }
-
-    @Test
-    public void testValidateClueIncorrect() throws Exception {
-        game.getClue(new String[]{"Apfel33", "2"});
-        Method method = Game.class.getDeclaredMethod("validateClue");
-        method.setAccessible(true);
-
-        try{
-            method.invoke(game);
-        } catch(InvocationTargetException e){
-            Throwable cause = e.getCause();
-            assertTrue(cause instanceof GameException);
-            assertEquals("Clue cannot contain numbers", cause.getMessage());
-        }
-    }
-
-    @Test
-    public void testValidateClueBoard() throws Exception {
-        String clue = game.getBoard().get(0).getWord();
-        game.getClue(new String[]{clue, "2"});
-        Method method = Game.class.getDeclaredMethod("validateClue");
-        method.setAccessible(true);
-
-        try{
-            method.invoke(game);
-        } catch(InvocationTargetException e){
-            Throwable cause = e.getCause();
-            assertTrue(cause instanceof GameException);
-            assertEquals("Clue cannot be a word on the board", cause.getMessage());
-        }
-    }*/
-
     @Test
     public void testEndTurnManyGuesses() throws Exception {
         game.getClue(new String[]{"Apple", "0"});
@@ -222,6 +165,65 @@ public class GameTest {
         checkScore.invoke(game);
 
         assertEquals(GameState.GAME_OVER, game.getGamestate());
+    }
+
+    @Test
+    public void testToggleMark() {
+        // Anfangszustand
+        boolean[] marked = game.getMarkedCards();
+        assertFalse(marked[5]);
+
+        // Markieren
+        game.toggleMark(5);
+        assertTrue(marked[5]);
+
+        // Nochmals aufrufen → wieder unmarkiert
+        game.toggleMark(5);
+        assertFalse(marked[5]);
+    }
+
+    @Test
+    public void testToggleMarkOutOfBounds() {
+        // Sollte keine Exception werfen
+        game.toggleMark(-1);
+        game.toggleMark(25);  // Index 25 ist außerhalb (0–24 erlaubt)
+
+        // Sicherstellen, dass Array unverändert ist
+        for (boolean mark : game.getMarkedCards()) {
+            assertFalse(mark);
+        }
+    }
+
+    @Test
+    public void testClearMarks() {
+        // Einige Karten markieren
+        game.toggleMark(0);
+        game.toggleMark(10);
+        game.toggleMark(24);
+
+        assertTrue(game.getMarkedCards()[0]);
+        assertTrue(game.getMarkedCards()[10]);
+        assertTrue(game.getMarkedCards()[24]);
+
+        // Jetzt alle löschen
+        game.clearMarks();
+
+        for (boolean mark : game.getMarkedCards()) {
+            assertFalse(mark);
+        }
+    }
+
+    @Test
+    public void testCheckExposeMatchesBoardWord() {
+        String wordOnBoard = game.getBoard().get(0).getWord();
+        game.getClue(new String[]{wordOnBoard, "1"});
+        assertTrue(game.checkExpose());
+    }
+
+    @Test
+    public void testCheckExposeNoMatch() {
+        game.getClue(new String[]{"NichtAufDemBrett", "1"});
+        assertFalse(game.checkExpose());
     }
 
 }

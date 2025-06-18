@@ -5,15 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b152b2b-2d91-4389-afc4-ff76bd82ee16" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/Server/CommunicationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/Server/TestCommunication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Gameprogress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Gameprogress.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Server/ConnectionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/ServerImplTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/Server/GameProgressTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/GameProgressTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/model/Card/CardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Card/CardTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/model/Player/PlayerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Player/PlayerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/model/Player/TeamTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/Player/TeamTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Server/GameTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/GameTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,40 +44,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "JUnit.CardTest.constructorWithNullValues.executor": "Run",
-    "JUnit.CardTest.executor": "Run",
-    "JUnit.CardTest.setCardRoleTest.executor": "Run",
-    "JUnit.CommunicationTest.executor": "Run",
-    "JUnit.ConnectionTest.executor": "Run",
-    "JUnit.GameProgressTest.executor": "Run",
-    "JUnit.GameProgressTest.testCardMarkToggleMultipleTimes.executor": "Run",
-    "JUnit.GameProgressTest.testCardMarked.executor": "Run",
-    "JUnit.GameProgressTest.testExposeCommand.executor": "Run",
-    "JUnit.GameProgressTest.testGameLobbyGameOver.executor": "Run",
-    "JUnit.GameProgressTest.testInvalidHintFormatHandled.executor": "Run",
-    "JUnit.GameTest.executor": "Run",
-    "JUnit.PlayerTest.executor": "Run",
-    "JUnit.PlayerTest.testEqualsSameUsername.executor": "Run",
-    "JUnit.PlayerTest.testSetGetReady.executor": "Run",
-    "JUnit.ServerImplTest.executor": "Run",
-    "JUnit.TeamTest.executor": "Run",
-    "JUnit.TeamTest.testSetNegativeCardsRemaining.executor": "Run",
-    "JUnit.TeamTest.testToStringAfterWin.executor": "Run",
-    "JUnit.WordBankTest.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Development",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;JUnit.CardTest.constructorWithNullValues.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CardTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CardTest.setCardRoleTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CommunicationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ConnectionTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.testCardMarkToggleMultipleTimes.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.testCardMarked.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.testExposeCommand.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.testGameLobbyGameOver.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameProgressTest.testInvalidHintFormatHandled.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.GameTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlayerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlayerTest.testEqualsSameUsername.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.PlayerTest.testSetGetReady.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ServerImplTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TeamTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TeamTest.testSetNegativeCardsRemaining.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.TeamTest.testToStringAfterWin.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.WordBankTest.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Development&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="JUnit.WordBankTest">
+}</component>
+  <component name="RunManager" selected="JUnit.ServerTest">
     <configuration name="GameProgressTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodenamesServer" />
       <extension name="coverage">
@@ -119,7 +112,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GameProgressTest.testCardMarked" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="GameTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodenamesServer" />
       <extension name="coverage">
         <pattern>
@@ -130,14 +123,14 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="ALTERNATIVE_JRE_PATH" value="21" />
       <option name="PACKAGE_NAME" value="Server" />
-      <option name="MAIN_CLASS_NAME" value="Server.GameProgressTest" />
-      <option name="METHOD_NAME" value="testCardMarked" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="Server.GameTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ServerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodenamesServer" />
       <extension name="coverage">
         <pattern>
@@ -146,7 +139,7 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="Server" />
-      <option name="MAIN_CLASS_NAME" value="Server.ServerImplTest" />
+      <option name="MAIN_CLASS_NAME" value="Server.ServerTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -165,19 +158,19 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="JUnit.ServerTest" />
+      <item itemvalue="JUnit.GameTest" />
       <item itemvalue="JUnit.GameProgressTest.testCardMarkToggleMultipleTimes" />
-      <item itemvalue="JUnit.ServerImplTest" />
       <item itemvalue="JUnit.WordBankTest" />
-      <item itemvalue="JUnit.GameProgressTest.testCardMarked" />
       <item itemvalue="JUnit.GameProgressTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ServerTest" />
+        <item itemvalue="JUnit.GameTest" />
         <item itemvalue="JUnit.WordBankTest" />
         <item itemvalue="JUnit.GameProgressTest" />
         <item itemvalue="JUnit.GameProgressTest.testCardMarkToggleMultipleTimes" />
-        <item itemvalue="JUnit.ServerImplTest" />
-        <item itemvalue="JUnit.GameProgressTest.testCardMarked" />
       </list>
     </recent_temporary>
   </component>
@@ -199,6 +192,7 @@
       <updated>1750253334772</updated>
       <workItem from="1750253336082" duration="455000" />
       <workItem from="1750253796956" duration="5432000" />
+      <workItem from="1750261553847" duration="159000" />
     </task>
     <servers />
   </component>
