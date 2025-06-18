@@ -1,5 +1,6 @@
 package Server;
 
+import model.GameState;
 import model.Player.Player;
 import model.Player.TeamColor;
 import org.java_websocket.WebSocket;
@@ -33,12 +34,18 @@ public class ServerImpl extends WebSocketServer {
     @Override
     public void onClose(WebSocket conn, int code, String reason, boolean remote) {
         Player player = connections.remove(conn);
+        gameprogress.sessions.remove(conn);
         if (player != null) {
             LOGGER.info(player.getUsername() + " hat die Verbindung getrennt.");
         } else {
             LOGGER.info("Verbindung ohne zugewiesenen Spieler getrennt.");
         }
         broadcastPlayerList();
+
+       if (gameprogress.game != null && gameprogress.game.getGamestate() != GameState.LOBBY) {
+            LOGGER.info(" Spieler verloren während aktivem Spiel. Setze Spiel zurück...");
+            gameprogress.gameReset();
+        }
     }
 
     @Override
@@ -83,6 +90,14 @@ public class ServerImpl extends WebSocketServer {
                 }
             }
 
+        } else if (message.startsWith("READY:")) {
+            String name = message.substring("READY:".length());
+            Player player = connections.get(conn);
+            if (player != null && player.getUsername().equals(name)) {
+                player.setReady(true);
+                LOGGER.info(name + " ist bereit.");
+                broadcastPlayerList();
+            }
         } else if (message.startsWith(SPYMASTER_TOGGLE)) {
             String name = message.substring(SPYMASTER_TOGGLE.length());
             Player player = connections.get(conn);
@@ -128,7 +143,9 @@ public class ServerImpl extends WebSocketServer {
         for (Player player : connections.values()) {
             sb.append(player.getUsername()).append(",")
                     .append(player.getTeamColor() != null ? player.getTeamColor().name() : "").append(",")
-                    .append(player.getSpymaster()).append(";");
+                    .append(player.getSpymaster()).append(",")
+                    .append(player.isReady()).append(";");
+
         }
         String msg = sb.toString();
         LOGGER.info(String.format("Sende Spielerliste: " + msg));

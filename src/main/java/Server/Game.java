@@ -14,11 +14,9 @@ public class Game {
     private TeamColor currentTurn;      //Team Turn
     private int remainingGuesses;
     private int[] score;                //score[0] = RED; score[1] = BLUE
+    private boolean[] markedCards = new boolean[25];
     // für die Cheatfunktion nötig
     private String currentClue;
-    private int totalRedCards = 0;
-    private int totalBlueCards = 0;
-    private boolean[] markedCards = new boolean[25];
 
 
     public Game(WordBank wordBank) {
@@ -41,9 +39,10 @@ public class Game {
     }
     //setter Methoden
     public void setGamestate(GameState state){this.state = state;}
+    public void setScore(int[] score){this.score = score;}
 
 
-    // creat Cardboard
+    // create Cardboard
     private List<Card> createBoard(List<String> randomWords) {
         List<Card> boardCards = new ArrayList<>();
 
@@ -68,11 +67,6 @@ public class Game {
             else if (i < 24) cardType = CardRole.NEUTRAL;   // Next 7 = Neutral
             else cardType = CardRole.ASSASSIN;              // Last 1 = Assassin
 
-            if(cardType == CardRole.RED){
-                totalRedCards++;
-            } else if(cardType == CardRole.BLUE){
-                totalBlueCards++;
-            }
             boardCards.add(new Card(randomWords.get(i), cardType));
         }
         // 2. Shuffle to randomize positions
@@ -178,7 +172,7 @@ public class Game {
     }
 
     // calculate the score and check Win state
-    private void checkScore() {
+    protected void checkScore() {
         int revealedRed = 0;
         int revealedBlue = 0;
 
@@ -215,11 +209,12 @@ public class Game {
         }
     }
 
-    private void endTurn() {
+    protected void endTurn() {
         if (state == GameState.OPERATIVE_TURN) {
             // Operative turn ends -> switch to other team's spymaster turn
             currentTurn = (currentTurn == TeamColor.RED) ? TeamColor.BLUE : TeamColor.RED;
             state = GameState.SPYMASTER_TURN;
+            clearMarks();
         }
         else if (state == GameState.SPYMASTER_TURN) {
             // Spymaster gave clue -> switch to same team's operative turn
@@ -249,6 +244,43 @@ public class Game {
 
     public void clearMarks() {
         Arrays.fill(markedCards, false);
+    }
+
+    public boolean checkExpose() {
+        String hint = currentClue.trim().toLowerCase();
+        for (Card card : board) {
+            String cardWord = card.getWord().toLowerCase();
+            if (cardWord.equals(hint) || cardWord.contains(hint) || hint.contains(cardWord)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addTeamCard (TeamColor targetTeam) {
+        List<Integer> neutralCards = new ArrayList<>();
+        for (int i = 0; i < board.size(); i++) {
+            Card card = board.get(i);
+            if (card.getCardRole() == CardRole.NEUTRAL && !card.isRevealed()) {
+                neutralCards.add(i);
+            }
+        }
+
+        if (neutralCards.isEmpty()) {
+            return false;
+        }
+
+        SecureRandom random = new SecureRandom();
+        int randomIndex = neutralCards.get(random.nextInt(neutralCards.size()));
+        Card selectedCard = board.get(randomIndex);
+
+        if (targetTeam == TeamColor.RED) {
+            selectedCard.setCardRole(CardRole.RED);
+        } else {
+            selectedCard.setCardRole(CardRole.BLUE);
+        }
+
+        return true;
     }
 }
 
