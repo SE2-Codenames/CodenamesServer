@@ -2,6 +2,7 @@ import model.Card.WordBank;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -89,5 +90,25 @@ public class WordBankTest {
     public void testConstructorLoadsWords() {
         WordBank wordBank = new WordBank();
         assertFalse(wordBank.getRandomWords(1).isEmpty());
+    }
+
+    @Test
+    public void testLoadWordsFromXML_Failure() {
+        //Rename XML file temporarily to make it "unavailable"
+        File originalFile = new File("wordBank.xml");
+        File tempFile = new File("wordBank.xml.bak");
+
+        boolean renamed = originalFile.renameTo(tempFile);
+        assertTrue(renamed, "Failed to rename the XML file for testing.");
+
+        try {
+            //fail to load the XML
+            Exception exception = assertThrows(RuntimeException.class, WordBank::new);
+            assertTrue(exception.getMessage().contains("Failed to load wordBank XML"));
+        } finally {
+            //Restore original XML
+            boolean restored = tempFile.renameTo(originalFile);
+            assertTrue(restored, "Failed to restore the original XML file after testing.");
+        }
     }
 }
