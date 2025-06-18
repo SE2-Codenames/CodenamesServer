@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-public class GameProgressTest {
+class GameProgressTest {
     @Mock
     private WebSocket socket;
 
@@ -28,7 +28,7 @@ public class GameProgressTest {
     private Map<WebSocket, Player> sessions;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         sessions = new HashMap<>();
         sessions.put(socket, new Player("Mihi"));
@@ -36,7 +36,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testStartGame() {
+    void testStartGame() {
         Communication comm = spy(new Communication(socket));
         comm.setInput("START_GAME");
 
@@ -53,7 +53,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testSpymasterHint() throws Exception {
+    void testSpymasterHint() throws Exception {
         Communication comm = mock(Communication.class);
         when(comm.getHint()).thenReturn(new String[]{"apple", "2"});
 
@@ -87,7 +87,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testOperativeTurn() throws Exception {
+    void testOperativeTurn() throws Exception {
         Communication comm = mock(Communication.class);
         when(comm.getSelectedCard()).thenReturn(5);
 
@@ -120,7 +120,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameNotStarted() {
+    void testGameNotStarted() {
         Communication comm = spy(new Communication(socket));
         comm.setInput("SELECT:3");
 
@@ -142,7 +142,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameException() throws Exception {
+    void testGameException() throws Exception {
         Communication comm = spy(new Communication(socket));
         comm.setInput("SELECT:1");
 
@@ -169,7 +169,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testBrokeException() {
+    void testBrokeException() {
         Communication comm = spy(new Communication(socket));
         comm.setInput("BAD_INPUT");
 
@@ -194,7 +194,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameLobbyGameOver() {
+    void testGameLobbyGameOver() {
 
         Communication comm = spy(new Communication(socket));
         comm.setInput("IRRELEVANT");
@@ -219,7 +219,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameStateGameOver() {
+    void testGameStateGameOver() {
         Communication comm = spy(new Communication(socket));
         comm.setInput("IRRELEVANT");
 
@@ -243,7 +243,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameReset() {
+    void testGameReset() {
         Gameprogress gameprogress = new Gameprogress(sessions) {
             @Override
             public void broadcastGameState() {

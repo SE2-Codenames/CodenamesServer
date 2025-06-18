@@ -5,36 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c5ba5a8-e2df-4515-8b34-473b92a276e3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Communication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Communication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/CardTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CardTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/GameProgressTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/GameProgressTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Development" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "EduardKlaus"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;EduardKlaus&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/SE2-Codenames/CodenamesServer.git",
-    "accountId": "10f0a170-924c-4672-a8b7-de6c993498e1"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/SE2-Codenames/CodenamesServer.git&quot;,
+    &quot;accountId&quot;: &quot;10f0a170-924c-4672-a8b7-de6c993498e1&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 1
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2yNJuaTf1sJRF3UVmxuuR7gxUR9" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -42,15 +54,23 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Server.executor": "Run",
+    "JUnit.CardTest.executor": "Run",
+    "JUnit.GameProgressTest.executor": "Run",
+    "JUnit.GameProgressTest.testGameLobbyGameOver.executor": "Run",
+    "JUnit.WordBankTest.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Development",
+    "git-widget-placeholder": "Tests-Pablo",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.GameProgressTest">
     <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Server.Server" />
       <module name="CodenamesServer" />
@@ -64,8 +84,49 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="CardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="CardTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameProgressTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="GameProgressTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GameProgressTest.testGameLobbyGameOver" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="GameProgressTest" />
+      <option name="METHOD_NAME" value="testGameLobbyGameOver" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="WordBankTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CodenamesServer" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="WordBankTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.GameProgressTest" />
+        <item itemvalue="JUnit.GameProgressTest.testGameLobbyGameOver" />
+        <item itemvalue="JUnit.CardTest" />
+        <item itemvalue="JUnit.WordBankTest" />
         <item itemvalue="Application.Server" />
       </list>
     </recent_temporary>
@@ -87,6 +148,8 @@
       <option name="presentableId" value="Default" />
       <updated>1749669321919</updated>
       <workItem from="1749669323248" duration="234000" />
+      <workItem from="1749824044652" duration="895000" />
+      <workItem from="1749887904123" duration="733000" />
     </task>
     <servers />
   </component>
