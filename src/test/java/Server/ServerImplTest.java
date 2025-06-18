@@ -67,5 +67,7 @@ public class ServerImplTest {
     public void testUnknownCommandDelegatesToGameProgress() {
         WebSocket testSocket = mock(WebSocket.class);
         server.onMessage(testSocket, "UNKNOWN_COMMAND");
+
+        verify(testSocket).send(contains("MESSAGE:Spiel wurde noch nicht gestartet."));
     }
 }

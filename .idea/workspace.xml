@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9c5ba5a8-e2df-4515-8b34-473b92a276e3" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_18_06_2025_15_29__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_18_06_2025_15_29__Changes_.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_18_06_2025_15_37__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Merge_at_18_06_2025_15_37__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Card/WordBank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Card/WordBank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/WordBankTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/WordBankTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/Server/ServerImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/ServerImplTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +46,8 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Server.executor": "Run",
+    "JUnit.ServerImplTest.executor": "Run",
+    "JUnit.ServerImplTest.testUnknownCommandDelegatesToGameProgress.executor": "Run",
     "JUnit.WordBankTest.executor": "Run",
     "JUnit.WordBankTest.testConstructorThrowsExceptionWhenXmlNotFound.executor": "Run",
     "JUnit.WordBankTest.testLoadWordsFromXMLThrowsExceptionForInvalidXML.executor": "Run",
@@ -66,21 +65,33 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.WordBankTest.testLoadWordsFromXML_Failure">
-    <configuration name="WordBankTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.ServerImplTest">
+    <configuration name="ServerImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodenamesServer" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="WordBankTest" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.ServerImplTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WordBankTest.testConstructorThrowsExceptionWhenXmlNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ServerImplTest.testUnknownCommandDelegatesToGameProgress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CodenamesServer" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="WordBankTest" />
-      <option name="METHOD_NAME" value="testConstructorThrowsExceptionWhenXmlNotFound" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="Server" />
+      <option name="MAIN_CLASS_NAME" value="Server.ServerImplTest" />
+      <option name="METHOD_NAME" value="testUnknownCommandDelegatesToGameProgress" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -118,11 +129,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ServerImplTest" />
+        <item itemvalue="JUnit.ServerImplTest.testUnknownCommandDelegatesToGameProgress" />
         <item itemvalue="JUnit.WordBankTest.testLoadWordsFromXML_Failure" />
         <item itemvalue="JUnit.WordBankTest.testLoadWordsFromXMLThrowsExceptionWhenFileNotFound" />
         <item itemvalue="JUnit.WordBankTest.testLoadWordsFromXMLThrowsExceptionForInvalidXML" />
-        <item itemvalue="JUnit.WordBankTest.testConstructorThrowsExceptionWhenXmlNotFound" />
-        <item itemvalue="JUnit.WordBankTest" />
       </list>
     </recent_temporary>
   </component>
