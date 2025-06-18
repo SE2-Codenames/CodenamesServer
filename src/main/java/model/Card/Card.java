@@ -30,4 +30,8 @@ public class Card {
     public String toString() {
         return word + " [" + cardRole + "]" + (revealed ? " (revealed)" : "");
     }
+
+    public void setCardRole (CardRole cardRole) {
+        this.cardRole = cardRole;
+    }
 }

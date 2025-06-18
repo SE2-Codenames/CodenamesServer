@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import model.Card.WordBank;
 import model.GameState;
 import model.Player.Player;
+import model.Player.TeamColor;
 import org.java_websocket.WebSocket;
 
 import java.util.*;
@@ -125,8 +126,29 @@ public class Gameprogress {
 
     private void handleExpose(WebSocket conn) {
         String data = communication.getExposeData();
-        LOGGER.info("EXPOSE verwendet: " + data);
-        conn.send("MESSAGE:Expose verwendet: " + data);
+
+        TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
+
+        boolean cardAdded = game.addTeamCard(targetTeam);
+        if (!cardAdded) {
+            LOGGER.info("No neutral cards left.");
+            conn.send("MESSAGE: No cards left.");
+
+            int[] score = game.getScore();
+            if (targetTeam == TeamColor.RED) {
+                score[0] = -1;
+            } else {
+                score[1] = -1;
+            }
+            game.setScore(score);
+        } else {
+            game.clearMarks();
+            game.endTurn();
+            conn.send("MESSAGE: Expose successful.");
+        }
+
+        game.checkScore();
+        broadcastGameState();
     }
 
     private void gameoverTurn() {

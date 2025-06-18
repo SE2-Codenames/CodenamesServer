@@ -41,9 +41,10 @@ public class Game {
     }
     //setter Methoden
     public void setGamestate(GameState state){this.state = state;}
+    public void setScore(int[] score){this.score = score;}
 
 
-    // creat Cardboard
+    // create Cardboard
     private List<Card> createBoard(List<String> randomWords) {
         List<Card> boardCards = new ArrayList<>();
 
@@ -178,7 +179,7 @@ public class Game {
     }
 
     // calculate the score and check Win state
-    private void checkScore() {
+    protected void checkScore() {
         int revealedRed = 0;
         int revealedBlue = 0;
 
@@ -215,7 +216,7 @@ public class Game {
         }
     }
 
-    private void endTurn() {
+    protected void endTurn() {
         if (state == GameState.OPERATIVE_TURN) {
             // Operative turn ends -> switch to other team's spymaster turn
             currentTurn = (currentTurn == TeamColor.RED) ? TeamColor.BLUE : TeamColor.RED;
@@ -249,6 +250,43 @@ public class Game {
 
     public void clearMarks() {
         Arrays.fill(markedCards, false);
+    }
+
+    public boolean checkExpose() {
+        String hint = currentClue.trim().toLowerCase();
+        for (Card card : board) {
+            String cardWord = card.getWord().toLowerCase();
+            if (cardWord.equals(hint) || cardWord.contains(hint) || hint.contains(cardWord)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean addTeamCard (TeamColor targetTeam) {
+        List<Integer> neutralCards = new ArrayList<>();
+        for (int i = 0; i < board.size(); i++) {
+            Card card = board.get(i);
+            if (card.getCardRole() == CardRole.NEUTRAL && !card.isRevealed()) {
+                neutralCards.add(i);
+            }
+        }
+
+        if (neutralCards.isEmpty()) {
+            return false;
+        }
+
+        SecureRandom random = new SecureRandom();
+        int randomIndex = neutralCards.get(random.nextInt(neutralCards.size()));
+        Card selectedCard = board.get(randomIndex);
+
+        if (targetTeam == TeamColor.RED) {
+            selectedCard.setCardRole(CardRole.RED);
+        } else {
+            selectedCard.setCardRole(CardRole.BLUE);
+        }
+
+        return true;
     }
 }
 
