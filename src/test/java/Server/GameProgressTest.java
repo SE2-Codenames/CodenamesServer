@@ -268,4 +268,86 @@ public class GameProgressTest {
 
         assertDoesNotThrow(() -> gameprogress.processMessage(socket, "HINT:apple"));
     }
+
+    @Test
+    public void testCardMarkedMarksCorrectCard() throws Exception {
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("MARK:5");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
+
+        gameprogress = new Gameprogress(sessions) {{
+            communication = comm;
+            game = mockGame;
+        }};
+
+        gameprogress.processMessage(socket, "MARK:5");
+        verify(mockGame).toggleMark(5);
+    }
+
+    @Test
+    public void testClearMarksClearsAll() throws Exception {
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("{\"clearMarks\":true}");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN); // <- wichtig!
+
+        gameprogress = new Gameprogress(sessions) {{
+            communication = comm;
+            game = mockGame;
+        }};
+
+        gameprogress.processMessage(socket, "{\"clearMarks\":true}");
+        verify(mockGame).clearMarks();
+    }
+
+    @Test
+    public void testStartGameAlreadyRunning() {
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
+
+        gameprogress = new Gameprogress(sessions);
+        gameprogress.game = mockGame;
+
+        gameprogress.processMessage(socket, "START_GAME");
+        verify(socket).send(contains("Das Spiel läuft bereits"));
+    }
+
+    @Test
+    public void testExposeWithNoNeutralCards() {
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("EXPOSE:hint");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.checkExpose()).thenReturn(false);
+        when(mockGame.getCurrentTeam()).thenReturn(TeamColor.RED);
+        when(mockGame.addTeamCard(any())).thenReturn(false);
+        when(mockGame.getScore()).thenReturn(new int[]{1, 1});
+
+        gameprogress = new Gameprogress(sessions) {{
+            communication = comm;
+            game = mockGame;
+        }};
+
+        gameprogress.processMessage(socket, "EXPOSE:hint");
+
+        verify(socket).send(contains("No cards left."));
+        verify(mockGame).setScore(any());
+    }
+
+    @Test
+    public void testUnknownInputHandled() {
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("UNKNOWN_COMMAND");
+
+        gameprogress = new Gameprogress(sessions) {{
+            communication = comm;
+            game = null;
+        }};
+
+        gameprogress.processMessage(socket, "UNKNOWN_COMMAND");
+        verify(socket).send(contains("Spiel wurde noch nicht gestartet"));
+    }
 }
