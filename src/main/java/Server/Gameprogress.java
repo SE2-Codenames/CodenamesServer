@@ -97,9 +97,9 @@ public class Gameprogress {
         }
 
         switch (game.getGamestate()) {
-            case LOBBY -> {
+            case LOBBY ->
                 conn.send("MESSAGE:Warte auf Spielstart.");
-            }
+
             case SPYMASTER_TURN -> {
                 if (communication.isHint()) {
                     spymasterTurn(conn);
@@ -121,9 +121,9 @@ public class Gameprogress {
                     conn.send("MESSAGE:Operatives sind am Zug.");
                 }
             }
-            case GAME_OVER -> {
+            case GAME_OVER ->
                 gameoverTurn();
-            }
+            
         }
     }
 
