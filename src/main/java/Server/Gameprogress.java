@@ -123,7 +123,7 @@ public class Gameprogress {
             }
             case GAME_OVER ->
                 gameoverTurn();
-            
+
         }
     }
 
@@ -140,13 +140,13 @@ public class Gameprogress {
         broadcastGameState();
     }
 
-    private void cardMarked(WebSocket conn) throws GameException {
+    private void cardMarked(WebSocket conn) {
         int marked = communication.getMarkedCard();
         game.toggleMark(marked);
         broadcastMarkedCards();
     }
 
-    private void clearMarked(WebSocket conn) throws GameException {
+    private void clearMarked(WebSocket conn) {
         game.clearMarks();
         broadcastMarkedCards();
     }
