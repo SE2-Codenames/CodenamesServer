@@ -49,8 +49,9 @@ class WordBankTest {
 
     @Test
     void testGetRandomWords_TooManyWords() {
+        int invalidCount = mockWords.size() + 1;  // Calculate problematic value first
         assertThrows(IllegalArgumentException.class,
-                () -> wordBank.getRandomWords(mockWords.size() + 1));
+                () -> wordBank.getRandomWords(invalidCount));  // Single throwing call
     }
 
     @Test
@@ -89,8 +90,8 @@ class WordBankTest {
 
     @Test
     void testConstructorLoadsWords() {
-        WordBank wordBank = new WordBank();
-        assertFalse(wordBank.getRandomWords(1).isEmpty());
+        WordBank bank = new WordBank();
+        assertFalse(bank.getRandomWords(1).isEmpty());
     }
 
     @Test
