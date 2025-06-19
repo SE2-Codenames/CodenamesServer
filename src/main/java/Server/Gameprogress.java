@@ -127,7 +127,7 @@ public class Gameprogress {
         }
     }
 
-    private void spymasterTurn(WebSocket conn) throws GameException {
+    private void spymasterTurn(WebSocket conn) {
         String[] clue = communication.getHint();
         game.getClue(clue);
 
