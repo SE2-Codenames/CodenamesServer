@@ -45,7 +45,7 @@ public class GameProgressTest {
     }
 
     @Test
-    void testSpymasterHint() throws Exception {
+    void testSpymasterHint(){
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestHint("apple", "2");
         comm.setTestInput("HINT:apple:2");
@@ -270,7 +270,7 @@ public class GameProgressTest {
     }
 
     @Test
-    void testCardMarkedMarksCorrectCard() throws Exception {
+    void testCardMarkedMarksCorrectCard(){
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("MARK:5");
 
@@ -287,7 +287,7 @@ public class GameProgressTest {
     }
 
     @Test
-    void testClearMarksClearsAll() throws Exception {
+    void testClearMarksClearsAll(){
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("{\"clearMarks\":true}");
 
