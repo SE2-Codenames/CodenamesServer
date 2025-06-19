@@ -58,7 +58,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mockGame;
+                setGame(mockGame);
             }
 
             @Override
@@ -84,7 +84,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mockGame;
+                setGame(mockGame);
             }
 
             @Override
@@ -104,7 +104,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = null;
+                setGame(null);
             }
         };
 
@@ -125,7 +125,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mockGame;
+                setGame(mockGame);
             }
         };
 
@@ -144,7 +144,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mockGame;
+                setGame(mockGame);
             }
         };
 
@@ -163,7 +163,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mockGame;
+                setGame(mockGame);
             }
 
             @Override
@@ -187,7 +187,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mockGame;
+                setGame(mockGame);
             }
 
             @Override
@@ -211,8 +211,8 @@ public class GameProgressTest {
 
         gameprogress.gameReset();
 
-        assertNotNull(gameprogress.game);
-        assertEquals(GameState.LOBBY, gameprogress.game.getGamestate());
+        assertNotNull(gameprogress.getGame());
+        assertEquals(GameState.LOBBY, gameprogress.getGame().getGamestate());
 
         verify(socket).send("RESET");
         verify(socket).send("RESET_BROADCAST");
@@ -231,7 +231,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = mockGame;
+                setGame(mockGame);
             }
 
             @Override
@@ -262,7 +262,7 @@ public class GameProgressTest {
         gameprogress = new Gameprogress(sessions) {
             {
                 this.communication = comm;
-                this.game = realGame;
+                setGame(realGame);
             }
         };
 
@@ -279,7 +279,7 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {{
             communication = comm;
-            game = mockGame;
+            setGame(mockGame);
         }};
 
         gameprogress.processMessage(socket, "MARK:5");
@@ -296,7 +296,7 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {{
             communication = comm;
-            game = mockGame;
+            setGame(mockGame);
         }};
 
         gameprogress.processMessage(socket, "{\"clearMarks\":true}");
@@ -309,7 +309,7 @@ public class GameProgressTest {
         when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
 
         gameprogress = new Gameprogress(sessions);
-        gameprogress.game = mockGame;
+        gameprogress.setGame(mockGame);
 
         gameprogress.processMessage(socket, "START_GAME");
         verify(socket).send(contains("Das Spiel läuft bereits"));
@@ -328,7 +328,7 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {{
             communication = comm;
-            game = mockGame;
+            setGame(mockGame);
         }};
 
         gameprogress.processMessage(socket, "EXPOSE:hint");
@@ -344,7 +344,7 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {{
             communication = comm;
-            game = null;
+            setGame(null);
         }};
 
         gameprogress.processMessage(socket, "UNKNOWN_COMMAND");
