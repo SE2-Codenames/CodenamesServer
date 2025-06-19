@@ -41,7 +41,7 @@ public class GameProgressTest {
         };
 
         gameprogress.processMessage(socket, "START_GAME");
-        verify(socket, atLeastOnce()).send(eq("SHOW_GAMEBOARD"));
+        verify(socket, atLeastOnce()).send("SHOW_GAMEBOARD");
     }
 
     @Test
