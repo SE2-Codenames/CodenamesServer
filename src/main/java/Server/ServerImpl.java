@@ -42,7 +42,7 @@ public class ServerImpl extends WebSocketServer {
         }
         broadcastPlayerList();
 
-       if (gameprogress.game != null && gameprogress.game.getGamestate() != GameState.LOBBY) {
+       if (gameprogress.getGame() != null && gameprogress.getGame().getGamestate() != GameState.LOBBY) {
             LOGGER.info(" Spieler verloren während aktivem Spiel. Setze Spiel zurück...");
             gameprogress.gameReset();
         }

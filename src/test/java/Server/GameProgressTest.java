@@ -20,7 +20,7 @@ public class GameProgressTest {
     private Map<WebSocket, Player> sessions;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         socket = mock(WebSocket.class);
         sessions = new HashMap<>();
         sessions.put(socket, new Player("Mihi"));
@@ -28,24 +28,24 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testStartGame() {
+    void testStartGame() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("START_GAME");
 
         gameprogress = new Gameprogress(sessions) {
             @Override
             public void processMessage(WebSocket c, String message) {
-                this.communication = comm;
+                setCommunication(comm);
                 super.processMessage(c, message);
             }
         };
 
         gameprogress.processMessage(socket, "START_GAME");
-        verify(socket, atLeastOnce()).send(eq("SHOW_GAMEBOARD"));
+        verify(socket, atLeastOnce()).send("SHOW_GAMEBOARD");
     }
 
     @Test
-    public void testSpymasterHint() throws Exception {
+    void testSpymasterHint(){
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestHint("apple", "2");
         comm.setTestInput("HINT:apple:2");
@@ -57,8 +57,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = mockGame;
+                setCommunication(comm);
+                setGame(mockGame);
             }
 
             @Override
@@ -71,7 +71,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testOperativeTurn() throws Exception {
+    void testOperativeTurn() throws Exception {
         TestCommunication comm = new TestCommunication(socket);
         comm.setSelectedCard(5);
         comm.setTestInput("SELECT:5");
@@ -83,8 +83,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = mockGame;
+                setCommunication(comm);
+                setGame(mockGame);
             }
 
             @Override
@@ -97,14 +97,14 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameNotStarted() {
+    void testGameNotStarted() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("SELECT:3");
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = null;
+                setCommunication(comm);
+                setGame(null);
             }
         };
 
@@ -113,7 +113,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameException() throws Exception {
+    void testGameException() throws Exception {
         TestCommunication comm = new TestCommunication(socket);
         comm.setSelectedCard(1);
         comm.setTestInput("SELECT:1");
@@ -124,8 +124,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = mockGame;
+                setCommunication(comm);
+                setGame(mockGame);
             }
         };
 
@@ -134,7 +134,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testBrokeException() {
+    void testBrokeException() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("BAD_INPUT");
 
@@ -143,8 +143,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = mockGame;
+                setCommunication(comm);
+                setGame(mockGame);
             }
         };
 
@@ -153,7 +153,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameLobbyGameOver() {
+    void testGameLobbyGameOver() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("IRRELEVANT");
 
@@ -162,8 +162,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = mockGame;
+                setCommunication(comm);
+                setGame(mockGame);
             }
 
             @Override
@@ -177,7 +177,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameStateGameOver() {
+    void testGameStateGameOver() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("IRRELEVANT");
 
@@ -186,8 +186,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = mockGame;
+                setCommunication(comm);
+                setGame(mockGame);
             }
 
             @Override
@@ -201,7 +201,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameReset() {
+    void testGameReset() {
         gameprogress = new Gameprogress(sessions) {
             @Override
             public void broadcastGameState() {
@@ -211,15 +211,15 @@ public class GameProgressTest {
 
         gameprogress.gameReset();
 
-        assertNotNull(gameprogress.game);
-        assertEquals(GameState.LOBBY, gameprogress.game.getGamestate());
+        assertNotNull(gameprogress.getGame());
+        assertEquals(GameState.LOBBY, gameprogress.getGame().getGamestate());
 
         verify(socket).send("RESET");
         verify(socket).send("RESET_BROADCAST");
     }
 
     @Test
-    public void testExposeCommand() {
+    void testExposeCommand() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("EXPOSE:apple");
 
@@ -230,8 +230,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = mockGame;
+                setCommunication(comm);
+                setGame(mockGame);
             }
 
             @Override
@@ -246,7 +246,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testInvalidHintFormatHandled() {
+    void testInvalidHintFormatHandled() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("HINT:apple");
 
@@ -261,8 +261,8 @@ public class GameProgressTest {
 
         gameprogress = new Gameprogress(sessions) {
             {
-                this.communication = comm;
-                this.game = realGame;
+                setCommunication(comm);
+                setGame(realGame);
             }
         };
 
@@ -270,7 +270,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testCardMarkedMarksCorrectCard() throws Exception {
+    void testCardMarkedMarksCorrectCard(){
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("MARK:5");
 
@@ -278,8 +278,8 @@ public class GameProgressTest {
         when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
 
         gameprogress = new Gameprogress(sessions) {{
-            communication = comm;
-            game = mockGame;
+            setCommunication(comm);
+            setGame(mockGame);
         }};
 
         gameprogress.processMessage(socket, "MARK:5");
@@ -287,7 +287,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testClearMarksClearsAll() throws Exception {
+    void testClearMarksClearsAll(){
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("{\"clearMarks\":true}");
 
@@ -295,8 +295,8 @@ public class GameProgressTest {
         when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN); // <- wichtig!
 
         gameprogress = new Gameprogress(sessions) {{
-            communication = comm;
-            game = mockGame;
+            setCommunication(comm);
+            setGame(mockGame);
         }};
 
         gameprogress.processMessage(socket, "{\"clearMarks\":true}");
@@ -304,19 +304,19 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testStartGameAlreadyRunning() {
+    void testStartGameAlreadyRunning() {
         Game mockGame = mock(Game.class);
         when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
 
         gameprogress = new Gameprogress(sessions);
-        gameprogress.game = mockGame;
+        gameprogress.setGame(mockGame);
 
         gameprogress.processMessage(socket, "START_GAME");
         verify(socket).send(contains("Das Spiel läuft bereits"));
     }
 
     @Test
-    public void testExposeWithNoNeutralCards() {
+    void testExposeWithNoNeutralCards() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("EXPOSE:hint");
 
@@ -327,8 +327,8 @@ public class GameProgressTest {
         when(mockGame.getScore()).thenReturn(new int[]{1, 1});
 
         gameprogress = new Gameprogress(sessions) {{
-            communication = comm;
-            game = mockGame;
+            setCommunication(comm);
+            setGame(mockGame);
         }};
 
         gameprogress.processMessage(socket, "EXPOSE:hint");
@@ -338,13 +338,13 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testUnknownInputHandled() {
+    void testUnknownInputHandled() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("UNKNOWN_COMMAND");
 
         gameprogress = new Gameprogress(sessions) {{
-            communication = comm;
-            game = null;
+            setCommunication(comm);
+            setGame(null);
         }};
 
         gameprogress.processMessage(socket, "UNKNOWN_COMMAND");
