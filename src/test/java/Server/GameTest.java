@@ -17,14 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class GameTest {
+class GameTest {
     private Game game;
     private WordBank words;
     private List<String> fixedWords;
 
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         fixedWords = new ArrayList<>();
         for(char i = 1; i<= 25; i++) {
             fixedWords.add("Word " + i);
@@ -35,12 +35,12 @@ public class GameTest {
     }
 
     @Test
-    public void testSize(){
+    void testSize(){
         assertEquals(25, game.getBoard().size());
     }
 
     @Test
-    public void testBoardWords(){
+    void testBoardWords(){
         List<Card> board = game.getBoard();
         for(Card card : board){
             assertTrue(fixedWords.contains(card.getWord()));
@@ -48,7 +48,7 @@ public class GameTest {
     }
 
     @Test
-    public void testAssassingCard() throws GameException {
+    void testAssassingCard() throws GameException {
         long card = game.getBoard().stream()
                 .filter(c ->c.getCardRole() == CardRole.ASSASSIN)
                 .count();
@@ -56,7 +56,7 @@ public class GameTest {
     }
 
     @Test
-    public void testRedBlueCards() {
+    void testRedBlueCards() {
         long red = game.getBoard().stream().filter(c -> c.getCardRole() == CardRole.RED).count();
         long blue = game.getBoard().stream().filter(c -> c.getCardRole() == CardRole.BLUE).count();
 
@@ -64,7 +64,7 @@ public class GameTest {
     }
 
     @Test
-    public void testRevealCard() throws GameException {
+    void testRevealCard() throws GameException {
         Card unrevealed = game.getBoard().stream().filter(c -> !c.isRevealed()).findFirst().orElseThrow();
         int index = game.getBoard().indexOf(unrevealed);
 
@@ -73,7 +73,7 @@ public class GameTest {
     }
 
     @Test
-    public void testGuessedRevealedCard() throws GameException {
+    void testGuessedRevealedCard() throws GameException {
         Card unrevealed = game.getBoard().stream().filter(c -> !c.isRevealed()).findFirst().orElseThrow();
         int index = game.getBoard().indexOf(unrevealed);
 
@@ -84,7 +84,7 @@ public class GameTest {
     }
 
     @Test
-    public void testRevealAssassin() throws GameException {
+    void testRevealAssassin() throws GameException {
 
         Card assassin = game.getBoard().stream()
                 .filter(c ->c.getCardRole() == CardRole.ASSASSIN)
@@ -96,7 +96,7 @@ public class GameTest {
     }
 
     @Test
-    public void testNeutral() throws GameException {
+    void testNeutral() throws GameException {
         Card neutral = game.getBoard().stream()
                 .filter(c -> c.getCardRole() == CardRole.NEUTRAL)
                 .findFirst().orElseThrow();
@@ -107,7 +107,7 @@ public class GameTest {
     }
 
     @Test
-    public void testScore() throws GameException {
+    void testScore() throws GameException {
         Card red = game.getBoard().stream()
                 .filter(c -> c.getCardRole() == CardRole.RED && !c.isRevealed())
                 .findFirst().orElseThrow();
@@ -116,19 +116,19 @@ public class GameTest {
     }
 
     @Test
-    public void testClue() {
+    void testClue() {
         game.getClue(new String[]{"Banana", "2"});
         assertEquals("Banana", game.getHint());
         assertEquals(2, game.getRemainingGuesses());
     }
 
     @Test
-    public void testClueIncorrect() {
+    void testClueIncorrect() {
         assertThrows(NumberFormatException.class, () -> game.getClue(new String[]{"Apfel", "mm"}));
     }
 
     @Test
-    public void testEndTurnManyGuesses() throws Exception {
+    void testEndTurnManyGuesses() throws Exception {
         game.getClue(new String[]{"Apple", "0"});
 
         Field field = Game.class.getDeclaredField("state");
@@ -149,7 +149,7 @@ public class GameTest {
     }
 
     @Test
-    public void testNotifyWin() throws Exception {
+    void testNotifyWin() throws Exception {
         List<Card> redCards = game.getBoard().stream()
                 .filter(c -> c.getCardRole() == CardRole.RED)
                 .toList();
@@ -168,7 +168,7 @@ public class GameTest {
     }
 
     @Test
-    public void testToggleMark() {
+    void testToggleMark() {
         // Anfangszustand
         boolean[] marked = game.getMarkedCards();
         assertFalse(marked[5]);
@@ -183,7 +183,7 @@ public class GameTest {
     }
 
     @Test
-    public void testToggleMarkOutOfBounds() {
+    void testToggleMarkOutOfBounds() {
         // Sollte keine Exception werfen
         game.toggleMark(-1);
         game.toggleMark(25);  // Index 25 ist außerhalb (0–24 erlaubt)
@@ -195,7 +195,7 @@ public class GameTest {
     }
 
     @Test
-    public void testClearMarks() {
+    void testClearMarks() {
         // Einige Karten markieren
         game.toggleMark(0);
         game.toggleMark(10);
@@ -214,14 +214,14 @@ public class GameTest {
     }
 
     @Test
-    public void testCheckExposeMatchesBoardWord() {
+    void testCheckExposeMatchesBoardWord() {
         String wordOnBoard = game.getBoard().get(0).getWord();
         game.getClue(new String[]{wordOnBoard, "1"});
         assertTrue(game.checkExpose());
     }
 
     @Test
-    public void testCheckExposeNoMatch() {
+    void testCheckExposeNoMatch() {
         game.getClue(new String[]{"NichtAufDemBrett", "1"});
         assertFalse(game.checkExpose());
     }
