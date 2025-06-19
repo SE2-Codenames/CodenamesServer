@@ -62,7 +62,7 @@ public class GameProgressTest {
             }
 
             @Override
-            public void broadcastGameState() {
+            public void broadcastGameState() { //only want to test if method gets called. Not send data
             }
         };
 
@@ -88,7 +88,7 @@ public class GameProgressTest {
             }
 
             @Override
-            public void broadcastGameState() {
+            public void broadcastGameState() { //only want to test if method gets called. Not send data
             }
         };
 
@@ -235,7 +235,7 @@ public class GameProgressTest {
             }
 
             @Override
-            public void broadcastGameState() {
+            public void broadcastGameState() { //only want to test if method gets called. Not send data
             }
         };
 
