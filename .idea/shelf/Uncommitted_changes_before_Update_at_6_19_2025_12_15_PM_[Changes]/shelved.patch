@@ -1,0 +1,227 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"6b152b2b-2d91-4389-afc4-ff76bd82ee16\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/Server/GameTest.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/test/java/Server/GameTest.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;EduardKlaus&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\">{\r\n  &quot;selectedUrlAndAccountId&quot;: {\r\n    &quot;url&quot;: &quot;https://github.com/SE2-Codenames/CodenamesServer.git&quot;,\r\n    &quot;accountId&quot;: &quot;10f0a170-924c-4672-a8b7-de6c993498e1&quot;\r\n  }\r\n}</component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;customColor&quot;: &quot;&quot;,\r\n  &quot;associatedIndex&quot;: 1\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2ygPdtSMDBVq2A6Bz83nkQIJxQH\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;JUnit.CardTest.constructorWithNullValues.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CardTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CardTest.setCardRoleTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.CommunicationTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.ConnectionTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.GameProgressTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.GameProgressTest.testCardMarkToggleMultipleTimes.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.GameProgressTest.testCardMarked.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.GameProgressTest.testExposeCommand.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.GameProgressTest.testGameLobbyGameOver.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.GameProgressTest.testInvalidHintFormatHandled.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.GameTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.PlayerTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.PlayerTest.testEqualsSameUsername.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.PlayerTest.testSetGetReady.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.ServerImplTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.TeamTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.TeamTest.testSetNegativeCardsRemaining.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.TeamTest.testToStringAfterWin.executor&quot;: &quot;Run&quot;,\r\n    &quot;JUnit.WordBankTest.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;Development&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\r\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\" selected=\"JUnit.ServerTest\">\r\n    <configuration name=\"GameProgressTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodenamesServer\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"Server.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"21\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"Server\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Server.GameProgressTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"GameProgressTest.testCardMarkToggleMultipleTimes\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodenamesServer\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"Server.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"Server\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Server.GameProgressTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"testCardMarkToggleMultipleTimes\" />\r\n      <option name=\"TEST_OBJECT\" value=\"method\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"GameTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodenamesServer\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"Server.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"21\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"Server\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Server.GameTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"ServerTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodenamesServer\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"Server.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <option name=\"PACKAGE_NAME\" value=\"Server\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"Server.ServerTest\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"WordBankTest\" type=\"JUnit\" factoryName=\"JUnit\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <module name=\"CodenamesServer\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"21\" />\r\n      <option name=\"PACKAGE_NAME\" value=\"\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"WordBankTest\" />\r\n      <option name=\"METHOD_NAME\" value=\"\" />\r\n      <option name=\"TEST_OBJECT\" value=\"class\" />\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <list>\r\n      <item itemvalue=\"JUnit.ServerTest\" />\r\n      <item itemvalue=\"JUnit.GameTest\" />\r\n      <item itemvalue=\"JUnit.GameProgressTest.testCardMarkToggleMultipleTimes\" />\r\n      <item itemvalue=\"JUnit.WordBankTest\" />\r\n      <item itemvalue=\"JUnit.GameProgressTest\" />\r\n    </list>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"JUnit.ServerTest\" />\r\n        <item itemvalue=\"JUnit.GameTest\" />\r\n        <item itemvalue=\"JUnit.WordBankTest\" />\r\n        <item itemvalue=\"JUnit.GameProgressTest\" />\r\n        <item itemvalue=\"JUnit.GameProgressTest.testCardMarkToggleMultipleTimes\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62\" />\r\n        <option value=\"bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"6b152b2b-2d91-4389-afc4-ff76bd82ee16\" name=\"Changes\" comment=\"\" />\r\n      <created>1750253334772</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1750253334772</updated>\r\n      <workItem from=\"1750253336082\" duration=\"455000\" />\r\n      <workItem from=\"1750253796956\" duration=\"5432000\" />\r\n      <workItem from=\"1750261553847\" duration=\"159000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,23 +4,21 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="6b152b2b-2d91-4389-afc4-ff76bd82ee16" name="Changes" comment="">
++    <list default="true" id="9c5ba5a8-e2df-4515-8b34-473b92a276e3" name="Changes" comment="">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/test/java/Server/GameTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/GameTest.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/test/java/Server/ServerImplTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/Server/ServerImplTest.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+-  <component name="FileTemplateManagerImpl">
+-    <option name="RECENT_TEMPLATES">
+-      <list>
+-        <option value="Class" />
+-      </list>
++  <component name="Git.Settings">
++    <option name="RECENT_BRANCH_BY_REPOSITORY">
++      <map>
++        <entry key="$PROJECT_DIR$" value="main" />
++      </map>
+     </option>
+-  </component>
+-  <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+   <component name="GitHubPullRequestSearchHistory">{
+@@ -39,35 +37,25 @@
+   &quot;customColor&quot;: &quot;&quot;,
+   &quot;associatedIndex&quot;: 1
+ }</component>
+-  <component name="ProjectId" id="2ygPdtSMDBVq2A6Bz83nkQIJxQH" />
++  <component name="ProjectId" id="2yNJuaTf1sJRF3UVmxuuR7gxUR9" />
++  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+   <component name="PropertiesComponent">{
+   &quot;keyToString&quot;: {
+-    &quot;JUnit.CardTest.constructorWithNullValues.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CardTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CardTest.setCardRoleTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.CommunicationTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.ConnectionTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.GameProgressTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.GameProgressTest.testCardMarkToggleMultipleTimes.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.GameProgressTest.testCardMarked.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.GameProgressTest.testExposeCommand.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.GameProgressTest.testGameLobbyGameOver.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.GameProgressTest.testInvalidHintFormatHandled.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.GameTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.PlayerTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.PlayerTest.testEqualsSameUsername.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.PlayerTest.testSetGetReady.executor&quot;: &quot;Run&quot;,
++    &quot;Application.Server.executor&quot;: &quot;Run&quot;,
+     &quot;JUnit.ServerImplTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.TeamTest.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.TeamTest.testSetNegativeCardsRemaining.executor&quot;: &quot;Run&quot;,
+-    &quot;JUnit.TeamTest.testToStringAfterWin.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.ServerImplTest.testUnknownCommandDelegatesToGameProgress.executor&quot;: &quot;Run&quot;,
+     &quot;JUnit.WordBankTest.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.WordBankTest.testConstructorThrowsExceptionWhenXmlNotFound.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.WordBankTest.testLoadWordsFromXMLThrowsExceptionForInvalidXML.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.WordBankTest.testLoadWordsFromXMLThrowsExceptionWhenFileNotFound.executor&quot;: &quot;Run&quot;,
++    &quot;JUnit.WordBankTest.testLoadWordsFromXML_Failure.executor&quot;: &quot;Run&quot;,
+     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;git-widget-placeholder&quot;: &quot;Development&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;Pablo-Sonar&quot;,
++    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+@@ -77,8 +65,9 @@
+     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+ }</component>
+-  <component name="RunManager" selected="JUnit.ServerTest">
+-    <configuration name="GameProgressTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++  <component name="RunManager" selected="Application.Server">
++    <configuration name="Server" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="Server.Server" />
+       <module name="CodenamesServer" />
+       <extension name="coverage">
+         <pattern>
+@@ -86,17 +75,11 @@
+           <option name="ENABLED" value="true" />
+         </pattern>
+       </extension>
+-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+-      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+-      <option name="PACKAGE_NAME" value="Server" />
+-      <option name="MAIN_CLASS_NAME" value="Server.GameProgressTest" />
+-      <option name="METHOD_NAME" value="" />
+-      <option name="TEST_OBJECT" value="class" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="GameProgressTest.testCardMarkToggleMultipleTimes" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++    <configuration name="ServerImplTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+       <module name="CodenamesServer" />
+       <extension name="coverage">
+         <pattern>
+@@ -105,14 +88,13 @@
+         </pattern>
+       </extension>
+       <option name="PACKAGE_NAME" value="Server" />
+-      <option name="MAIN_CLASS_NAME" value="Server.GameProgressTest" />
+-      <option name="METHOD_NAME" value="testCardMarkToggleMultipleTimes" />
+-      <option name="TEST_OBJECT" value="method" />
++      <option name="MAIN_CLASS_NAME" value="Server.ServerImplTest" />
++      <option name="TEST_OBJECT" value="class" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="GameTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++    <configuration name="ServerImplTest.testUnknownCommandDelegatesToGameProgress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+       <module name="CodenamesServer" />
+       <extension name="coverage">
+         <pattern>
+@@ -120,57 +102,41 @@
+           <option name="ENABLED" value="true" />
+         </pattern>
+       </extension>
+-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+-      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+       <option name="PACKAGE_NAME" value="Server" />
+-      <option name="MAIN_CLASS_NAME" value="Server.GameTest" />
+-      <option name="METHOD_NAME" value="" />
+-      <option name="TEST_OBJECT" value="class" />
++      <option name="MAIN_CLASS_NAME" value="Server.ServerImplTest" />
++      <option name="METHOD_NAME" value="testUnknownCommandDelegatesToGameProgress" />
++      <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="ServerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++    <configuration name="WordBankTest.testLoadWordsFromXMLThrowsExceptionWhenFileNotFound" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+       <module name="CodenamesServer" />
+-      <extension name="coverage">
+-        <pattern>
+-          <option name="PATTERN" value="Server.*" />
+-          <option name="ENABLED" value="true" />
+-        </pattern>
+-      </extension>
+-      <option name="PACKAGE_NAME" value="Server" />
+-      <option name="MAIN_CLASS_NAME" value="Server.ServerTest" />
+-      <option name="TEST_OBJECT" value="class" />
++      <option name="PACKAGE_NAME" value="" />
++      <option name="MAIN_CLASS_NAME" value="WordBankTest" />
++      <option name="METHOD_NAME" value="testLoadWordsFromXMLThrowsExceptionWhenFileNotFound" />
++      <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="WordBankTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
++    <configuration name="WordBankTest.testLoadWordsFromXML_Failure" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+       <module name="CodenamesServer" />
+-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+-      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+       <option name="PACKAGE_NAME" value="" />
+       <option name="MAIN_CLASS_NAME" value="WordBankTest" />
+-      <option name="METHOD_NAME" value="" />
+-      <option name="TEST_OBJECT" value="class" />
++      <option name="METHOD_NAME" value="testLoadWordsFromXML_Failure" />
++      <option name="TEST_OBJECT" value="method" />
+       <method v="2">
+         <option name="Make" enabled="true" />
+       </method>
+     </configuration>
+-    <list>
+-      <item itemvalue="JUnit.ServerTest" />
+-      <item itemvalue="JUnit.GameTest" />
+-      <item itemvalue="JUnit.GameProgressTest.testCardMarkToggleMultipleTimes" />
+-      <item itemvalue="JUnit.WordBankTest" />
+-      <item itemvalue="JUnit.GameProgressTest" />
+-    </list>
+     <recent_temporary>
+       <list>
+-        <item itemvalue="JUnit.ServerTest" />
+-        <item itemvalue="JUnit.GameTest" />
+-        <item itemvalue="JUnit.WordBankTest" />
+-        <item itemvalue="JUnit.GameProgressTest" />
+-        <item itemvalue="JUnit.GameProgressTest.testCardMarkToggleMultipleTimes" />
++        <item itemvalue="Application.Server" />
++        <item itemvalue="JUnit.ServerImplTest" />
++        <item itemvalue="JUnit.ServerImplTest.testUnknownCommandDelegatesToGameProgress" />
++        <item itemvalue="JUnit.WordBankTest.testLoadWordsFromXML_Failure" />
++        <item itemvalue="JUnit.WordBankTest.testLoadWordsFromXMLThrowsExceptionWhenFileNotFound" />
+       </list>
+     </recent_temporary>
+   </component>
+@@ -185,14 +151,12 @@
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+-      <changelist id="6b152b2b-2d91-4389-afc4-ff76bd82ee16" name="Changes" comment="" />
+-      <created>1750253334772</created>
++      <changelist id="9c5ba5a8-e2df-4515-8b34-473b92a276e3" name="Changes" comment="" />
++      <created>1749669321919</created>
+       <option name="number" value="Default" />
+       <option name="presentableId" value="Default" />
+-      <updated>1750253334772</updated>
+-      <workItem from="1750253336082" duration="455000" />
+-      <workItem from="1750253796956" duration="5432000" />
+-      <workItem from="1750261553847" duration="159000" />
++      <updated>1749669321919</updated>
++      <workItem from="1749669323248" duration="234000" />
+     </task>
+     <servers />
+   </component>

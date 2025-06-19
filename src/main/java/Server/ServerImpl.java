@@ -55,9 +55,9 @@ public class ServerImpl extends WebSocketServer {
         if (message.startsWith("USER:")) {
             String name = message.substring("USER:".length());
 
-            boolean name_taken = connections.values().stream()
+            boolean nameTaken = connections.values().stream()
                     .anyMatch(p -> p.getUsername().equalsIgnoreCase(name));
-            if (name_taken) {
+            if (nameTaken) {
                 LOGGER.info("USERNAME_TAKEN");
                 conn.send("USERNAME_TAKEN");
                 return;
