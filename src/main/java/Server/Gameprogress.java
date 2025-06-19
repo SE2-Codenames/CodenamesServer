@@ -102,20 +102,20 @@ public class Gameprogress {
 
             case SPYMASTER_TURN -> {
                 if (communication.isHint()) {
-                    spymasterTurn(conn);
+                    spymasterTurn();
                 } else {
                     conn.send("MESSAGE:Warte auf Hinweis des Spymasters.");
                 }
             }
             case OPERATIVE_TURN -> {
                 if (communication.isCardSelection()) {
-                    operativeTurn(conn);
+                    operativeTurn();
                 }
                 else if (communication.isCardMarked()) {
-                    cardMarked(conn);
+                    cardMarked();
                 }
                 else if (communication.clearMarksRequested()){
-                    clearMarked(conn);
+                    clearMarked();
                 }
                 else {
                     conn.send("MESSAGE:Operatives sind am Zug.");
@@ -127,7 +127,7 @@ public class Gameprogress {
         }
     }
 
-    private void spymasterTurn(WebSocket conn) {
+    private void spymasterTurn() {
         String[] clue = communication.getHint();
         game.getClue(clue);
 
@@ -140,18 +140,18 @@ public class Gameprogress {
         broadcastGameState();
     }
 
-    private void cardMarked(WebSocket conn) {
+    private void cardMarked() {
         int marked = communication.getMarkedCard();
         game.toggleMark(marked);
         broadcastMarkedCards();
     }
 
-    private void clearMarked(WebSocket conn) {
+    private void clearMarked() {
         game.clearMarks();
         broadcastMarkedCards();
     }
 
-    private void operativeTurn(WebSocket conn) throws GameException {
+    private void operativeTurn() throws GameException {
         int guess = communication.getSelectedCard();
         game.guessCard(guess);
 
