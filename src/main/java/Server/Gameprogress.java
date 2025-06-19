@@ -19,14 +19,23 @@ public class Gameprogress {
     public final Map<WebSocket, Player> sessions;
     private final Gson gson = new Gson();
     private Game game;
-    public Communication communication;
+    private Communication communication;
 
+    //Getter-Setters
     public Game getGame() {
         return game;
     }
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public Communication getCommunication() {
+        return communication;
+    }
+
+    public void setCommunication(Communication communication) {
+        this.communication = communication;
     }
 
     public Gameprogress(Map<WebSocket, Player> sessions) {
