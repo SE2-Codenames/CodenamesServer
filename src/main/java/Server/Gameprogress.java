@@ -165,7 +165,6 @@ public class Gameprogress {
     }
 
     private void handleExpose(WebSocket conn) {
-        String data = communication.getExposeData();
 
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
 
