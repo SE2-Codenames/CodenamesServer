@@ -18,8 +18,25 @@ public class Gameprogress {
 
     public final Map<WebSocket, Player> sessions;
     private final Gson gson = new Gson();
-    public Game game;
-    public Communication communication;
+    private Game game;
+    private Communication communication;
+
+    //Getter-Setters
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Communication getCommunication() {
+        return communication;
+    }
+
+    public void setCommunication(Communication communication) {
+        this.communication = communication;
+    }
 
     public Gameprogress(Map<WebSocket, Player> sessions) {
         this.sessions = sessions;
@@ -80,9 +97,9 @@ public class Gameprogress {
         }
 
         switch (game.getGamestate()) {
-            case LOBBY -> {
+            case LOBBY ->
                 conn.send("MESSAGE:Warte auf Spielstart.");
-            }
+
             case SPYMASTER_TURN -> {
                 if (communication.isHint()) {
                     spymasterTurn(conn);
@@ -104,13 +121,13 @@ public class Gameprogress {
                     conn.send("MESSAGE:Operatives sind am Zug.");
                 }
             }
-            case GAME_OVER -> {
+            case GAME_OVER ->
                 gameoverTurn();
-            }
+
         }
     }
 
-    private void spymasterTurn(WebSocket conn) throws GameException {
+    private void spymasterTurn(WebSocket conn) {
         String[] clue = communication.getHint();
         game.getClue(clue);
 
@@ -123,13 +140,13 @@ public class Gameprogress {
         broadcastGameState();
     }
 
-    private void cardMarked(WebSocket conn) throws GameException {
+    private void cardMarked(WebSocket conn) {
         int marked = communication.getMarkedCard();
         game.toggleMark(marked);
         broadcastMarkedCards();
     }
 
-    private void clearMarked(WebSocket conn) throws GameException {
+    private void clearMarked(WebSocket conn) {
         game.clearMarks();
         broadcastMarkedCards();
     }
@@ -148,7 +165,6 @@ public class Gameprogress {
     }
 
     private void handleExpose(WebSocket conn) {
-        String data = communication.getExposeData();
 
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
 

@@ -1,4 +1,5 @@
-import model.Card.WordBank;
+package model.Card;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +12,13 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WordBankTest {
+class WordBankTest {
 
     private WordBank wordBank;
     private List<String> mockWords;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Setup mock word list
         mockWords = List.of("apple", "banana", "cherry", "date", "elderberry");
         wordBank = new WordBank();
@@ -27,7 +28,7 @@ public class WordBankTest {
     }
 
     @Test
-    public void testGetRandomWords_NormalCase() {
+    void testGetRandomWords_NormalCase() {
         List<String> result = wordBank.getRandomWords(3);
 
         assertEquals(3, result.size());
@@ -37,7 +38,7 @@ public class WordBankTest {
     }
 
     @Test
-    public void testGetRandomWords_AllWords() {
+    void testGetRandomWords_AllWords() {
         List<String> result = wordBank.getRandomWords(mockWords.size());
 
         assertEquals(mockWords.size(), result.size());
@@ -47,19 +48,19 @@ public class WordBankTest {
     }
 
     @Test
-    public void testGetRandomWords_TooManyWords() {
+    void testGetRandomWords_TooManyWords() {
         assertThrows(IllegalArgumentException.class,
                 () -> wordBank.getRandomWords(mockWords.size() + 1));
     }
 
     @Test
-    public void testGetRandomWords_ZeroWords() {
+    void testGetRandomWords_ZeroWords() {
         List<String> result = wordBank.getRandomWords(0);
         assertTrue(result.isEmpty());
     }
 
     @Test
-    public void testGetRandomWords_Shuffled() {
+    void testGetRandomWords_Shuffled() {
         // Run multiple times to verify randomness
         Set<List<String>> results = new HashSet<>();
         for (int i = 0; i < 10; i++) {
@@ -87,13 +88,13 @@ public class WordBankTest {
     }
 
     @Test
-    public void testConstructorLoadsWords() {
+    void testConstructorLoadsWords() {
         WordBank wordBank = new WordBank();
         assertFalse(wordBank.getRandomWords(1).isEmpty());
     }
 
     @Test
-    public void testLoadWordsFromXML_Failure() {
+    void testLoadWordsFromXML_Failure() {
         //Rename XML file temporarily to make it "unavailable"
         File originalFile = new File("wordBank.xml");
         File tempFile = new File("wordBank.xml.bak");

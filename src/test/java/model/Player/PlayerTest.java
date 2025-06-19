@@ -10,20 +10,20 @@ public class PlayerTest {
     private Player player2;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         player1 = new Player("Mihi");
         player2 = new Player("Edi");
     }
 
     @Test
-    public void testConstructor() {
+    void testConstructor() {
         assertEquals("Mihi", player1.getUsername());
         assertNull(player1.getTeamColor());
         assertFalse(player1.getSpymaster());
     }
 
     @Test
-    public void testSetGetSpymaster() {
+    void testSetGetSpymaster() {
         player1.setSpymaster(true);
         assertTrue(player1.getSpymaster());
         player2.setSpymaster(false);
@@ -31,7 +31,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void testSetGetColor() {
+    void testSetGetColor() {
         player1.setTeamColor(TeamColor.RED);
         assertEquals(TeamColor.RED, player1.getTeamColor());
         player2.setTeamColor(TeamColor.BLUE);
@@ -39,32 +39,32 @@ public class PlayerTest {
     }
 
     @Test
-    public void testToInfoString() {
+    void testToInfoString() {
         player1.setTeamColor(TeamColor.RED);
         player1.setSpymaster(true);
         assertEquals("Mihi,RED,true", player1.toInfoString());
     }
 
     @Test
-    public void testToInfoStringNoTeamColor() {
+    void testToInfoStringNoTeamColor() {
         player1.setSpymaster(true);
         assertEquals("Mihi,,true", player1.toInfoString());
     }
 
 
     @Test
-    public void testRandomName() {
+    void testRandomName() {
         Player random = new Player("Pablo");
         assertNotEquals(random, player1);
     }
 
     @Test
-    public void testEqualsNull() {
+    void testEqualsNull() {
         assertNotEquals(null, player1);
     }
 
     @Test
-    public void testSetGetReady() {
+    void testSetGetReady() {
         assertFalse(player1.isReady()); // initial false
         player1.setReady(true);
         assertTrue(player1.isReady());
