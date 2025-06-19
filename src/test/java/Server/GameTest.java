@@ -48,7 +48,7 @@ class GameTest {
     }
 
     @Test
-    void testAssassingCard() throws GameException {
+    void testAssassingCard(){
         long card = game.getBoard().stream()
                 .filter(c ->c.getCardRole() == CardRole.ASSASSIN)
                 .count();
