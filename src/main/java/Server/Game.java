@@ -131,14 +131,11 @@ public class Game {
     }
 
     private void handleTeamCardReveal(Card card) {
-        int team;
         CardRole colour;
         if (currentTurn == TeamColor.RED) {
-            team = 0;
             colour = CardRole.RED;
         }
         else{
-            team = 1;
             colour = CardRole.BLUE;
         }
         checkScore();
