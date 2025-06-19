@@ -20,7 +20,7 @@ public class GameProgressTest {
     private Map<WebSocket, Player> sessions;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         socket = mock(WebSocket.class);
         sessions = new HashMap<>();
         sessions.put(socket, new Player("Mihi"));
@@ -28,7 +28,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testStartGame() {
+    void testStartGame() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("START_GAME");
 
@@ -45,7 +45,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testSpymasterHint() throws Exception {
+    void testSpymasterHint() throws Exception {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestHint("apple", "2");
         comm.setTestInput("HINT:apple:2");
@@ -71,7 +71,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testOperativeTurn() throws Exception {
+    void testOperativeTurn() throws Exception {
         TestCommunication comm = new TestCommunication(socket);
         comm.setSelectedCard(5);
         comm.setTestInput("SELECT:5");
@@ -97,7 +97,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameNotStarted() {
+    void testGameNotStarted() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("SELECT:3");
 
@@ -113,7 +113,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameException() throws Exception {
+    void testGameException() throws Exception {
         TestCommunication comm = new TestCommunication(socket);
         comm.setSelectedCard(1);
         comm.setTestInput("SELECT:1");
@@ -134,7 +134,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testBrokeException() {
+    void testBrokeException() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("BAD_INPUT");
 
@@ -153,7 +153,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameLobbyGameOver() {
+    void testGameLobbyGameOver() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("IRRELEVANT");
 
@@ -177,7 +177,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameStateGameOver() {
+    void testGameStateGameOver() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("IRRELEVANT");
 
@@ -201,7 +201,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testGameReset() {
+    void testGameReset() {
         gameprogress = new Gameprogress(sessions) {
             @Override
             public void broadcastGameState() {
@@ -219,7 +219,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testExposeCommand() {
+    void testExposeCommand() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("EXPOSE:apple");
 
@@ -246,7 +246,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testInvalidHintFormatHandled() {
+    void testInvalidHintFormatHandled() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("HINT:apple");
 
@@ -270,7 +270,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testCardMarkedMarksCorrectCard() throws Exception {
+    void testCardMarkedMarksCorrectCard() throws Exception {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("MARK:5");
 
@@ -287,7 +287,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testClearMarksClearsAll() throws Exception {
+    void testClearMarksClearsAll() throws Exception {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("{\"clearMarks\":true}");
 
@@ -304,7 +304,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testStartGameAlreadyRunning() {
+    void testStartGameAlreadyRunning() {
         Game mockGame = mock(Game.class);
         when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
 
@@ -316,7 +316,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testExposeWithNoNeutralCards() {
+    void testExposeWithNoNeutralCards() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("EXPOSE:hint");
 
@@ -338,7 +338,7 @@ public class GameProgressTest {
     }
 
     @Test
-    public void testUnknownInputHandled() {
+    void testUnknownInputHandled() {
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("UNKNOWN_COMMAND");
 

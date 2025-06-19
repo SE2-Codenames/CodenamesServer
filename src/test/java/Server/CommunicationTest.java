@@ -19,7 +19,7 @@ public class CommunicationTest {
     private Communication comm;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         mockSocket = mock(WebSocket.class);
         comm = new Communication(mockSocket);
     }
@@ -27,31 +27,31 @@ public class CommunicationTest {
     // ===== Eingehende Nachrichten =====
 
     @Test
-    public void testIsGameStartRequested() {
+    void testIsGameStartRequested() {
         comm.setInput("START_GAME");
         assertTrue(comm.isGameStartRequested());
     }
 
     @Test
-    public void testIsHint() {
+    void testIsHint() {
         comm.setInput("HINT:apple:3");
         assertTrue(comm.isHint());
     }
 
     @Test
-    public void testIsCardSelection() {
+    void testIsCardSelection() {
         comm.setInput("SELECT:5");
         assertTrue(comm.isCardSelection());
     }
 
     @Test
-    public void testIsCardMarked() {
+    void testIsCardMarked() {
         comm.setInput("MARK:12");
         assertTrue(comm.isCardMarked());
     }
 
     @Test
-    public void testIsExposeCommand() {
+    void testIsExposeCommand() {
         comm.setInput("EXPOSE:banana");
         assertTrue(comm.isExposeCommand());
     }
@@ -59,7 +59,7 @@ public class CommunicationTest {
     // ===== Nachrichtenwerte auslesen =====
 
     @Test
-    public void testGetHintValid() {
+    void testGetHintValid() {
         comm.setInput("HINT:fruit:2");
         String[] result = comm.getHint();
         assertEquals("fruit", result[0]);
@@ -67,7 +67,7 @@ public class CommunicationTest {
     }
 
     @Test
-    public void testGetHintInvalidFormat() {
+    void testGetHintInvalidFormat() {
         comm.setInput("HINT:invalid");
         String[] result = comm.getHint();
         assertEquals("", result[0]);
@@ -75,43 +75,43 @@ public class CommunicationTest {
     }
 
     @Test
-    public void testGetSelectedCardValid() {
+    void testGetSelectedCardValid() {
         comm.setInput("SELECT:7");
         assertEquals(7, comm.getSelectedCard());
     }
 
     @Test
-    public void testGetSelectedCardInvalid() {
+    void testGetSelectedCardInvalid() {
         comm.setInput("SELECT:abc");
         assertEquals(-1, comm.getSelectedCard());
     }
 
     @Test
-    public void testGetMarkedCardValid() {
+    void testGetMarkedCardValid() {
         comm.setInput("MARK:14");
         assertEquals(14, comm.getMarkedCard());
     }
 
     @Test
-    public void testGetMarkedCardInvalid() {
+    void testGetMarkedCardInvalid() {
         comm.setInput("MARK:invalid");
         assertEquals(-1, comm.getMarkedCard());
     }
 
     @Test
-    public void testGetExposeData() {
+    void testGetExposeData() {
         comm.setInput("EXPOSE:cheat");
         assertEquals("cheat", comm.getExposeData());
     }
 
     @Test
-    public void testClearMarksRequestedTrue() {
+    void testClearMarksRequestedTrue() {
         comm.setInput("{\"clearMarks\":true}");
         assertTrue(comm.clearMarksRequested());
     }
 
     @Test
-    public void testClearMarksRequestedFalse() {
+    void testClearMarksRequestedFalse() {
         comm.setInput("randomInput");
         assertFalse(comm.clearMarksRequested());
     }
@@ -119,7 +119,7 @@ public class CommunicationTest {
     // ===== Sendemethoden =====
 
     @Test
-    public void testSendGameState() {
+    void testSendGameState() {
         Card card = new Card("Tree", CardRole.NEUTRAL);
         comm.sendGameState(GameState.OPERATIVE_TURN, TeamColor.RED, List.of(card), new int[]{3, 4}, "nature");
 
@@ -127,7 +127,7 @@ public class CommunicationTest {
     }
 
     @Test
-    public void testSendMarked() {
+    void testSendMarked() {
         boolean[] marked = new boolean[25];
         marked[2] = true;
         comm.sendMarked(marked);
@@ -136,26 +136,26 @@ public class CommunicationTest {
     }
 
     @Test
-    public void testSendHint() {
+    void testSendHint() {
         comm.sendHint("apple", 3);
         verify(mockSocket).send(contains("hint"));
     }
 
     @Test
-    public void testSendCard() {
+    void testSendCard() {
         Card card = new Card("River", CardRole.BLUE);
         comm.sendCard(card);
         verify(mockSocket).send(contains("card"));
     }
 
     @Test
-    public void testSendExpose() {
+    void testSendExpose() {
         comm.sendExpose("cheat activated");
         verify(mockSocket).send(contains("cheat activated"));
     }
 
     @Test
-    public void testSendWin() {
+    void testSendWin() {
         comm.sendWin("Team RED wins!", TeamColor.RED, 9);
         verify(mockSocket).send(contains("win"));
         verify(mockSocket).send(contains("Team RED wins!"));
