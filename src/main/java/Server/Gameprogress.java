@@ -58,6 +58,7 @@ public class Gameprogress {
                 return;
             }
             if (communication.isExposeCommand()) {
+                LOGGER.info("ExposeFunktion Start");
                 handleExpose(conn);
                 return;
             }
@@ -168,11 +169,11 @@ public class Gameprogress {
     private void handleExpose(WebSocket conn) {
 
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
-
+        LOGGER.info("Target team: " + targetTeam);
         boolean cardAdded = game.addTeamCard(targetTeam);
         if (!cardAdded) {
             LOGGER.info("No neutral cards left.");
-            conn.send("MESSAGE: No cards left.");
+            conn.send("MESSAGE:No cards left.");
 
             int[] score = game.getScore();
             if (targetTeam == TeamColor.RED) {
@@ -182,11 +183,12 @@ public class Gameprogress {
             }
             game.setScore(score);
         } else {
-            game.clearMarks();
-            game.endTurn();
-            conn.send("MESSAGE: Expose successful.");
+            if (targetTeam == game.getCurrentTeam()) {
+                game.clearMarks();
+                game.endTurn();
+            }
         }
-
+        conn.send("MESSAGE: Expose successful.");
         game.checkScore();
         broadcastGameState();
     }
