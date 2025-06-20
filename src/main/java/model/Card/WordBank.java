@@ -34,7 +34,7 @@ public class WordBank {
             }
             return words;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load wordBank XML", e);
+            throw new IllegalArgumentException("Failed to load wordBank XML", e);
         }
     }
 
