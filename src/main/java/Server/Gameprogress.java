@@ -162,6 +162,7 @@ public class Gameprogress {
         }
 
         broadcastGameState();
+        broadcastMarkedCards();
     }
 
     private void handleExpose(WebSocket conn) {
