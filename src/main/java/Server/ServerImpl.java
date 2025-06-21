@@ -99,31 +99,43 @@ public class ServerImpl extends WebSocketServer {
                 broadcastPlayerList();
             }
         } else if (message.startsWith(SPYMASTER_TOGGLE)) {
-            String name = message.substring(SPYMASTER_TOGGLE.length());
+            String name = message.substring(SPYMASTER_TOGGLE.length() + 1);
             Player player = connections.get(conn);
+
             if (player != null && player.getUsername().equals(name)) {
                 if (player.getTeamColor() == null) {
                     conn.send("MESSAGE:Bitte erst einem Team beitreten.");
                     return;
                 }
-                // Nur einer pro Team
-                for (Map.Entry<WebSocket, Player> entry : connections.entrySet()) {
-                    Player p = entry.getValue();
-                    if (!entry.getKey().equals(conn) && p.getTeamColor() == player.getTeamColor() && p.getSpymaster()) {
-                        p.setSpymaster(false);
-                        entry.getKey().send(SPYMASTER_TOGGLE + p.getUsername() + ":false");
+
+                Player existingSpymaster = null;
+                for (Player p : connections.values()) {
+                    if (!p.getUsername().equals(name)
+                            && p.getTeamColor() == player.getTeamColor()
+                            && p.getSpymaster()) {
+                        existingSpymaster = p;
+                        break;
                     }
                 }
+
+                if (existingSpymaster != null && !player.getSpymaster()) {
+                    conn.send("MESSAGE:Es gibt bereits einen Spymaster in deinem Team.");
+                    return;
+                }
+
                 boolean newState = !player.getSpymaster();
                 player.setSpymaster(newState);
-                conn.send(SPYMASTER_TOGGLE + player.getUsername() + ":" + newState);
-                LOGGER.info(String.format(player.getUsername() + (newState ? " ist jetzt Spymaster." : " ist kein Spymaster mehr.")));
+
+                conn.send(SPYMASTER_TOGGLE + ":" + player.getUsername() + ":" + newState);
+                LOGGER.info(player.getUsername() + (newState ? " ist jetzt Spymaster." : " ist kein Spymaster mehr."));
+
                 broadcastPlayerList();
             } else {
                 conn.send("MESSAGE:Spieler nicht gefunden oder nicht zugeordnet.");
             }
+        }
 
-        } else {
+        else {
             gameprogress.processMessage(conn, message);
         }
     }
@@ -140,13 +152,19 @@ public class ServerImpl extends WebSocketServer {
 
     private void broadcastPlayerList() {
         StringBuilder sb = new StringBuilder("PLAYERS:");
+
         for (Player player : connections.values()) {
+            LOGGER.info("Spieler: " + player.getUsername() +
+                    ", Team=" + player.getTeamColor() +
+                    ", Spymaster=" + player.getSpymaster() +
+                    ", Ready=" + player.isReady());
+
             sb.append(player.getUsername()).append(",")
                     .append(player.getTeamColor() != null ? player.getTeamColor().name() : "").append(",")
                     .append(player.getSpymaster()).append(",")
                     .append(player.isReady()).append(";");
-
         }
+
         String msg = sb.toString();
         LOGGER.info(String.format("Sende Spielerliste: " + msg));
         for (WebSocket conn : connections.keySet()) {
