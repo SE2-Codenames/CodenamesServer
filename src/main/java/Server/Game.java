@@ -17,6 +17,8 @@ public class Game {
     private boolean[] markedCards = new boolean[25];
     // für die Cheatfunktion nötig
     private String currentClue;
+    private int revealedRed;
+    private int revealedBlue;
 
 
     public Game(WordBank wordBank) {
@@ -149,7 +151,7 @@ public class Game {
     }
 
     // calculate the score and check Win state
-    protected void checkScore() {
+    /*protected void checkScore() {
         int revealedRed = 0;
         int revealedBlue = 0;
 
@@ -176,6 +178,53 @@ public class Game {
 
             if(revealedRed == 0 || revealedBlue == 0){
                 notifyWin();
+            }
+        }
+    }
+     */
+
+    protected void checkScore() {
+        if (isGameOver()) {
+            notifyGameOver();
+            return;
+        }
+        resetScore();
+        countUnrevealedCards();
+
+        if (revealedRed == 0 || revealedBlue == 0) {
+            notifyWin();
+        }
+    }
+
+    private boolean isGameOver() {
+        return score[0] == -1 || score[1] == -1;
+    }
+
+    private void resetScore() {
+        score[0] = 0;
+        score[1] = 0;
+        revealedRed = 0;
+        revealedBlue = 0;
+    }
+
+    private void countUnrevealedCards() {
+        for (int i = 0; i < 25; i++) {
+            if (!board.get(i).isRevealed()) {
+                CardRole role = board.get(i).getCardRole();
+                updateScores(role);
+            }
+        }
+    }
+
+    private void updateScores(CardRole role) {
+        switch (role) {
+            case RED -> {
+                revealedRed++;
+                score[0]++;
+            }
+            case BLUE -> {
+                revealedBlue++;
+                score[1]++;
             }
         }
     }
