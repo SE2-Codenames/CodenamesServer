@@ -154,7 +154,9 @@ public class ServerImpl extends WebSocketServer {
 
         }
         String msg = sb.toString();
-        LOGGER.info(String.format("Sende Spielerliste: " + msg));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Sende Spielerliste: " + msg);
+        }
         for (WebSocket conn : connections.keySet()) {
             conn.send(msg);
         }
