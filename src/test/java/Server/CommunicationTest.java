@@ -132,7 +132,7 @@ public class CommunicationTest {
         marked[2] = true;
         comm.sendMarked(marked);
 
-        verify(mockSocket).send(startsWith("MARKED:"));
+        verify(mockSocket).send(startsWith("MARK:"));
     }
 
     @Test
@@ -160,4 +160,37 @@ public class CommunicationTest {
         verify(mockSocket).send(contains("win"));
         verify(mockSocket).send(contains("Team RED wins!"));
     }
+
+    @Test
+    void testIsSkippedTurn() {
+        comm.setInput("SKIP_TURN");
+        assertTrue(comm.isSkippedTurn());
+    }
+
+    @Test
+    void testSendMessage() {
+        comm.sendMessage("Testnachricht");
+        verify(mockSocket).send(contains("Testnachricht"));
+        verify(mockSocket).send(contains("\"type\":\"message\""));
+    }
+
+    @Test
+    void testGetHintEmpty() {
+        comm.setInput("");
+        String[] result = comm.getHint();
+        assertEquals("", result[0]);
+        assertEquals("0", result[1]);
+    }
+
+    @Test
+    void testNullInputHandling() {
+        comm.setInput(null);
+        assertFalse(comm.isGameStartRequested());
+        assertFalse(comm.isHint());
+        assertFalse(comm.isCardSelection());
+        assertFalse(comm.isCardMarked());
+        assertFalse(comm.isExposeCommand());
+        assertFalse(comm.isSkippedTurn());
+    }
+
 }

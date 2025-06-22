@@ -350,4 +350,85 @@ public class GameProgressTest {
         gameprogress.processMessage(socket, "UNKNOWN_COMMAND");
         verify(socket).send(contains("Spiel wurde noch nicht gestartet"));
     }
+
+    @Test
+    void testSkipTurnChangesState() {
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("SKIP_TURN");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
+
+        gameprogress = new Gameprogress(sessions) {{
+            setCommunication(comm);
+            setGame(mockGame);
+        }};
+
+        gameprogress.processMessage(socket, "SKIP_TURN");
+
+        verify(mockGame).endTurn();
+        verify(mockGame).clearMarks();
+        verify(socket).send(contains("Turn skipped"));
+    }
+
+    @Test
+    void testSkipTurnIgnoredIfNotOperativeTurn() {
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("SKIP_TURN");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.SPYMASTER_TURN); // falscher Zustand
+
+        gameprogress = new Gameprogress(sessions) {{
+            setCommunication(comm);
+            setGame(mockGame);
+        }};
+
+        gameprogress.processMessage(socket, "SKIP_TURN");
+
+        verify(mockGame, never()).endTurn();
+        verify(socket).send(contains("Warte auf Hinweis des Spymasters"));
+    }
+
+    @Test
+    void testSkipTurnInGameOverIgnored() {
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("SKIP_TURN");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.GAME_OVER);
+
+        gameprogress = new Gameprogress(sessions) {{
+            setCommunication(comm);
+            setGame(mockGame);
+        }};
+
+        gameprogress.processMessage(socket, "SKIP_TURN");
+
+        verify(mockGame, never()).endTurn();
+        verify(socket).send(contains("GAME_OVER"));
+    }
+
+    @Test
+    void testAllPlayersNotifiedOnSkip() {
+        WebSocket socket2 = mock(WebSocket.class);
+        sessions.put(socket2, new Player("Tester"));
+
+        TestCommunication comm = new TestCommunication(socket);
+        comm.setTestInput("SKIP_TURN");
+
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
+
+        gameprogress = new Gameprogress(sessions) {{
+            setCommunication(comm);
+            setGame(mockGame);
+        }};
+
+        gameprogress.processMessage(socket, "SKIP_TURN");
+
+        verify(socket).send(contains("Turn skipped"));
+        verify(socket2).send(contains("Turn skipped"));
+    }
+
 }
