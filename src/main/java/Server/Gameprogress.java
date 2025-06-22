@@ -167,6 +167,10 @@ public class Gameprogress {
 
         broadcastGameState();
         broadcastMarkedCards();
+
+        if(game.getGamestate()==GameState.GAME_OVER){
+            gameoverTurn();
+        }
     }
 
     private void skippTurn() {
@@ -183,13 +187,12 @@ public class Gameprogress {
     }
 
     private void handleExpose(WebSocket conn) {
-
+        String message;
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
         LOGGER.info("Target team: " + targetTeam);
         boolean cardAdded = game.addTeamCard(targetTeam);
         if (!cardAdded) {
             LOGGER.info("No neutral cards left.");
-            conn.send("MESSAGE:No cards left.");
 
             int[] score = game.getScore();
             if (targetTeam == TeamColor.RED) {
@@ -198,13 +201,22 @@ public class Gameprogress {
                 score[1] = -1;
             }
             game.setScore(score);
+
+            message = "No cards left";
+
         } else {
             if (targetTeam == game.getCurrentTeam()) {
                 game.clearMarks();
                 game.endTurn();
+                message = "Opponent used a forbidden word";
+            }else{
+                message = "No forbidden word detected";
             }
         }
-        conn.send("MESSAGE: Expose successful.");
+        for (WebSocket session : sessions.keySet()) {
+            Communication comm = new Communication(session);
+            comm.sendExpose(message);
+        }
         game.checkScore();
         broadcastGameState();
     }
@@ -224,15 +236,28 @@ public class Gameprogress {
     public void gameReset() {
         LOGGER.info("SPIELGAMERESET");
 
+        for(WebSocket socket : sessions.keySet()) {
+            Communication comm = new Communication(socket);
+            comm.sendWin(
+                    game.getCurrentTeam(),
+                    game.getScore(),
+                    game.checkAssassin()
+            );
+        }
+
+        for (WebSocket socket : new HashMap<>(sessions).keySet()) {
+            try {
+                socket.close(1000, "Game has been reset by the server");
+            } catch (Exception e) {
+                LOGGER.warning("Fehler beim Trennen der Verbindung: " + e.getMessage());
+            }
+        }
+
+        sessions.clear();
+
         WordBank wordBank = new WordBank();
         game = new Game(wordBank);
         game.setGamestate(GameState.LOBBY);
-
-        for(WebSocket socket : sessions.keySet()) {
-            socket.send("RESET");
-        }
-
-        broadcastGameState();
     }
 
     public void broadcastGameState() {
@@ -248,7 +273,6 @@ public class Gameprogress {
                     game.getHint()
             );
         }
-
     }
 
     public void broadcastMarkedCards() {

@@ -299,4 +299,64 @@ class GameTest {
         assertFalse(game.checkExpose());
     }
 
+    @Test
+    void testAddTeamCard() {
+        boolean changed = game.addTeamCard(TeamColor.RED);
+        assertTrue(changed);
+
+        long neutralCount = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.NEUTRAL)
+                .count();
+
+        assertTrue(neutralCount <= 6); // Start: 7 → danach max. 6
+    }
+
+    @Test
+    void testAddTeamCardNoNeutralLeft() {
+        // Alle neutralen Karten in revealed Zustand setzen (unveränderlich)
+        game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.NEUTRAL)
+                .forEach(c -> {
+                    try {
+                        Field field = Card.class.getDeclaredField("revealed");
+                        field.setAccessible(true);
+                        field.set(c, true);
+                    } catch (Exception e) {
+                        fail(e);
+                    }
+                });
+
+        boolean changed = game.addTeamCard(TeamColor.BLUE);
+        assertFalse(changed);
+    }
+
+    @Test
+    void testCheckAssassinBeforeReveal() {
+        assertFalse(game.checkAssassin());
+    }
+
+    @Test
+    void testCheckAssassinAfterReveal() throws GameException {
+        Card assassin = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.ASSASSIN)
+                .findFirst()
+                .orElseThrow();
+
+        game.guessCard(game.getBoard().indexOf(assassin));
+        assertTrue(game.checkAssassin());
+    }
+
+    @Test
+    void testEndTurnSwitchesTeam() throws Exception {
+        Field stateField = Game.class.getDeclaredField("state");
+        stateField.setAccessible(true);
+        stateField.set(game, GameState.OPERATIVE_TURN);
+
+        TeamColor original = game.getCurrentTeam();
+        game.endTurn();
+
+        assertNotEquals(original, game.getCurrentTeam());
+        assertEquals(GameState.SPYMASTER_TURN, game.getGamestate());
+    }
+
 }
