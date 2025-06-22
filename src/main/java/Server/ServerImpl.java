@@ -50,7 +50,9 @@ public class ServerImpl extends WebSocketServer {
 
     @Override
     public void onMessage(WebSocket conn, String message) {
-        LOGGER.info(String.format("Nachricht empfangen: " + message));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info(String.format("Nachricht empfangen: %s", message));
+        }
 
         if (message.startsWith("USER:")) {
             String name = message.substring("USER:".length());
@@ -65,7 +67,9 @@ public class ServerImpl extends WebSocketServer {
 
             Player player = new Player(name);
             connections.put(conn, player);
-            LOGGER.info(String.format(name + " ist dem Spiel beigetreten."));
+            if (LOGGER.isLoggable(Level.INFO)) {
+                LOGGER.info(String.format("%s ist dem Spiel beigetreten.", name));
+            }
             broadcastPlayerList();
             conn.send("USERNAME_OK");
 
@@ -125,10 +129,10 @@ public class ServerImpl extends WebSocketServer {
 
                 boolean newState = !player.getSpymaster();
                 player.setSpymaster(newState);
-
-                conn.send(SPYMASTER_TOGGLE + ":" + player.getUsername() + ":" + newState);
-                LOGGER.info(player.getUsername() + (newState ? " ist jetzt Spymaster." : " ist kein Spymaster mehr."));
-
+                conn.send(SPYMASTER_TOGGLE + player.getUsername() + ":" + newState);
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.info(String.format("%s %s", player.getUsername(), newState ? "ist jetzt Spymaster." : "ist kein Spymaster mehr."));
+                }
                 broadcastPlayerList();
             } else {
                 conn.send("MESSAGE:Spieler nicht gefunden oder nicht zugeordnet.");
@@ -163,10 +167,13 @@ public class ServerImpl extends WebSocketServer {
                     .append(player.getTeamColor() != null ? player.getTeamColor().name() : "").append(",")
                     .append(player.getSpymaster()).append(",")
                     .append(player.isReady()).append(";");
+
         }
 
         String msg = sb.toString();
-        LOGGER.info(String.format("Sende Spielerliste: " + msg));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Sende Spielerliste: " + msg);
+        }
         for (WebSocket conn : connections.keySet()) {
             conn.send(msg);
         }

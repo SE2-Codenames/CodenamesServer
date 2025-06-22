@@ -7,6 +7,6 @@ public class Server {
         int port = 8081; // oder frei wählbar
         ServerImpl server = new ServerImpl(port);
         server.start();
-        logger.info("Server läuft auf Port " + port);
+        logger.info(String.format("Server läuft auf Port %d", port));
     }
 }
