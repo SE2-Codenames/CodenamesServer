@@ -77,7 +77,7 @@ public class TestCommunication extends Communication {
     }
 
     @Override
-    public void sendWin(String message, TeamColor team, int score) {
+    public void sendWin(TeamColor team, int[] score, boolean assasin) {
         // no-op für Tests
     }
 }

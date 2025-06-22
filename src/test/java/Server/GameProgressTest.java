@@ -202,20 +202,20 @@ public class GameProgressTest {
 
     @Test
     void testGameReset() {
-        gameprogress = new Gameprogress(sessions) {
-            @Override
-            public void broadcastGameState() {
-                socket.send("RESET_BROADCAST");
-            }
-        };
+        Game mockGame = mock(Game.class);
+        when(mockGame.getCurrentTeam()).thenReturn(TeamColor.RED);
+        when(mockGame.getScore()).thenReturn(new int[]{1, 2});
+        when(mockGame.checkAssassin()).thenReturn(false);
 
+        gameprogress = new Gameprogress(sessions);
+        gameprogress.setGame(mockGame);
         gameprogress.gameReset();
 
         assertNotNull(gameprogress.getGame());
         assertEquals(GameState.LOBBY, gameprogress.getGame().getGamestate());
 
-        verify(socket).send("RESET");
-        verify(socket).send("RESET_BROADCAST");
+        verify(socket).close(eq(1000), contains("reset"));
+        verify(socket).send(contains("GAME_OVER"));
     }
 
     @Test
@@ -228,21 +228,16 @@ public class GameProgressTest {
         when(mockGame.getCurrentTeam()).thenReturn(TeamColor.BLUE);
         when(mockGame.addTeamCard(any())).thenReturn(true);
 
-        gameprogress = new Gameprogress(sessions) {
-            {
-                setCommunication(comm);
-                setGame(mockGame);
-            }
-
-            @Override
-            public void broadcastGameState() { //only want to test if method gets called. Not send data
-            }
-        };
+        gameprogress = new Gameprogress(sessions) {{
+            setCommunication(comm);
+            setGame(mockGame);
+        }};
 
         gameprogress.processMessage(socket, "EXPOSE:apple");
 
-        verify(mockGame).addTeamCard(any());
-        verify(socket).send(contains("Expose successful."));
+        verify(socket).send(startsWith("CHAT:"));
+        verify(socket).send(contains("\"type\":\"expose\""));
+        verify(socket).send(contains("Opponent used a forbidden word"));
     }
 
     @Test
@@ -324,7 +319,7 @@ public class GameProgressTest {
         when(mockGame.checkExpose()).thenReturn(false);
         when(mockGame.getCurrentTeam()).thenReturn(TeamColor.RED);
         when(mockGame.addTeamCard(any())).thenReturn(false);
-        when(mockGame.getScore()).thenReturn(new int[]{1, 1});
+        when(mockGame.getScore()).thenReturn(new int[]{1, -1});
 
         gameprogress = new Gameprogress(sessions) {{
             setCommunication(comm);
@@ -333,8 +328,11 @@ public class GameProgressTest {
 
         gameprogress.processMessage(socket, "EXPOSE:hint");
 
-        verify(socket).send(contains("No cards left."));
         verify(mockGame).setScore(any());
+
+        verify(socket).send(startsWith("CHAT:"));
+        verify(socket).send(contains("\"type\":\"expose\""));
+        verify(socket).send(contains("No cards left"));
     }
 
     @Test

@@ -156,9 +156,9 @@ public class CommunicationTest {
 
     @Test
     void testSendWin() {
-        comm.sendWin("Team RED wins!", TeamColor.RED, 9);
-        verify(mockSocket).send(contains("win"));
-        verify(mockSocket).send(contains("Team RED wins!"));
+        comm.sendWin(TeamColor.RED, new int[]{8, 9}, true);
+        verify(mockSocket).send(contains("GAME_OVER"));
+        verify(mockSocket).send(contains("RED"));
     }
 
     @Test
@@ -193,4 +193,9 @@ public class CommunicationTest {
         assertFalse(comm.isSkippedTurn());
     }
 
+    @Test
+    void testGetSelectedCardNegative() {
+        comm.setInput("SELECT:-5");
+        assertEquals(-5, comm.getSelectedCard());  // Sollte evtl. geblockt werden?
+    }
 }
