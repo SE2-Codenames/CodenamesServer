@@ -125,6 +125,15 @@ public class Communication {
         LOGGER.info(gesendetAnClient + message);
     }
 
+    public void sendWin(TeamColor team, int[] score, boolean assassinTriggered) {
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("team", team);
+        payload.put("assassinTriggered", assassinTriggered);
+        payload.put("score", score);
+        String message = "GAME_OVER" + gson.toJson(payload);
+        conn.send(message);
+    }
+
     //Chatnachrichten
     public void sendHint(String hint, int number) {
         Map<String, Object> payload = new HashMap<>();
@@ -152,15 +161,6 @@ public class Communication {
         Map<String, Object> payload = new HashMap<>();
         payload.put("type", "message");
         payload.put("message", message);
-        sendChat(payload);
-    }
-
-    public void sendWin(String message, TeamColor team, int score) {
-        Map<String, Object> payload = new HashMap<>();
-        payload.put("type", "win");
-        payload.put("message", message);
-        payload.put("team", team);
-        payload.put("score", score);
         sendChat(payload);
     }
 

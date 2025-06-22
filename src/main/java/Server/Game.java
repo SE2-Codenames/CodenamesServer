@@ -150,39 +150,6 @@ public class Game {
         }
     }
 
-    // calculate the score and check Win state
-    /*protected void checkScore() {
-        int revealedRed = 0;
-        int revealedBlue = 0;
-
-        if(score[0] == -1 || score[1] == -1){
-            notifyGameOver();
-        }
-        else {
-
-            score[0] = 0;
-            score[1] = 0;
-
-            for (int i = 0; i < 25; i++) {
-                if(!board.get(i).isRevealed()){
-                    if(board.get(i).getCardRole() == CardRole.RED){
-                        revealedRed++;
-                        score[0]++;
-                    }
-                    if(board.get(i).getCardRole() == CardRole.BLUE){
-                        revealedBlue++;
-                        score[1]++;
-                    }
-                }
-            }
-
-            if(revealedRed == 0 || revealedBlue == 0){
-                notifyWin();
-            }
-        }
-    }
-     */
-
     protected void checkScore() {
         if (isGameOver()) {
             notifyGameOver();
@@ -307,6 +274,17 @@ public class Game {
         }
 
         return true;
+    }
+
+    public boolean checkAssassin(){
+        for (Card card : board) {
+            if (card.getCardRole() == CardRole.ASSASSIN) {
+                if (card.isRevealed()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
 
