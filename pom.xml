@@ -96,7 +96,7 @@
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/reports/jacoco/jacocoTestReport/jacocoTestReport.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.coverage.exclusions>**/Server/Server.java, **/Server/ServerImpl.java, **/Server/ServerPayload.java</sonar.coverage.exclusions>
+        <sonar.coverage.exclusions>**/Server/Server.java, **/Server/ServerImpl.java</sonar.coverage.exclusions>
     </properties>
 
 </project>

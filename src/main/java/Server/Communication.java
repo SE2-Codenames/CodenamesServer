@@ -18,6 +18,8 @@ public class Communication {
     private final WebSocket conn;
     private final Gson gson = new Gson();
     private String input;
+    private static final String mark = "MARK:";
+    private static final String gesendetAnClient = "Gesendet an Client:";
 
     public Communication(WebSocket conn) {
         this.conn = conn;
@@ -44,6 +46,8 @@ public class Communication {
     public boolean isCardMarked() {
         return input != null && input.startsWith("MARK:");
     }
+
+    public boolean isSkippedTurn(){return input != null && input.equalsIgnoreCase("SKIP_TURN");}
 
     public boolean isExposeCommand() {
         return input != null && input.startsWith("EXPOSE:");
@@ -76,8 +80,8 @@ public class Communication {
     }
 
     public int getMarkedCard() {
-        if (input.startsWith("MARK:")) {
-            String posStr = input.substring("MARK:".length());
+        if (input.startsWith(mark)) {
+            String posStr = input.substring(mark.length());
             try {
                 return Integer.parseInt(posStr);
             } catch (NumberFormatException e) {
@@ -110,15 +114,15 @@ public class Communication {
 
         String message = "GAME_STATE:" + gson.toJson(payload);
         conn.send(message);
-        LOGGER.info("Gesendet an Client: " + message);
+        LOGGER.info(gesendetAnClient + message);
     }
 
     public void sendMarked(boolean[] markedCards) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("markedCards", markedCards);
-        String message = "MARKED:" + gson.toJson(payload);
+        String message = mark + gson.toJson(payload);
         conn.send(message);
-        LOGGER.info("Gesendet an Client: " + message);
+        LOGGER.info(gesendetAnClient + message);
     }
 
     //Chatnachrichten
@@ -144,6 +148,13 @@ public class Communication {
         sendChat(payload);
     }
 
+    public void sendMessage(String message){
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", "message");
+        payload.put("message", message);
+        sendChat(payload);
+    }
+
     public void sendWin(String message, TeamColor team, int score) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("type", "win");
@@ -157,6 +168,6 @@ public class Communication {
         String json = gson.toJson(payload);
         String fullMessage = "CHAT:" + json;
         conn.send(fullMessage);
-        LOGGER.info("Gesendet an Client: " + fullMessage);
+        LOGGER.info(gesendetAnClient + fullMessage);
     }
 }

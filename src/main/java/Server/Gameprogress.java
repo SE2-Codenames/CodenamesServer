@@ -58,6 +58,7 @@ public class Gameprogress {
                 return;
             }
             if (communication.isExposeCommand()) {
+                LOGGER.info("ExposeFunktion Start");
                 handleExpose(conn);
                 return;
             }
@@ -102,20 +103,23 @@ public class Gameprogress {
 
             case SPYMASTER_TURN -> {
                 if (communication.isHint()) {
-                    spymasterTurn(conn);
+                    spymasterTurn();
                 } else {
                     conn.send("MESSAGE:Warte auf Hinweis des Spymasters.");
                 }
             }
             case OPERATIVE_TURN -> {
-                if (communication.isCardSelection()) {
-                    operativeTurn(conn);
+                if (communication.isSkippedTurn()) {
+                    skippTurn();
+                }
+                else if (communication.isCardSelection()) {
+                    operativeTurn();
                 }
                 else if (communication.isCardMarked()) {
-                    cardMarked(conn);
+                    cardMarked();
                 }
                 else if (communication.clearMarksRequested()){
-                    clearMarked(conn);
+                    clearMarked();
                 }
                 else {
                     conn.send("MESSAGE:Operatives sind am Zug.");
@@ -127,7 +131,7 @@ public class Gameprogress {
         }
     }
 
-    private void spymasterTurn(WebSocket conn) {
+    private void spymasterTurn() {
         String[] clue = communication.getHint();
         game.getClue(clue);
 
@@ -140,18 +144,18 @@ public class Gameprogress {
         broadcastGameState();
     }
 
-    private void cardMarked(WebSocket conn) {
+    private void cardMarked() {
         int marked = communication.getMarkedCard();
         game.toggleMark(marked);
         broadcastMarkedCards();
     }
 
-    private void clearMarked(WebSocket conn) {
+    private void clearMarked() {
         game.clearMarks();
         broadcastMarkedCards();
     }
 
-    private void operativeTurn(WebSocket conn) throws GameException {
+    private void operativeTurn() throws GameException {
         int guess = communication.getSelectedCard();
         game.guessCard(guess);
 
@@ -162,16 +166,30 @@ public class Gameprogress {
         }
 
         broadcastGameState();
+        broadcastMarkedCards();
+    }
+
+    private void skippTurn() {
+        game.endTurn();
+        game.clearMarks();
+
+        for (WebSocket session : sessions.keySet()) {
+            Communication comm = new Communication(session);
+            comm.sendMessage("Turn skipped");
+        }
+
+        broadcastMarkedCards();
+        broadcastGameState();
     }
 
     private void handleExpose(WebSocket conn) {
 
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
-
+        LOGGER.info("Target team: " + targetTeam);
         boolean cardAdded = game.addTeamCard(targetTeam);
         if (!cardAdded) {
             LOGGER.info("No neutral cards left.");
-            conn.send("MESSAGE: No cards left.");
+            conn.send("MESSAGE:No cards left.");
 
             int[] score = game.getScore();
             if (targetTeam == TeamColor.RED) {
@@ -181,11 +199,12 @@ public class Gameprogress {
             }
             game.setScore(score);
         } else {
-            game.clearMarks();
-            game.endTurn();
-            conn.send("MESSAGE: Expose successful.");
+            if (targetTeam == game.getCurrentTeam()) {
+                game.clearMarks();
+                game.endTurn();
+            }
         }
-
+        conn.send("MESSAGE: Expose successful.");
         game.checkScore();
         broadcastGameState();
     }

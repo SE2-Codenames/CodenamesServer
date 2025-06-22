@@ -116,6 +116,79 @@ class GameTest {
     }
 
     @Test
+    void testCheckScoreGameOverTriggers() throws Exception {
+        int[] losingScore = {-1, 0};
+        game.setScore(losingScore);
+
+        Method checkScore = Game.class.getDeclaredMethod("checkScore");
+        checkScore.setAccessible(true);
+        checkScore.invoke(game);
+
+        assertEquals(GameState.GAME_OVER, game.getGamestate());
+        assertEquals(TeamColor.BLUE, game.getCurrentTeam());
+    }
+
+    @Test
+    void testCheckScoreTriggersWin() throws Exception {
+        List<Card> blueCards = game.getBoard().stream()
+                .filter(c -> c.getCardRole() == CardRole.BLUE)
+                .toList();
+
+        for (Card c : blueCards) {
+            Field revealedField = Card.class.getDeclaredField("revealed");
+            revealedField.setAccessible(true);
+            revealedField.set(c, true);
+        }
+
+        Method checkScore = Game.class.getDeclaredMethod("checkScore");
+        checkScore.setAccessible(true);
+        checkScore.invoke(game);
+
+        assertEquals(GameState.GAME_OVER, game.getGamestate());
+    }
+
+    @Test
+    void testUpdateScoresCounts() throws Exception {
+        Method updateScores = Game.class.getDeclaredMethod("updateScores", CardRole.class);
+        updateScores.setAccessible(true);
+
+        Field redField = Game.class.getDeclaredField("revealedRed");
+        Field blueField = Game.class.getDeclaredField("revealedBlue");
+        redField.setAccessible(true);
+        blueField.setAccessible(true);
+        redField.set(game, 0);
+        blueField.set(game, 0);
+
+        updateScores.invoke(game, CardRole.RED);
+        updateScores.invoke(game, CardRole.BLUE);
+
+        assertEquals(1, redField.get(game));
+        assertEquals(1, blueField.get(game));
+    }
+
+    @Test
+    void testResetScoreAllZero() throws Exception {
+        Field redField = Game.class.getDeclaredField("revealedRed");
+        Field blueField = Game.class.getDeclaredField("revealedBlue");
+        redField.setAccessible(true);
+        blueField.setAccessible(true);
+        redField.set(game, 3);
+        blueField.set(game, 2);
+
+        int[] newScore = {5, 6};
+        game.setScore(newScore);
+
+        Method resetScore = Game.class.getDeclaredMethod("resetScore");
+        resetScore.setAccessible(true);
+        resetScore.invoke(game);
+
+        assertArrayEquals(new int[]{0, 0}, game.getScore());
+        assertEquals(0, redField.get(game));
+        assertEquals(0, blueField.get(game));
+    }
+
+
+    @Test
     void testClue() {
         game.getClue(new String[]{"Banana", "2"});
         assertEquals("Banana", game.getHint());
