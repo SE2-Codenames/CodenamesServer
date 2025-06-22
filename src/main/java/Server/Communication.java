@@ -47,6 +47,8 @@ public class Communication {
         return input != null && input.startsWith("MARK:");
     }
 
+    public boolean isSkippedTurn(){return input != null && input.equalsIgnoreCase("SKIP_TURN");}
+
     public boolean isExposeCommand() {
         return input != null && input.startsWith("EXPOSE:");
     }
@@ -142,6 +144,13 @@ public class Communication {
     public void sendExpose(String message) {
         Map<String, Object> payload = new HashMap<>();
         payload.put("type", "expose");
+        payload.put("message", message);
+        sendChat(payload);
+    }
+
+    public void sendMessage(String message){
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("type", "message");
         payload.put("message", message);
         sendChat(payload);
     }

@@ -109,7 +109,10 @@ public class Gameprogress {
                 }
             }
             case OPERATIVE_TURN -> {
-                if (communication.isCardSelection()) {
+                if (communication.isSkippedTurn()) {
+                    skippTurn();
+                }
+                else if (communication.isCardSelection()) {
                     operativeTurn();
                 }
                 else if (communication.isCardMarked()) {
@@ -164,6 +167,19 @@ public class Gameprogress {
 
         broadcastGameState();
         broadcastMarkedCards();
+    }
+
+    private void skippTurn() {
+        game.endTurn();
+        game.clearMarks();
+
+        for (WebSocket session : sessions.keySet()) {
+            Communication comm = new Communication(session);
+            comm.sendMessage("Turn skipped");
+        }
+
+        broadcastMarkedCards();
+        broadcastGameState();
     }
 
     private void handleExpose(WebSocket conn) {
