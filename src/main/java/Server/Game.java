@@ -94,7 +94,7 @@ public class Game {
     // Input from the Operative Player for there guess
     public void guessCard(int guess) throws GameException {
         Card card = board.get(guess);
-
+        markedCards[guess] = false;
         if (card.isRevealed()) {
             throw new GameException("Card already revealed");
         }
