@@ -49,12 +49,32 @@ public class Gameprogress {
 
         try {
             if (communication.isGameStartRequested()) {
-                LOGGER.info("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress());
-                startGame(conn);
-                for (WebSocket socket : sessions.keySet()) {
-                    socket.send("SHOW_GAMEBOARD");
+                boolean redSpy = false;
+                boolean blueSpy = false;
+                boolean redOperative = false;
+                boolean blueOperative = false;
+                for (Player player : sessions.values()) {
+                    if (player.getTeamColor() == TeamColor.BLUE && player.getSpymaster()){
+                        blueSpy = true;
+                    }
+                    if (player.getTeamColor() == TeamColor.BLUE && !player.getSpymaster()){
+                        blueSpy = true;
+                    }
+                    if (player.getTeamColor() == TeamColor.RED && player.getSpymaster()){
+                        redSpy = true;
+                    }
+                    if (player.getTeamColor() == TeamColor.RED && !player.getSpymaster()){
+                        redOperative = true;
+                    }
                 }
 
+                if(redSpy && blueSpy && redOperative && blueOperative){
+                    LOGGER.info("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress());
+                    startGame(conn);
+                    for (WebSocket socket : sessions.keySet()) {
+                        socket.send("SHOW_GAMEBOARD");
+                    }
+                }
                 return;
             }
             if (communication.isExposeCommand()) {
