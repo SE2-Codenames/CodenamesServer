@@ -79,10 +79,10 @@ public class Game {
     //randomized the starting Team
     private TeamColor startingTeamRandom() {
         SecureRandom rd = new SecureRandom();
-        //if(rd.nextBoolean())
+        if(rd.nextBoolean())
             return TeamColor.RED;
-        //else
-        //    return TeamColor.BLUE;
+        else
+            return TeamColor.BLUE;
     }
 
     public void getClue(String[] clue){
@@ -184,15 +184,13 @@ public class Game {
     }
 
     private void updateScores(CardRole role) {
-        switch (role) {
-            case RED -> {
-                revealedRed++;
-                score[0]++;
-            }
-            case BLUE -> {
-                revealedBlue++;
-                score[1]++;
-            }
+        if(role == CardRole.RED) {
+            revealedRed++;
+            score[0]++;
+        }
+        else {
+            revealedBlue++;
+            score[1]++;
         }
     }
 
