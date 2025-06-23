@@ -241,6 +241,10 @@ public class Game {
 
     public boolean checkExpose() {
         String hint = currentClue.trim().toLowerCase();
+
+        if (containsInvalidCharacters(hint)) {
+            return true;
+        }
         for (Card card : board) {
             String cardWord = card.getWord().toLowerCase();
             if (cardWord.equals(hint) || cardWord.contains(hint) || hint.contains(cardWord)) {
@@ -248,6 +252,10 @@ public class Game {
             }
         }
         return false;
+    }
+
+    public boolean containsInvalidCharacters(String input) {
+        return !input.matches("^[a-zA-Z]+$");
     }
 
     public boolean addTeamCard (TeamColor targetTeam) {
@@ -287,5 +295,3 @@ public class Game {
         return false;
     }
 }
-
-

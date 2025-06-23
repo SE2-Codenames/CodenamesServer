@@ -359,4 +359,16 @@ class GameTest {
         assertEquals(GameState.SPYMASTER_TURN, game.getGamestate());
     }
 
+    @Test
+    void testContainsInvalidCharacters() {
+        assertTrue(game.containsInvalidCharacters("Test1"));     // enthält Zahlen
+        assertTrue(game.containsInvalidCharacters("Test!"));       // enthält Sonderzeichen
+        assertTrue(game.containsInvalidCharacters("Test Test"));    // enthält Leerzeichen
+        assertTrue(game.containsInvalidCharacters("TÄST"));        // enthält Umlaut
+        assertTrue(game.containsInvalidCharacters("Test_test"));    // enthält Unterstrich
+        assertTrue(game.containsInvalidCharacters("Test "));
+
+        assertFalse(game.containsInvalidCharacters("Test"));
+        assertFalse(game.containsInvalidCharacters("testText"));
+    }
 }
