@@ -183,7 +183,7 @@ public class Gameprogress {
         }
 
         broadcastMarkedCards();
-        broadcastGameState();
+        checkGameOver();
     }
 
     private void handleExpose(WebSocket conn) {
@@ -218,7 +218,15 @@ public class Gameprogress {
             comm.sendExpose(message);
         }
         game.checkScore();
-        broadcastGameState();
+        checkGameOver();
+    }
+
+    public void checkGameOver(){
+        if (game.getGamestate() == GameState.GAME_OVER) {
+            gameoverTurn();
+        }else{
+            broadcastGameState();
+        }
     }
 
     private void gameoverTurn() {
