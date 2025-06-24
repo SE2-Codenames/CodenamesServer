@@ -9,6 +9,7 @@ import org.java_websocket.WebSocket;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Communication {
@@ -62,7 +63,9 @@ public class Communication {
             if (parts.length == 3) {
                 return new String[]{parts[1], parts[2]};
             } else {
-                LOGGER.warning(String.format("Ungültiges HINT-Format: %s", input));
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning(String.format("Ungültiges HINT-Format: %s", input));
+                }
             }
         }
         return new String[]{"", "0"};
@@ -74,7 +77,9 @@ public class Communication {
             try {
                 return Integer.parseInt(posStr);
             } catch (NumberFormatException e) {
+                if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning("Ungültige Kartenposition empfangen: " + posStr);
+                }
             }
         }
         return -1;
@@ -86,7 +91,9 @@ public class Communication {
             try {
                 return Integer.parseInt(posStr);
             } catch (NumberFormatException e) {
-                LOGGER.warning("Ungültige MARK-Kartenposition empfangen: " + posStr);
+                if (LOGGER.isLoggable(Level.WARNING)) {
+                    LOGGER.warning("Ungültige MARK-Kartenposition empfangen: " + posStr);
+                }
             }
         }
         return -1;
@@ -115,7 +122,9 @@ public class Communication {
 
         String message = "GAME_STATE:" + gson.toJson(payload);
         conn.send(message);
-        LOGGER.info(String.format("%s%s",GESENDET_AN_CLIENT, message));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info(GESENDET_AN_CLIENT + message);
+        }
     }
 
     public void sendMarked(boolean[] markedCards) {
@@ -123,7 +132,9 @@ public class Communication {
         payload.put("markedCards", markedCards);
         String message = MARK + gson.toJson(payload);
         conn.send(message);
-        LOGGER.info(String.format("%s%s",GESENDET_AN_CLIENT, message));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info(GESENDET_AN_CLIENT + message);
+        }
     }
 
     public void sendWin(TeamColor team, int[] score, boolean assassinTriggered) {
@@ -169,6 +180,8 @@ public class Communication {
         String json = gson.toJson(payload);
         String fullMessage = "CHAT:" + json;
         conn.send(fullMessage);
-        LOGGER.info(String.format("%s%s",GESENDET_AN_CLIENT, fullMessage));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info(GESENDET_AN_CLIENT + fullMessage);
+        }
     }
 }
