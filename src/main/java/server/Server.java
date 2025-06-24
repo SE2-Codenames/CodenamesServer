@@ -1,4 +1,4 @@
-package Server;
+package server;
 import java.util.logging.Logger;
 
 public class Server {

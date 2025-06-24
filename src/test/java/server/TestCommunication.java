@@ -1,8 +1,8 @@
-package Server;
+package server;
 
-import model.Card.Card;
+import model.card.Card;
 import model.GameState;
-import model.Player.TeamColor;
+import model.player.TeamColor;
 import org.java_websocket.WebSocket;
 
 import java.util.List;

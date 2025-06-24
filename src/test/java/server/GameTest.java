@@ -1,10 +1,10 @@
-package Server;
+package server;
 
-import model.Card.Card;
-import model.Card.CardRole;
-import model.Card.WordBank;
+import model.card.Card;
+import model.card.CardRole;
+import model.card.WordBank;
 import model.GameState;
-import model.Player.TeamColor;
+import model.player.TeamColor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

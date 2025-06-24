@@ -1,8 +1,8 @@
-package Server;
+package server;
 
 import model.GameState;
-import model.Player.Player;
-import model.Player.TeamColor;
+import model.player.Player;
+import model.player.TeamColor;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;

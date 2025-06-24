@@ -1,11 +1,11 @@
-package Server;
+package server;
 
 import com.google.gson.Gson;
-import model.Card.Card;
-import model.Card.WordBank;
+import model.card.Card;
+import model.card.WordBank;
 import model.GameState;
-import model.Player.Player;
-import model.Player.TeamColor;
+import model.player.Player;
+import model.player.TeamColor;
 import org.java_websocket.WebSocket;
 
 import java.util.*;

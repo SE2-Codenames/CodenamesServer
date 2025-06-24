@@ -1,8 +1,8 @@
-package Server;
+package server;
 
-import model.Card.*;
+import model.card.*;
 import model.GameState;
-import model.Player.TeamColor;
+import model.player.TeamColor;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -184,15 +184,12 @@ public class Game {
     }
 
     private void updateScores(CardRole role) {
-        switch (role) {
-            case RED -> {
-                revealedRed++;
-                score[0]++;
-            }
-            case BLUE -> {
-                revealedBlue++;
-                score[1]++;
-            }
+        if(role == CardRole.RED){
+            revealedRed++;
+            score[0]++;
+        }else if(role == CardRole.BLUE){
+            revealedBlue++;
+            score[1]++;
         }
     }
 
