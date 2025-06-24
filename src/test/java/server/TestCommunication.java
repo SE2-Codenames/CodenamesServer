@@ -80,4 +80,10 @@ public class TestCommunication extends Communication {
     public void sendWin(TeamColor team, int[] score, boolean assasin) {
         // no-op für Tests
     }
+
+    @Override
+    public void sendMessage(String message) {
+        super.sendMessage(message);
+    }
+
 }

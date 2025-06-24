@@ -53,7 +53,7 @@ public class Gameprogress {
                         blueSpy = true;
                     }
                     if (player.getTeamColor() == TeamColor.BLUE && !player.getSpymaster()){
-                        blueSpy = true;
+                        blueOperative = true;
                     }
                     if (player.getTeamColor() == TeamColor.RED && player.getSpymaster()){
                         redSpy = true;

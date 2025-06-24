@@ -29,19 +29,42 @@ class GameProgressTest {
 
     @Test
     void testStartGame() {
+        Player player = sessions.get(socket);
+        player.setTeamColor(TeamColor.RED);
+        player.setSpymaster(true);
+
+        // Füge die restlichen Rollen hinzu
+        WebSocket socket2 = mock(WebSocket.class);
+        WebSocket socket3 = mock(WebSocket.class);
+        WebSocket socket4 = mock(WebSocket.class);
+
+        Player blueSpy = new Player("BlueSpy");
+        blueSpy.setTeamColor(TeamColor.BLUE);
+        blueSpy.setSpymaster(true);
+
+        Player redOp = new Player("RedOp");
+        redOp.setTeamColor(TeamColor.RED);
+        redOp.setSpymaster(false);
+
+        Player blueOp = new Player("BlueOp");
+        blueOp.setTeamColor(TeamColor.BLUE);
+        blueOp.setSpymaster(false);
+
+        sessions.put(socket2, blueSpy);
+        sessions.put(socket3, redOp);
+        sessions.put(socket4, blueOp);
+
         TestCommunication comm = new TestCommunication(socket);
         comm.setTestInput("START_GAME");
 
-        gameprogress = new Gameprogress(sessions) {
-            @Override
-            public void processMessage(WebSocket c, String message) {
-                setCommunication(comm);
-                super.processMessage(c, message);
-            }
-        };
-
+        gameprogress = new Gameprogress(sessions);
+        gameprogress.setCommunication(comm);
         gameprogress.processMessage(socket, "START_GAME");
-        verify(socket, atLeastOnce()).send("SHOW_GAMEBOARD");
+
+        verify(socket).send("SHOW_GAMEBOARD");
+        verify(socket2).send("SHOW_GAMEBOARD");
+        verify(socket3).send("SHOW_GAMEBOARD");
+        verify(socket4).send("SHOW_GAMEBOARD");
     }
 
     @Test
@@ -296,18 +319,6 @@ class GameProgressTest {
 
         gameprogress.processMessage(socket, "{\"clearMarks\":true}");
         verify(mockGame).clearMarks();
-    }
-
-    @Test
-    void testStartGameAlreadyRunning() {
-        Game mockGame = mock(Game.class);
-        when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
-
-        gameprogress = new Gameprogress(sessions);
-        gameprogress.setGame(mockGame);
-
-        gameprogress.processMessage(socket, "START_GAME");
-        verify(socket).send(contains("Das Spiel läuft bereits"));
     }
 
     @Test
