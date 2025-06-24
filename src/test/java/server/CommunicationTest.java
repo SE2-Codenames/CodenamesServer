@@ -1,9 +1,9 @@
-package Server;
+package server;
 
-import model.Card.Card;
-import model.Card.CardRole;
+import model.card.Card;
+import model.card.CardRole;
 import model.GameState;
-import model.Player.TeamColor;
+import model.player.TeamColor;
 import org.java_websocket.WebSocket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CommunicationTest {
+class CommunicationTest {
 
     private WebSocket mockSocket;
     private Communication comm;

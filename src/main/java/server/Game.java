@@ -1,8 +1,8 @@
-package Server;
+package server;
 
-import model.Card.*;
+import model.card.*;
 import model.GameState;
-import model.Player.TeamColor;
+import model.player.*;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -284,10 +284,8 @@ public class Game {
 
     public boolean checkAssassin(){
         for (Card card : board) {
-            if (card.getCardRole() == CardRole.ASSASSIN) {
-                if (card.isRevealed()) {
-                    return true;
-                }
+            if (card.getCardRole() == CardRole.ASSASSIN && card.isRevealed()) {
+                return true;
             }
         }
         return false;

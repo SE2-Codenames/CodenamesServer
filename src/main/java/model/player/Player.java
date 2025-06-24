@@ -1,4 +1,4 @@
-package model.Player;
+package model.player;
 
 public class Player {
     private String username;

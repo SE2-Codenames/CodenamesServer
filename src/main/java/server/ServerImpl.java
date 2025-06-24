@@ -1,8 +1,8 @@
-package Server;
+package server;
 
 import model.GameState;
-import model.Player.Player;
-import model.Player.TeamColor;
+import model.player.Player;
+import model.player.TeamColor;
 import org.java_websocket.WebSocket;
 import org.java_websocket.handshake.ClientHandshake;
 import org.java_websocket.server.WebSocketServer;
@@ -84,7 +84,7 @@ public class ServerImpl extends WebSocketServer {
                         TeamColor team = TeamColor.valueOf(teamStr);
                         player.setTeamColor(team);
                         player.setSpymaster(false);
-                        LOGGER.info(String.format(name + " ist Team " + team + " beigetreten."));
+                        LOGGER.info(String.format("%s ist Team %s beigetreten.", name, team));
                         broadcastPlayerList();
                     } catch (IllegalArgumentException e) {
                         conn.send("MESSAGE:Ungültiges Team.");
@@ -99,7 +99,7 @@ public class ServerImpl extends WebSocketServer {
             Player player = connections.get(conn);
             if (player != null && player.getUsername().equals(name)) {
                 player.setReady(true);
-                LOGGER.info(name + " ist bereit.");
+                LOGGER.info(String.format("%s ist bereit.", name));
                 broadcastPlayerList();
             }
         } else if (message.startsWith(SPYMASTER_TOGGLE)) {

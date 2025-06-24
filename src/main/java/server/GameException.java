@@ -1,4 +1,4 @@
-package Server;
+package server;
 
 public class GameException extends Exception{
     public GameException(String message) {
