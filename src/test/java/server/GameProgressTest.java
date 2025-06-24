@@ -1,9 +1,9 @@
-package Server;
+package server;
 
-import model.Card.WordBank;
+import model.card.WordBank;
 import model.GameState;
-import model.Player.Player;
-import model.Player.TeamColor;
+import model.player.Player;
+import model.player.TeamColor;
 import org.java_websocket.WebSocket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class GameProgressTest {
+class GameProgressTest {
 
     private WebSocket socket;
     private Gameprogress gameprogress;
@@ -427,6 +427,32 @@ public class GameProgressTest {
 
         verify(socket).send(contains("Turn skipped"));
         verify(socket2).send(contains("Turn skipped"));
+    }
+
+    @Test
+    void testCheckGameOverTriggersGameOver() {
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.GAME_OVER);
+
+        gameprogress = new Gameprogress(sessions) {{
+            setGame(mockGame);
+        }};
+
+        gameprogress.checkGameOver();
+
+    }
+
+    @Test
+    void testCheckGameOverDoesNotTriggerGameOverWhenNotOver() {
+        Game mockGame = mock(Game.class);
+        when(mockGame.getGamestate()).thenReturn(GameState.OPERATIVE_TURN);
+
+        gameprogress = new Gameprogress(sessions) {{
+            setGame(mockGame);
+        }};
+
+        gameprogress.checkGameOver();
+
     }
 
 }

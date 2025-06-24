@@ -1,8 +1,8 @@
-package Server;
+package server;
 
-import model.Card.*;
+import model.card.*;
 import model.GameState;
-import model.Player.TeamColor;
+import model.player.*;
 
 import java.security.SecureRandom;
 import java.util.*;
@@ -79,10 +79,10 @@ public class Game {
     //randomized the starting Team
     private TeamColor startingTeamRandom() {
         SecureRandom rd = new SecureRandom();
-        //if(rd.nextBoolean())
+        if(rd.nextBoolean())
             return TeamColor.RED;
-        //else
-        //    return TeamColor.BLUE;
+        else
+            return TeamColor.BLUE;
     }
 
     public void getClue(String[] clue){
@@ -94,7 +94,7 @@ public class Game {
     // Input from the Operative Player for there guess
     public void guessCard(int guess) throws GameException {
         Card card = board.get(guess);
-
+        markedCards[guess] = false;
         if (card.isRevealed()) {
             throw new GameException("Card already revealed");
         }
@@ -184,15 +184,13 @@ public class Game {
     }
 
     private void updateScores(CardRole role) {
-        switch (role) {
-            case RED -> {
-                revealedRed++;
-                score[0]++;
-            }
-            case BLUE -> {
-                revealedBlue++;
-                score[1]++;
-            }
+        if(role == CardRole.RED) {
+            revealedRed++;
+            score[0]++;
+        }
+        else {
+            revealedBlue++;
+            score[1]++;
         }
     }
 
@@ -241,6 +239,10 @@ public class Game {
 
     public boolean checkExpose() {
         String hint = currentClue.trim().toLowerCase();
+
+        if (containsInvalidCharacters(hint)) {
+            return true;
+        }
         for (Card card : board) {
             String cardWord = card.getWord().toLowerCase();
             if (cardWord.equals(hint) || cardWord.contains(hint) || hint.contains(cardWord)) {
@@ -248,6 +250,10 @@ public class Game {
             }
         }
         return false;
+    }
+
+    public boolean containsInvalidCharacters(String input) {
+        return !input.matches("^[a-zA-Z]+$");
     }
 
     public boolean addTeamCard (TeamColor targetTeam) {
@@ -278,14 +284,10 @@ public class Game {
 
     public boolean checkAssassin(){
         for (Card card : board) {
-            if (card.getCardRole() == CardRole.ASSASSIN) {
-                if (card.isRevealed()) {
-                    return true;
-                }
+            if (card.getCardRole() == CardRole.ASSASSIN && card.isRevealed()) {
+                return true;
             }
         }
         return false;
     }
 }
-
-

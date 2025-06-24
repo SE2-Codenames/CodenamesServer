@@ -1,4 +1,4 @@
-package model.Card;
+package model.card;
 
 public class Card {
     private String word;

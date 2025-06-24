@@ -1,11 +1,11 @@
-package Server;
+package server;
 
 import com.google.gson.Gson;
-import model.Card.Card;
-import model.Card.WordBank;
+import model.card.Card;
+import model.card.WordBank;
 import model.GameState;
-import model.Player.Player;
-import model.Player.TeamColor;
+import model.player.Player;
+import model.player.TeamColor;
 import org.java_websocket.WebSocket;
 
 import java.util.*;
@@ -17,7 +17,6 @@ public class Gameprogress {
     private static final Logger LOGGER = Logger.getLogger(Gameprogress.class.getName());
 
     public final Map<WebSocket, Player> sessions;
-    private final Gson gson = new Gson();
     private Game game;
     private Communication communication;
 
@@ -30,10 +29,6 @@ public class Gameprogress {
         this.game = game;
     }
 
-    public Communication getCommunication() {
-        return communication;
-    }
-
     public void setCommunication(Communication communication) {
         this.communication = communication;
     }
@@ -43,18 +38,38 @@ public class Gameprogress {
     }
 
     public void processMessage(WebSocket conn, String input) {
-        LOGGER.info("[processMessage] Eingehende Nachricht: " + input);
+        LOGGER.info(String.format("[processMessage] Eingehende Nachricht: %s", input));
         communication = new Communication(conn);
         communication.setInput(input);
 
         try {
             if (communication.isGameStartRequested()) {
-                LOGGER.info("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress());
-                startGame(conn);
-                for (WebSocket socket : sessions.keySet()) {
-                    socket.send("SHOW_GAMEBOARD");
+                boolean redSpy = false;
+                boolean blueSpy = false;
+                boolean redOperative = false;
+                boolean blueOperative = false;
+                for (Player player : sessions.values()) {
+                    if (player.getTeamColor() == TeamColor.BLUE && player.getSpymaster()){
+                        blueSpy = true;
+                    }
+                    if (player.getTeamColor() == TeamColor.BLUE && !player.getSpymaster()){
+                        blueSpy = true;
+                    }
+                    if (player.getTeamColor() == TeamColor.RED && player.getSpymaster()){
+                        redSpy = true;
+                    }
+                    if (player.getTeamColor() == TeamColor.RED && !player.getSpymaster()){
+                        redOperative = true;
+                    }
                 }
 
+                if(redSpy && blueSpy && redOperative && blueOperative){
+                    LOGGER.info("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress());
+                    startGame(conn);
+                    for (WebSocket socket : sessions.keySet()) {
+                        socket.send("SHOW_GAMEBOARD");
+                    }
+                }
                 return;
             }
             if (communication.isExposeCommand()) {
@@ -183,13 +198,13 @@ public class Gameprogress {
         }
 
         broadcastMarkedCards();
-        broadcastGameState();
+        checkGameOver();
     }
 
     private void handleExpose(WebSocket conn) {
         String message;
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
-        LOGGER.info("Target team: " + targetTeam);
+        LOGGER.info(String.format("Target team: %s", targetTeam));
         boolean cardAdded = game.addTeamCard(targetTeam);
         if (!cardAdded) {
             LOGGER.info("No neutral cards left.");
@@ -218,7 +233,15 @@ public class Gameprogress {
             comm.sendExpose(message);
         }
         game.checkScore();
-        broadcastGameState();
+        checkGameOver();
+    }
+
+    public void checkGameOver(){
+        if (game.getGamestate() == GameState.GAME_OVER) {
+            gameoverTurn();
+        }else{
+            broadcastGameState();
+        }
     }
 
     private void gameoverTurn() {

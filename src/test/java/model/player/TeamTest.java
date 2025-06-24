@@ -1,11 +1,11 @@
-package model.Player;
+package model.player;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TeamTest {
+class TeamTest {
     private Team team1;
     private Team team2;
 
