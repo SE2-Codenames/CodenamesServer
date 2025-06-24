@@ -1,6 +1,5 @@
 package server;
 
-import com.google.gson.Gson;
 import model.card.Card;
 import model.card.WordBank;
 import model.GameState;
@@ -38,7 +37,9 @@ public class Gameprogress {
     }
 
     public void processMessage(WebSocket conn, String input) {
-        LOGGER.info(String.format("[processMessage] Eingehende Nachricht: %s", input));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info(String.format("[processMessage] Eingehende Nachricht: %s", input));
+        }
         communication = new Communication(conn);
         communication.setInput(input);
 
@@ -64,7 +65,9 @@ public class Gameprogress {
                 }
 
                 if(redSpy && blueSpy && redOperative && blueOperative){
-                    LOGGER.info("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress());
+                    if (LOGGER.isLoggable(Level.INFO)) {
+                        LOGGER.info(String.format("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress()));
+                    }
                     startGame(conn);
                     for (WebSocket socket : sessions.keySet()) {
                         socket.send("SHOW_GAMEBOARD");
@@ -73,8 +76,10 @@ public class Gameprogress {
                 return;
             }
             if (communication.isExposeCommand()) {
-                LOGGER.info("ExposeFunktion Start");
-                handleExpose(conn);
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.info("ExposeFunktion Start");
+                }
+                handleExpose();
                 return;
             }
             checkState(conn);
@@ -89,7 +94,9 @@ public class Gameprogress {
     }
 
     public void startGame(WebSocket initiator) {
-        LOGGER.info("SPIELSTART angefordert");
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("SPIELSTART angefordert");
+        }
 
         if (game != null && game.getGamestate() != GameState.LOBBY) {
             LOGGER.warning("Spiel wurde bereits gestartet oder läuft noch.");
@@ -101,7 +108,9 @@ public class Gameprogress {
         this.game = new Game(new WordBank());
         this.game.setGamestate(GameState.SPYMASTER_TURN);
 
-        LOGGER.info("Neues Spiel gestartet. Startteam: " + game.getCurrentTeam());
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info(String.format("Neues Spiel gestartet. Startteam: " + game.getCurrentTeam()));
+        }
         broadcastGameState();
     }
 
@@ -201,13 +210,17 @@ public class Gameprogress {
         checkGameOver();
     }
 
-    private void handleExpose(WebSocket conn) {
+    private void handleExpose() {
         String message;
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
-        LOGGER.info(String.format("Target team: %s", targetTeam));
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info(String.format(String.format("Target team: %s", targetTeam)));
+        }
         boolean cardAdded = game.addTeamCard(targetTeam);
         if (!cardAdded) {
-            LOGGER.info("No neutral cards left.");
+            if (LOGGER.isLoggable(Level.INFO)) {
+                LOGGER.info("No neutral cards left.");
+            }
 
             int[] score = game.getScore();
             if (targetTeam == TeamColor.RED) {
@@ -245,7 +258,9 @@ public class Gameprogress {
     }
 
     private void gameoverTurn() {
-        LOGGER.info("SPIELGAMEOVER");
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("SPIELGAMEOVER");
+        }
         broadcastGameState();
 
         new Timer().schedule(new TimerTask() {
@@ -257,7 +272,9 @@ public class Gameprogress {
     }
 
     public void gameReset() {
-        LOGGER.info("SPIELGAMERESET");
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("SPIELGAMERESET");
+        }
 
         for(WebSocket socket : sessions.keySet()) {
             Communication comm = new Communication(socket);
@@ -285,7 +302,9 @@ public class Gameprogress {
 
     public void broadcastGameState() {
         if (game == null) return;
-        LOGGER.info("Spielstatus wird an alle Clients gesendet...");
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Spielstatus wird an alle Clients gesendet...");
+        }
         for (WebSocket session : sessions.keySet()) {
             Communication comm = new Communication(session);
             comm.sendGameState(
@@ -300,7 +319,9 @@ public class Gameprogress {
 
     public void broadcastMarkedCards() {
         if (game == null) return;
-        LOGGER.info("Markierte Karten werden an alle Clients gesendet...");
+        if (LOGGER.isLoggable(Level.INFO)) {
+            LOGGER.info("Markierte Karten werden an alle Clients gesendet...");
+        }
         for (WebSocket session : sessions.keySet()) {
             Communication comm = new Communication(session);
             comm.sendMarked(game.getMarkedCards());
