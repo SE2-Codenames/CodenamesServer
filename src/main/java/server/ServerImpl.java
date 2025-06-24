@@ -84,7 +84,9 @@ public class ServerImpl extends WebSocketServer {
                         TeamColor team = TeamColor.valueOf(teamStr);
                         player.setTeamColor(team);
                         player.setSpymaster(false);
-                        LOGGER.info(String.format("%s ist Team %s beigetreten.", name, team));
+                        if (LOGGER.isLoggable(Level.INFO)) {
+                            LOGGER.info(String.format("%s ist Team %s beigetreten.", name, team));
+                        }
                         broadcastPlayerList();
                     } catch (IllegalArgumentException e) {
                         conn.send("MESSAGE:Ungültiges Team.");
@@ -99,7 +101,9 @@ public class ServerImpl extends WebSocketServer {
             Player player = connections.get(conn);
             if (player != null && player.getUsername().equals(name)) {
                 player.setReady(true);
-                LOGGER.info(String.format("%s ist bereit.", name));
+                if (LOGGER.isLoggable(Level.INFO)) {
+                    LOGGER.info(String.format("%s ist bereit.", name));
+                }
                 broadcastPlayerList();
             }
         } else if (message.startsWith(SPYMASTER_TOGGLE)) {

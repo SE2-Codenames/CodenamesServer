@@ -1,4 +1,5 @@
 package server;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Server {
@@ -7,6 +8,8 @@ public class Server {
         int port = 8081; // oder frei wählbar
         ServerImpl server = new ServerImpl(port);
         server.start();
-        logger.info(String.format("Server läuft auf Port %d", port));
+        if (logger.isLoggable(Level.INFO)) {
+            logger.info("Server läuft auf Port " + port);
+        }
     }
 }
