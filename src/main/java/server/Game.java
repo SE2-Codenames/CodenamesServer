@@ -275,10 +275,8 @@ public class Game {
 
     public boolean checkAssassin(){
         for (Card card : board) {
-            if (card.getCardRole() == CardRole.ASSASSIN) {
-                if (card.isRevealed()) {
+            if (card.getCardRole() == CardRole.ASSASSIN && card.isRevealed()) {
                     return true;
-                }
             }
         }
         return false;

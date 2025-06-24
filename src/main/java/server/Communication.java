@@ -62,7 +62,7 @@ public class Communication {
             if (parts.length == 3) {
                 return new String[]{parts[1], parts[2]};
             } else {
-                LOGGER.warning("Ungültiges HINT-Format: " + input);
+                LOGGER.warning(String.format("Ungültiges HINT-Format: %s", input));
             }
         }
         return new String[]{"", "0"};
@@ -115,7 +115,7 @@ public class Communication {
 
         String message = "GAME_STATE:" + gson.toJson(payload);
         conn.send(message);
-        LOGGER.info(GESENDET_AN_CLIENT + message);
+        LOGGER.info(String.format("%s%s",GESENDET_AN_CLIENT, message));
     }
 
     public void sendMarked(boolean[] markedCards) {
@@ -123,7 +123,7 @@ public class Communication {
         payload.put("markedCards", markedCards);
         String message = MARK + gson.toJson(payload);
         conn.send(message);
-        LOGGER.info(GESENDET_AN_CLIENT + message);
+        LOGGER.info(String.format("%s%s",GESENDET_AN_CLIENT, message));
     }
 
     public void sendWin(TeamColor team, int[] score, boolean assassinTriggered) {
@@ -169,6 +169,6 @@ public class Communication {
         String json = gson.toJson(payload);
         String fullMessage = "CHAT:" + json;
         conn.send(fullMessage);
-        LOGGER.info(GESENDET_AN_CLIENT + fullMessage);
+        LOGGER.info(String.format("%s%s",GESENDET_AN_CLIENT, fullMessage));
     }
 }

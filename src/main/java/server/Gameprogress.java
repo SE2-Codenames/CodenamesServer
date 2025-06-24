@@ -43,7 +43,7 @@ public class Gameprogress {
     }
 
     public void processMessage(WebSocket conn, String input) {
-        LOGGER.info("[processMessage] Eingehende Nachricht: " + input);
+        LOGGER.info(String.format("[processMessage] Eingehende Nachricht: %s", input));
         communication = new Communication(conn);
         communication.setInput(input);
 
@@ -189,7 +189,7 @@ public class Gameprogress {
     private void handleExpose(WebSocket conn) {
         String message;
         TeamColor targetTeam = game.checkExpose() ? game.getCurrentTeam() : (game.getCurrentTeam() == TeamColor.RED ? TeamColor.BLUE : TeamColor.RED);
-        LOGGER.info("Target team: " + targetTeam);
+        LOGGER.info(String.format("Target team: %s", targetTeam));
         boolean cardAdded = game.addTeamCard(targetTeam);
         if (!cardAdded) {
             LOGGER.info("No neutral cards left.");
