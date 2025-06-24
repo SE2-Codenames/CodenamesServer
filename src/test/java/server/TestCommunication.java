@@ -8,8 +8,7 @@ import org.java_websocket.WebSocket;
 import java.util.List;
 
 public class TestCommunication extends Communication {
-
-    private String testInput;
+    
     private String[] testHint;
     private int selectedCard = -1;
     private int markedCard = -1;
@@ -31,7 +30,6 @@ public class TestCommunication extends Communication {
     }
 
     public void setTestInput(String input) {
-        this.testInput = input;
         super.setInput(input);
     }
 

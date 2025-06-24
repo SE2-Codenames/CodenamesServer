@@ -66,7 +66,7 @@ public class Gameprogress {
 
                 if(redSpy && blueSpy && redOperative && blueOperative){
                     if (LOGGER.isLoggable(Level.INFO)) {
-                        LOGGER.info(String.format("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress()));
+                        LOGGER.info("[processMessage] SPIELSTART angefordert durch Client " + conn.getRemoteSocketAddress());
                     }
                     startGame(conn);
                     for (WebSocket socket : sessions.keySet()) {
@@ -109,7 +109,7 @@ public class Gameprogress {
         this.game.setGamestate(GameState.SPYMASTER_TURN);
 
         if (LOGGER.isLoggable(Level.INFO)) {
-            LOGGER.info(String.format("Neues Spiel gestartet. Startteam: " + game.getCurrentTeam()));
+            LOGGER.info("Neues Spiel gestartet. Startteam: " + game.getCurrentTeam());
         }
         broadcastGameState();
     }
