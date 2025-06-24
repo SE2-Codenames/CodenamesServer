@@ -120,6 +120,10 @@ class GameTest {
         int[] losingScore = {-1, 0};
         game.setScore(losingScore);
 
+        Field currentTurnField = Game.class.getDeclaredField("currentTurn");
+        currentTurnField.setAccessible(true);
+        currentTurnField.set(game, TeamColor.RED);
+
         Method checkScore = Game.class.getDeclaredMethod("checkScore");
         checkScore.setAccessible(true);
         checkScore.invoke(game);
@@ -139,6 +143,22 @@ class GameTest {
             revealedField.setAccessible(true);
             revealedField.set(c, true);
         }
+
+        for (Card c : game.getBoard()) {
+            if (c.getCardRole() != CardRole.BLUE) {
+                Field revealedField = Card.class.getDeclaredField("revealed");
+                revealedField.setAccessible(true);
+                revealedField.set(c, true);
+            }
+        }
+
+        Field turnField = Game.class.getDeclaredField("currentTurn");
+        turnField.setAccessible(true);
+        turnField.set(game, TeamColor.BLUE);
+
+        Field stateField = Game.class.getDeclaredField("state");
+        stateField.setAccessible(true);
+        stateField.set(game, GameState.OPERATIVE_TURN);
 
         Method checkScore = Game.class.getDeclaredMethod("checkScore");
         checkScore.setAccessible(true);
