@@ -188,7 +188,7 @@ public class Game {
             revealedRed++;
             score[0]++;
         }
-        else {
+        else if(role == CardRole.BLUE){
             revealedBlue++;
             score[1]++;
         }
